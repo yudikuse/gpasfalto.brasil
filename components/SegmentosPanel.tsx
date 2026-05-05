@@ -4,7 +4,7 @@ const segmentos = [
   {
     code: '01',
     title: 'Agronegócio',
-    desc: 'Estradas rurais, pátios de máquinas, acessos a silos e armazéns. Infraestrutura que opera o ano todo — da plantio à colheita.',
+    desc: 'Estradas rurais, pátios de máquinas, acessos a silos e armazéns. Infraestrutura que opera o ano todo — do plantio à colheita.',
     items: ['Estradas e acessos rurais', 'Pátios de máquinas e armazéns', 'Plataformas de silo', 'Terraplanagem e drenagem'],
     cta: 'Quero orçamento para minha fazenda',
   },
