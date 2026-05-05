@@ -19,7 +19,11 @@ export default function Home() {
         <HeroPanel />
         <NumbersPanel />
         {site.projects.map((proj, i) => (
-          <ProjectPanel key={proj.slug} project={proj} panelId={'p' + (i + 3)} />
+          <ProjectPanel
+            key={proj.slug}
+            project={proj}
+            panelId={i === 0 ? 'obras' : proj.slug}
+          />
         ))}
         <SegmentosPanel />
         <UsinasPanel />
