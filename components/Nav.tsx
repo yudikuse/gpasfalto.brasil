@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { site } from '@/data/content'
 
 export default function Nav() {
@@ -19,49 +20,35 @@ export default function Nav() {
   }
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between
-        px-10 h-[68px] border-b border-transparent
-        transition-all duration-300
-        ${solid ? 'nav-solid' : 'bg-transparent'}`}
-    >
-      <button
-        onClick={() => scrollTo('p1')}
-        className="flex items-center hover:opacity-85 transition-opacity"
-      >
-        <Image
-          src="/images/logo-white.png"
-          alt={site.company.name}
-          width={160}
-          height={44}
-          className="h-20 w-auto object-contain"
-          priority
-        />
+    <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between
+      px-10 h-[68px] border-b border-transparent transition-all duration-300
+      ${solid ? 'nav-solid' : 'bg-transparent'}`}>
+      <button onClick={() => scrollTo('p1')}
+        className="flex items-center hover:opacity-85 transition-opacity">
+        <Image src="/images/logo-white.png" alt={site.company.name}
+          width={160} height={44} className="h-14 w-auto object-contain" priority />
       </button>
-
       <ul className="hidden md:flex gap-8 list-none">
-        {[
-          { label: 'Empresa', id: 'p2' },
-          { label: 'Obras',   id: 'p3' },
-          { label: 'Usinas',  id: 'p6' },
-        ].map(l => (
+        {[{ label: 'Obras', id: 'p3' }, { label: 'Usinas', id: 'p6' }].map(l => (
           <li key={l.id}>
-            <button
-              onClick={() => scrollTo(l.id)}
+            <button onClick={() => scrollTo(l.id)}
               className="text-[12px] font-medium tracking-[.1em] uppercase
-                text-white/50 hover:text-white transition-colors"
-            >
+                text-white/50 hover:text-white transition-colors">
               {l.label}
             </button>
           </li>
         ))}
+        <li>
+          <Link href="/sobre"
+            className="text-[12px] font-medium tracking-[.1em] uppercase
+              text-white/50 hover:text-white transition-colors">
+            Sobre
+          </Link>
+        </li>
       </ul>
-
-      <button
-        onClick={() => scrollTo('p7')}
+      <button onClick={() => scrollTo('p7')}
         className="text-[12px] font-medium tracking-[.1em] uppercase
-          text-white bg-green px-6 py-2.5 hover:bg-green2 transition-colors"
-      >
+          text-white bg-green px-6 py-2.5 hover:bg-green2 transition-colors">
         Orçamento
       </button>
     </nav>
