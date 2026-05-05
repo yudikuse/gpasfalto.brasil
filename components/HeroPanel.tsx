@@ -1,3 +1,5 @@
+'use client'
+
 import { site } from '@/data/content'
 
 export default function HeroPanel() {
