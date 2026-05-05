@@ -5,12 +5,12 @@ import { site } from '@/data/content'
 type Step = 1 | 2 | 3
 
 const projectTypes = [
-  { label: 'Agronegócio',        icon: '🌾', sub: 'Estrada, pátio, silo, fazenda' },
-  { label: 'Loteamento',         icon: '🏘️', sub: 'Infraestrutura completa' },
-  { label: 'Empresa Privada',    icon: '🏭', sub: 'Pátio, acesso, área industrial' },
-  { label: 'Obra Pública',       icon: '🏛️', sub: 'Prefeitura, licitação' },
-  { label: 'Fornecimento CBUQ',  icon: '⚙️', sub: 'Massa asfáltica para sua obra' },
-  { label: 'Outro',              icon: '📋', sub: 'Descreva seu projeto' },
+  { label: 'Agronegócio',       code: '01', sub: 'Estrada, pátio, silo, fazenda' },
+  { label: 'Loteamento',        code: '02', sub: 'Infraestrutura completa' },
+  { label: 'Empresa Privada',   code: '03', sub: 'Pátio, acesso, área industrial' },
+  { label: 'Obra Pública',      code: '04', sub: 'Prefeitura, licitação' },
+  { label: 'Fornecimento CBUQ', code: '05', sub: 'Massa asfáltica para sua obra' },
+  { label: 'Outro',             code: '06', sub: 'Descreva seu projeto' },
 ]
 
 const scopeItems = [
@@ -138,7 +138,9 @@ export default function ContactPanel() {
                   className={`flex items-center gap-4 px-5 py-4 border text-left
                     transition-all duration-200 hover:border-green hover:bg-green/5
                     ${type === p.label ? 'border-green bg-green/8' : 'border-navy/12'}`}>
-                  <span className="text-xl">{p.icon}</span>
+                  <span className="font-display font-black text-[11px] tracking-[.2em] text-green/40 w-8 flex-shrink-0">
+  {p.code}
+</span>
                   <div>
                     <div className="text-[13px] font-medium text-navy">{p.label}</div>
                     <div className="text-[11px] text-navy/40">{p.sub}</div>
