@@ -25,8 +25,8 @@ export const site = {
   hero: {
     eyebrow:     'Infraestrutura · Pavimentação · CBUQ',
     line1:       'GP ASFALTO',
-    line2:       'BRASIL',
-    line3:       'CONSTRÓI.',
+    line2:       'DO CAMPO',
+    line3:       'À CIDADE.',
     description: 'Terraplenagem, pavimentação CBUQ e infraestrutura completa para o agronegócio, loteamentos e empresas do Centro-Oeste.',
     // YouTube: trocar pelo ID do melhor VT drone da GP Asfalto
     // Ex: "vS6B71Pfu7c" = COMIGO Iporá | "fc37905" = COMIGO Ponte de Pedra
