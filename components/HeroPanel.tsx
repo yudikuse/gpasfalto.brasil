@@ -54,13 +54,15 @@ export default function HeroPanel() {
           </span>
         </div>
 
-        <h1 className="anim-2 font-display font-black leading-[.88] tracking-[-0.01em]
-          text-white"
+        <h1
+          className="anim-2 font-display font-black leading-[.88] tracking-[-0.01em] text-white"
           style={{ fontSize: 'clamp(64px, 11vw, 148px)' }}
         >
           {hero.line1}
-          <span className="block"
-            style={{ WebkitTextStroke: '1.5px rgba(255,255,255,.2)', color: 'transparent' }}>
+          <span
+            className="block"
+            style={{ WebkitTextStroke: '1.5px rgba(255,255,255,.2)', color: 'transparent' }}
+          >
             {hero.line2}
           </span>
           <span className="block text-green">{hero.line3}</span>
@@ -73,7 +75,10 @@ export default function HeroPanel() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
             
               href="#p7"
-              onClick={e => { e.preventDefault(); document.getElementById('p7')?.scrollIntoView({ behavior: 'smooth' }) }}
+              onClick={e => {
+                e.preventDefault()
+                document.getElementById('p7')?.scrollIntoView({ behavior: 'smooth' })
+              }}
               className="text-[12px] font-medium tracking-[.14em] uppercase
                 text-white bg-green px-8 py-4 hover:bg-green2 transition-colors whitespace-nowrap"
             >
@@ -81,7 +86,10 @@ export default function HeroPanel() {
             </a>
             
               href="#p3"
-              onClick={e => { e.preventDefault(); document.getElementById('p3')?.scrollIntoView({ behavior: 'smooth' }) }}
+              onClick={e => {
+                e.preventDefault()
+                document.getElementById('p3')?.scrollIntoView({ behavior: 'smooth' })
+              }}
               className="text-[12px] font-light tracking-[.12em] uppercase
                 text-white/40 hover:text-white/80 transition-colors"
             >
@@ -89,6 +97,7 @@ export default function HeroPanel() {
             </a>
           </div>
         </div>
+
       </div>
     </section>
   )
