@@ -40,38 +40,43 @@ export default function ContactPanel() {
 
   const handleSend = () => {
     const msg = encodeURIComponent(
-      'Ola! Meu nome e ' + form.nome + '.\n' +
+      'Olá! Meu nome é ' + form.nome + '.\n' +
       'WhatsApp: ' + form.whatsapp + '\n' +
       'Cidade: ' + form.cidade + '\n' +
       'Tipo de projeto: ' + type + '\n' +
       'Escopo: ' + (scope.length ? scope.join(', ') : 'A definir') + '\n' +
-      (form.desc ? 'Descricao: ' + form.desc : '')
+      (form.desc ? 'Descrição: ' + form.desc : '')
     )
     window.open('https://wa.me/' + company.whatsapp + '?text=' + msg, '_blank')
     setSent(true)
   }
 
+  const resetForm = () => {
+    setSent(false); setStep(1); setType(''); setScope([])
+    setForm({ nome: '', whatsapp: '', cidade: '', desc: '' })
+  }
+
   if (sent) return (
-    <section className="panel bg-cream flex items-center justify-center" id="p7">
+    <section className="panel bg-cream flex items-center justify-center" id="contato">
       <div className="text-center px-8">
         <div className="w-16 h-16 border-2 border-green flex items-center justify-center mx-auto mb-6">
           <span className="text-green text-2xl font-display font-black">OK</span>
         </div>
         <h2 className="font-display font-black text-navy text-[40px] mb-3">Mensagem enviada!</h2>
         <p className="text-[14px] text-navy/50 mb-8 max-w-sm mx-auto leading-relaxed">
-          Nossa equipe tecnica retorna em ate 24 horas com uma analise do seu projeto.
+          Nossa equipe técnica retorna em até 24 horas com uma análise do seu projeto.
         </p>
-        <button onClick={() => { setSent(false); setStep(1); setType(''); setScope([]); setForm({ nome: '', whatsapp: '', cidade: '', desc: '' }) }}
+        <button onClick={resetForm}
           className="text-[11px] font-medium tracking-[.14em] uppercase
             text-green border border-green/40 px-6 py-3 hover:bg-green hover:text-white transition-colors">
-          Novo orcamento
+          Novo orçamento
         </button>
       </div>
     </section>
   )
 
   return (
-    <section className="panel bg-cream" id="p7">
+    <section className="panel bg-cream" id="contato">
       <div className="h-full grid grid-cols-1 md:grid-cols-2 overflow-y-auto md:overflow-hidden">
 
         {/* LEFT */}
@@ -80,17 +85,17 @@ export default function ContactPanel() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="w-5 h-px bg-green block" />
-              <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">
-                Orcamento
+              <span className="text-[12px] font-medium tracking-[.22em] uppercase text-green">
+                Orçamento
               </span>
             </div>
             <h2 className="font-display font-black text-navy leading-[.9]"
               style={{ fontSize: 'clamp(40px, 5vw, 72px)' }}>
-              Solicite<br />uma analise<br />
-              <em className="text-green not-italic">tecnica.</em>
+              Solicite<br />uma análise<br />
+              <em className="text-green not-italic">técnica.</em>
             </h2>
-            <p className="text-[13px] font-light leading-[1.8] text-navy/50 mt-5 max-w-xs">
-              Preencha em 3 passos. Nossa equipe retorna em ate 24h com proposta detalhada.
+            <p className="text-[14px] font-light leading-[1.8] text-navy/50 mt-5 max-w-xs">
+              Preencha em 3 passos. Nossa equipe retorna em até 24h com proposta detalhada.
             </p>
           </div>
           <div className="flex flex-col mt-8">
@@ -100,9 +105,11 @@ export default function ContactPanel() {
               { label: 'E-mail',   value: company.email,    href: 'mailto:' + company.email },
             ].map(c => (
               <div key={c.label} className="flex flex-col py-3 border-b border-navy/8 first:border-t">
-                <span className="text-[8px] font-medium tracking-[.26em] uppercase text-navy/30 mb-1">{c.label}</span>
+                <span className="text-[10px] font-medium tracking-[.22em] uppercase text-navy/30 mb-1">
+                  {c.label}
+                </span>
                 <a href={c.href} target="_blank"
-                  className="font-display font-bold text-[16px] tracking-[.03em] text-navy hover:text-green transition-colors">
+                  className="font-display font-bold text-[17px] tracking-[.03em] text-navy hover:text-green transition-colors">
                   {c.value}
                 </a>
               </div>
@@ -119,16 +126,14 @@ export default function ContactPanel() {
               <div key={s} className="flex items-center gap-2">
                 <div className={`w-6 h-6 flex items-center justify-center
                   text-[10px] font-bold transition-all duration-300
-                  ${step >= s
-                    ? 'bg-green text-white'
-                    : 'border border-navy/20 text-navy/30'}`}>
+                  ${step >= s ? 'bg-green text-white' : 'border border-navy/20 text-navy/30'}`}>
                   {step > s ? '✓' : s}
                 </div>
                 {s < 3 && <div className={`w-8 h-px transition-colors duration-300
                   ${step > s ? 'bg-green' : 'bg-navy/15'}`} />}
               </div>
             ))}
-            <span className="ml-2 text-[10px] tracking-[.12em] uppercase text-navy/40">
+            <span className="ml-2 text-[11px] tracking-[.1em] uppercase text-navy/40">
               {step === 1 ? 'Tipo de projeto' : step === 2 ? 'Escopo' : 'Seus dados'}
             </span>
           </div>
@@ -137,7 +142,7 @@ export default function ContactPanel() {
           {step === 1 && (
             <div className="flex flex-col gap-2">
               <h3 className="font-display font-bold text-[22px] text-navy uppercase mb-4">
-                Qual e o seu projeto?
+                Qual é o seu projeto?
               </h3>
               {projectTypes.map(p => (
                 <button key={p.label}
@@ -148,8 +153,8 @@ export default function ContactPanel() {
                     {p.code}
                   </span>
                   <div>
-                    <div className="text-[13px] font-medium text-navy">{p.label}</div>
-                    <div className="text-[11px] text-navy/40">{p.sub}</div>
+                    <div className="text-[14px] font-medium text-navy">{p.label}</div>
+                    <div className="text-[12px] text-navy/40">{p.sub}</div>
                   </div>
                   <span className="ml-auto text-navy/20 text-sm">→</span>
                 </button>
@@ -161,7 +166,7 @@ export default function ContactPanel() {
           {step === 2 && (
             <div>
               <button onClick={() => setStep(1)}
-                className="text-[10px] tracking-[.12em] uppercase text-navy/40
+                className="text-[11px] tracking-[.1em] uppercase text-navy/40
                   hover:text-navy transition-colors mb-6 flex items-center gap-2">
                 ← {type}
               </button>
@@ -171,7 +176,7 @@ export default function ContactPanel() {
               <div className="grid grid-cols-2 gap-2 mb-8">
                 {scopeItems.map(s => (
                   <button key={s} onClick={() => toggleScope(s)}
-                    className={`px-4 py-3 border text-[11px] font-medium tracking-[.04em]
+                    className={`px-4 py-3 border text-[12px] font-medium tracking-[.03em]
                       text-left transition-all duration-200
                       ${scope.includes(s)
                         ? 'border-green bg-green/8 text-navy'
@@ -192,7 +197,7 @@ export default function ContactPanel() {
           {step === 3 && (
             <div>
               <button onClick={() => setStep(2)}
-                className="text-[10px] tracking-[.12em] uppercase text-navy/40
+                className="text-[11px] tracking-[.1em] uppercase text-navy/40
                   hover:text-navy transition-colors mb-6 flex items-center gap-2">
                 ← Voltar
               </button>
@@ -201,38 +206,38 @@ export default function ContactPanel() {
               </h3>
               <div className="flex flex-col gap-0">
                 {[
-                  { key: 'nome',     label: 'Nome',     type: 'text', ph: 'Seu nome completo' },
-                  { key: 'cidade',   label: 'Cidade',   type: 'text', ph: 'Onde fica a obra?' },
+                  { key: 'nome',   label: 'Nome',   type: 'text', ph: 'Seu nome completo' },
+                  { key: 'cidade', label: 'Cidade', type: 'text', ph: 'Onde fica a obra?' },
                 ].map(f => (
                   <div key={f.key} className="flex flex-col border-b border-navy/10 first:border-t">
-                    <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3 pb-1">
+                    <label className="text-[10px] font-medium tracking-[.2em] uppercase text-navy/30 pt-3 pb-1">
                       {f.label}
                     </label>
                     <input type={f.type} placeholder={f.ph} required
                       value={form[f.key as keyof typeof form]}
                       onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
-                      className="bg-transparent border-none outline-none text-[14px] font-light
+                      className="bg-transparent border-none outline-none text-[15px] font-light
                         text-navy pb-3 placeholder:text-navy/20 caret-green" />
                   </div>
                 ))}
                 <div className="flex flex-col border-b border-navy/10">
-                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3 pb-1">
+                  <label className="text-[10px] font-medium tracking-[.2em] uppercase text-navy/30 pt-3 pb-1">
                     WhatsApp
                   </label>
                   <input type="tel" placeholder="(64) 9 0000-0000" required
                     value={form.whatsapp}
                     onChange={e => setForm(p => ({ ...p, whatsapp: maskPhone(e.target.value) }))}
-                    className="bg-transparent border-none outline-none text-[14px] font-light
+                    className="bg-transparent border-none outline-none text-[15px] font-light
                       text-navy pb-3 placeholder:text-navy/20 caret-green" />
                 </div>
                 <div className="flex flex-col border-b border-navy/10">
-                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3 pb-1">
-                    Descricao (opcional)
+                  <label className="text-[10px] font-medium tracking-[.2em] uppercase text-navy/30 pt-3 pb-1">
+                    Descrição (opcional)
                   </label>
-                  <textarea placeholder="Extensao, prazo, outras informacoes..." rows={2}
+                  <textarea placeholder="Extensão, prazo, outras informações..." rows={2}
                     value={form.desc}
                     onChange={e => setForm(p => ({ ...p, desc: e.target.value }))}
-                    className="bg-transparent border-none outline-none text-[14px] font-light
+                    className="bg-transparent border-none outline-none text-[15px] font-light
                       text-navy pb-3 resize-none placeholder:text-navy/20 caret-green" />
                 </div>
               </div>
@@ -241,11 +246,11 @@ export default function ContactPanel() {
                 className="mt-6 w-full flex items-center justify-between px-6 py-4
                   bg-green text-white text-[12px] font-medium tracking-[.14em] uppercase
                   hover:bg-green2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-                Enviar analise pelo WhatsApp
+                Enviar análise pelo WhatsApp
                 <span>↗</span>
               </button>
-              <p className="text-[10px] text-navy/30 text-center mt-3">
-                Retorno em ate 24 horas
+              <p className="text-[11px] text-navy/30 text-center mt-3">
+                Retorno em até 24 horas
               </p>
             </div>
           )}
@@ -255,16 +260,16 @@ export default function ContactPanel() {
       {/* FOOTER */}
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between
         px-8 md:px-10 py-3.5 bg-navy border-t border-white/5">
-        <button onClick={() => document.getElementById('p1')?.scrollIntoView({ behavior: 'smooth' })}
+        <button onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
           className="font-display font-bold text-[13px] tracking-[.1em] uppercase
             text-white/60 hover:text-white transition-colors">
           GP<span className="text-green">.</span>ASFALTO
         </button>
         <span className="hidden md:block text-[9px] tracking-[.08em] text-white/15">
-          2025 {company.razao} · Rio Verde, GO
+          © 2025 {company.razao} · Rio Verde, GO
         </span>
         <a href={'https://wa.me/' + company.whatsapp} target="_blank"
-          className="text-[10px] tracking-[.12em] uppercase text-white/30 hover:text-green transition-colors">
+          className="text-[11px] tracking-[.1em] uppercase text-white/30 hover:text-green transition-colors">
           WhatsApp
         </a>
       </div>
