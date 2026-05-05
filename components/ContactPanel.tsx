@@ -2,183 +2,257 @@
 import { useState } from 'react'
 import { site } from '@/data/content'
 
-export default function ContactPanel() {
-  const { company, formOptions } = site
-  const [sent, setSent] = useState(false)
-  const [loading, setLoading] = useState(false)
+type Step = 1 | 2 | 3
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
-    const form = e.currentTarget
-    const data = new FormData(form)
-    // Envia para WhatsApp com mensagem pré-formatada
-    const nome    = data.get('nome') as string
-    const fone    = data.get('whatsapp') as string
-    const projeto = data.get('projeto') as string
-    const cliente = data.get('cliente') as string
-    const desc    = data.get('descricao') as string
+const projectTypes = [
+  { label: 'Agronegócio',        icon: '🌾', sub: 'Estrada, pátio, silo, fazenda' },
+  { label: 'Loteamento',         icon: '🏘️', sub: 'Infraestrutura completa' },
+  { label: 'Empresa Privada',    icon: '🏭', sub: 'Pátio, acesso, área industrial' },
+  { label: 'Obra Pública',       icon: '🏛️', sub: 'Prefeitura, licitação' },
+  { label: 'Fornecimento CBUQ',  icon: '⚙️', sub: 'Massa asfáltica para sua obra' },
+  { label: 'Outro',              icon: '📋', sub: 'Descreva seu projeto' },
+]
+
+const scopeItems = [
+  'Pavimentação CBUQ', 'Terraplenagem', 'Drenagem pluvial',
+  'Rede de água', 'Rede de esgoto', 'Meio-fio e sarjeta',
+  'Fornecimento CBUQ', 'Projeto completo',
+]
+
+export default function ContactPanel() {
+  const { company } = site
+  const [step, setStep]   = useState<Step>(1)
+  const [type, setType]   = useState('')
+  const [scope, setScope] = useState<string[]>([])
+  const [form, setForm]   = useState({ nome: '', whatsapp: '', cidade: '', desc: '' })
+  const [sent, setSent]   = useState(false)
+
+  const toggleScope = (s: string) =>
+    setScope(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
+
+  const handleSend = () => {
     const msg = encodeURIComponent(
-      `Olá! Meu nome é *${nome}*.\n` +
-      `📱 WhatsApp: ${fone}\n` +
-      `🏗️ Projeto: ${projeto}\n` +
-      `👤 Perfil: ${cliente}\n` +
-      `📝 Descrição: ${desc}`
+      'Olá! Meu nome é *' + form.nome + '*.\n' +
+      '📱 WhatsApp: ' + form.whatsapp + '\n' +
+      '📍 Cidade: ' + form.cidade + '\n' +
+      '🏗️ Tipo: ' + type + '\n' +
+      '📋 Escopo: ' + (scope.length ? scope.join(', ') : 'A definir') + '\n' +
+      '📝 ' + form.desc
     )
-    window.open(`https://wa.me/${company.whatsapp}?text=${msg}`, '_blank')
-    setLoading(false)
+    window.open('https://wa.me/' + company.whatsapp + '?text=' + msg, '_blank')
     setSent(true)
-    form.reset()
   }
+
+  if (sent) return (
+    <section className="panel bg-cream flex items-center justify-center" id="p7">
+      <div className="text-center px-8">
+        <div className="w-16 h-16 bg-green rounded-full flex items-center justify-center mx-auto mb-6">
+          <span className="text-white text-2xl">✓</span>
+        </div>
+        <h2 className="font-display font-black text-navy text-[40px] mb-3">Mensagem enviada!</h2>
+        <p className="text-[14px] text-navy/50 mb-8 max-w-sm mx-auto leading-relaxed">
+          Nossa equipe técnica retorna em até 24 horas com uma análise do seu projeto.
+        </p>
+        <button onClick={() => { setSent(false); setStep(1); setType(''); setScope([]); setForm({ nome: '', whatsapp: '', cidade: '', desc: '' }) }}
+          className="text-[11px] font-medium tracking-[.14em] uppercase
+            text-green border border-green/40 px-6 py-3 hover:bg-green hover:text-white transition-colors">
+          Novo orçamento
+        </button>
+      </div>
+    </section>
+  )
 
   return (
     <section className="panel bg-cream" id="p7">
       <div className="h-full grid grid-cols-1 md:grid-cols-2 overflow-y-auto md:overflow-hidden">
 
         {/* LEFT */}
-        <div className="flex flex-col justify-between px-10 py-20 md:px-12
+        <div className="flex flex-col justify-between px-8 md:px-12 py-20
           border-b md:border-b-0 md:border-r border-navy/10">
 
-          <h2 className="font-display font-black text-navy leading-[.9]"
-            style={{ fontSize: 'clamp(44px, 6vw, 80px)' }}>
-            Solicite<br />um<br />
-            <em className="text-green not-italic">orçamento.</em>
-          </h2>
-
-          <p className="text-[12px] font-light leading-[1.8] text-navy/50 max-w-xs">
-            Equipe técnica retorna em até 24 horas.
-            Da visita ao local até a proposta com memorial descritivo e cronograma.
-          </p>
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-5 h-px bg-green block" />
+              <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">
+                Orçamento
+              </span>
+            </div>
+            <h2 className="font-display font-black text-navy leading-[.9]"
+              style={{ fontSize: 'clamp(40px, 5vw, 72px)' }}>
+              Solicite<br />uma análise<br />
+              <em className="text-green not-italic">técnica.</em>
+            </h2>
+            <p className="text-[13px] font-light leading-[1.8] text-navy/50 mt-5 max-w-xs">
+              Preencha em 3 passos. Nossa equipe retorna em até 24h com proposta detalhada.
+            </p>
+          </div>
 
           {/* CONTACTS */}
-          <div className="flex flex-col">
+          <div className="flex flex-col mt-8">
             {[
-              { label: 'WhatsApp', value: `(64) 99931-7039`, href: `https://wa.me/${company.whatsapp}` },
-              { label: 'Telefone', value: company.phone,     href: `tel:+55${company.phone.replace(/\D/g,'')}` },
-              { label: 'E-mail',   value: company.email,     href: `mailto:${company.email}` },
-              { label: 'Endereço', value: company.address,   href: undefined },
+              { label: 'WhatsApp', value: '(64) 99931-7039', href: 'https://wa.me/' + company.whatsapp },
+              { label: 'Telefone', value: company.phone,    href: 'tel:+55' + company.phone.replace(/\D/g,'') },
+              { label: 'E-mail',   value: company.email,    href: 'mailto:' + company.email },
             ].map(c => (
-              <div key={c.label}
-                className="flex flex-col py-3.5 border-b border-navy/8 first:border-t">
-                <span className="text-[8px] font-medium tracking-[.26em] uppercase text-navy/30 mb-1">
-                  {c.label}
-                </span>
-                {c.href ? (
-                  <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined}
-                    className="font-display font-bold text-[17px] tracking-[.03em] text-navy
-                      hover:text-green transition-colors">
-                    {c.value}
-                  </a>
-                ) : (
-                  <span className="font-display font-bold text-[15px] tracking-[.02em] text-navy">
-                    {c.value}
-                  </span>
-                )}
+              <div key={c.label} className="flex flex-col py-3 border-b border-navy/8 first:border-t">
+                <span className="text-[8px] font-medium tracking-[.26em] uppercase text-navy/30 mb-1">{c.label}</span>
+                <a href={c.href} target="_blank"
+                  className="font-display font-bold text-[16px] tracking-[.03em] text-navy hover:text-green transition-colors">
+                  {c.value}
+                </a>
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT — FORM */}
-        <div className="flex flex-col justify-center px-10 py-16 md:px-12">
-          {sent ? (
-            <div className="text-center">
-              <p className="font-display font-bold text-4xl text-navy mb-4">Mensagem enviada!</p>
-              <p className="text-[13px] text-navy/50 mb-8">Nossa equipe entrará em contato em breve.</p>
-              <button onClick={() => setSent(false)}
-                className="text-[11px] font-medium tracking-[.14em] uppercase
-                  text-green border border-green/40 px-6 py-3 hover:bg-green hover:text-white transition-colors">
-                Novo orçamento
+        {/* RIGHT — STEPPED FORM */}
+        <div className="flex flex-col px-8 md:px-12 py-16 md:py-20 overflow-y-auto">
+
+          {/* STEP INDICATOR */}
+          <div className="flex items-center gap-2 mb-10">
+            {([1,2,3] as Step[]).map(s => (
+              <div key={s} className="flex items-center gap-2">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center
+                  text-[10px] font-bold transition-all duration-300
+                  ${step >= s ? 'bg-green text-white' : 'bg-navy/10 text-navy/30'}`}>
+                  {step > s ? '✓' : s}
+                </div>
+                {s < 3 && <div className={`w-8 h-px transition-colors duration-300
+                  ${step > s ? 'bg-green' : 'bg-navy/15'}`} />}
+              </div>
+            ))}
+            <span className="ml-2 text-[10px] tracking-[.12em] uppercase text-navy/40">
+              {step === 1 ? 'Tipo de projeto' : step === 2 ? 'Escopo' : 'Seus dados'}
+            </span>
+          </div>
+
+          {/* STEP 1 — TYPE */}
+          {step === 1 && (
+            <div className="flex flex-col gap-2">
+              <h3 className="font-display font-bold text-[22px] text-navy uppercase mb-4">
+                Qual é o seu projeto?
+              </h3>
+              {projectTypes.map(p => (
+                <button key={p.label}
+                  onClick={() => { setType(p.label); setStep(2) }}
+                  className={`flex items-center gap-4 px-5 py-4 border text-left
+                    transition-all duration-200 hover:border-green hover:bg-green/5
+                    ${type === p.label ? 'border-green bg-green/8' : 'border-navy/12'}`}>
+                  <span className="text-xl">{p.icon}</span>
+                  <div>
+                    <div className="text-[13px] font-medium text-navy">{p.label}</div>
+                    <div className="text-[11px] text-navy/40">{p.sub}</div>
+                  </div>
+                  <span className="ml-auto text-navy/20 text-sm">→</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* STEP 2 — SCOPE */}
+          {step === 2 && (
+            <div>
+              <button onClick={() => setStep(1)}
+                className="text-[10px] tracking-[.12em] uppercase text-navy/40
+                  hover:text-navy transition-colors mb-6 flex items-center gap-2">
+                ← {type}
+              </button>
+              <h3 className="font-display font-bold text-[22px] text-navy uppercase mb-6">
+                O que precisa?
+              </h3>
+              <div className="grid grid-cols-2 gap-2 mb-8">
+                {scopeItems.map(s => (
+                  <button key={s}
+                    onClick={() => toggleScope(s)}
+                    className={`px-4 py-3 border text-[11px] font-medium tracking-[.04em]
+                      text-left transition-all duration-200
+                      ${scope.includes(s)
+                        ? 'border-green bg-green/8 text-navy'
+                        : 'border-navy/12 text-navy/50 hover:border-navy/30'}`}>
+                    {scope.includes(s) ? '✓ ' : ''}{s}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => setStep(3)}
+                className="w-full py-4 bg-navy text-white text-[12px] font-medium
+                  tracking-[.14em] uppercase hover:bg-navy3 transition-colors">
+                Continuar →
               </button>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col">
-              {/* Row: nome + fone */}
-              <div className="grid grid-cols-2">
-                <div className="flex flex-col border-t border-navy/10 border-r">
-                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3.5 pb-1">Nome</label>
-                  <input name="nome" type="text" required placeholder="Seu nome"
-                    className="bg-transparent border-none outline-none text-[14px] font-light text-navy pb-3.5
-                      placeholder:text-navy/20 caret-green" />
-                </div>
-                <div className="flex flex-col border-t border-navy/10 pl-4">
-                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3.5 pb-1">WhatsApp</label>
-                  <input name="whatsapp" type="tel" required placeholder="(64) 9 0000-0000"
-                    className="bg-transparent border-none outline-none text-[14px] font-light text-navy pb-3.5
-                      placeholder:text-navy/20 caret-green" />
-                </div>
-              </div>
+          )}
 
-              {[
-                { name: 'projeto', label: 'Tipo de projeto', options: formOptions.projectTypes },
-                { name: 'cliente', label: 'Você representa', options: formOptions.clientTypes },
-              ].map(f => (
-                <div key={f.name} className="flex flex-col border-t border-navy/10">
-                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3.5 pb-1">
-                    {f.label}
-                  </label>
-                  <select name={f.name} required
-                    className="bg-transparent border-none outline-none text-[14px] font-light text-navy pb-3.5
-                      appearance-none cursor-pointer caret-green">
-                    <option value="" disabled>Selecione...</option>
-                    {f.options.map(o => <option key={o} value={o}>{o}</option>)}
-                  </select>
-                </div>
-              ))}
-
-              <div className="flex flex-col border-t border-navy/10">
-                <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3.5 pb-1">
-                  Descrição do projeto
-                </label>
-                <textarea name="descricao" rows={3} placeholder="Localização, extensão estimada, prazo desejado..."
-                  className="bg-transparent border-none outline-none text-[14px] font-light text-navy pb-3.5
-                    resize-none placeholder:text-navy/20 caret-green" />
-              </div>
-
-              <button type="submit" disabled={loading}
-                className="mt-6 flex items-center justify-between px-6 py-4
-                  bg-navy text-white font-body text-[11px] font-medium tracking-[.14em] uppercase
-                  hover:bg-navy3 transition-colors disabled:opacity-60">
-                {loading ? 'Enviando...' : 'Enviar solicitação'}
-                <span>→</span>
+          {/* STEP 3 — CONTACT */}
+          {step === 3 && (
+            <div>
+              <button onClick={() => setStep(2)}
+                className="text-[10px] tracking-[.12em] uppercase text-navy/40
+                  hover:text-navy transition-colors mb-6 flex items-center gap-2">
+                ← Voltar
               </button>
-
-              <a href={`https://wa.me/${company.whatsapp}`} target="_blank"
-                className="mt-1 flex items-center justify-between px-6 py-3.5
-                  border border-navy/12 text-navy/35 font-body text-[11px] font-normal
-                  tracking-[.14em] uppercase hover:border-[#25D366] hover:text-[#25D366] transition-colors">
-                Prefiro falar no WhatsApp
+              <h3 className="font-display font-bold text-[22px] text-navy uppercase mb-6">
+                Seus dados
+              </h3>
+              <div className="flex flex-col gap-0">
+                {[
+                  { key: 'nome',      label: 'Nome',     type: 'text', ph: 'Seu nome completo' },
+                  { key: 'whatsapp',  label: 'WhatsApp', type: 'tel',  ph: '(64) 9 0000-0000' },
+                  { key: 'cidade',    label: 'Cidade',   type: 'text', ph: 'Onde fica a obra?' },
+                ].map(f => (
+                  <div key={f.key} className="flex flex-col border-b border-navy/10 first:border-t">
+                    <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3 pb-1">
+                      {f.label}
+                    </label>
+                    <input type={f.type} placeholder={f.ph} required
+                      value={form[f.key as keyof typeof form]}
+                      onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
+                      className="bg-transparent border-none outline-none text-[14px] font-light
+                        text-navy pb-3 placeholder:text-navy/20 caret-green" />
+                  </div>
+                ))}
+                <div className="flex flex-col border-b border-navy/10">
+                  <label className="text-[8px] font-medium tracking-[.24em] uppercase text-navy/30 pt-3 pb-1">
+                    Descrição (opcional)
+                  </label>
+                  <textarea placeholder="Extensão, prazo, outras informações..." rows={2}
+                    value={form.desc}
+                    onChange={e => setForm(p => ({ ...p, desc: e.target.value }))}
+                    className="bg-transparent border-none outline-none text-[14px] font-light
+                      text-navy pb-3 resize-none placeholder:text-navy/20 caret-green" />
+                </div>
+              </div>
+              <button onClick={handleSend}
+                disabled={!form.nome || !form.whatsapp}
+                className="mt-6 w-full flex items-center justify-between px-6 py-4
+                  bg-green text-white text-[12px] font-medium tracking-[.14em] uppercase
+                  hover:bg-green2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                Enviar análise pelo WhatsApp
                 <span>↗</span>
-              </a>
-            </form>
+              </button>
+              <p className="text-[10px] text-navy/30 text-center mt-3">
+                Retorno em até 24 horas
+              </p>
+            </div>
           )}
         </div>
 
       </div>
 
-      {/* FOOTER BAR */}
+      {/* FOOTER */}
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between
-        px-10 py-3.5 bg-navy border-t border-white/5">
-        <a href="#p1"
-          onClick={e => { e.preventDefault(); document.getElementById('p1')?.scrollIntoView({ behavior: 'smooth' }) }}
-          className="font-display font-bold text-[14px] tracking-[.1em] uppercase text-white/70 hover:text-white transition-colors">
-          GP<span className="text-green">.</span>ASFALTO BRASIL
-        </a>
-        <nav className="hidden md:flex gap-5">
-          {[
-            { l: 'Empresa', id: 'p2' }, { l: 'Obras', id: 'p3' },
-            { l: 'Usinas', id: 'p6' },
-          ].map(n => (
-            <a key={n.id} href={`#${n.id}`}
-              onClick={e => { e.preventDefault(); document.getElementById(n.id)?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="text-[9px] tracking-[.14em] uppercase text-white/20 hover:text-white/60 transition-colors">
-              {n.l}
-            </a>
-          ))}
-        </nav>
-        <span className="text-[9px] tracking-[.08em] text-white/15">
+        px-8 md:px-10 py-3.5 bg-navy border-t border-white/5">
+        <button onClick={() => document.getElementById('p1')?.scrollIntoView({ behavior: 'smooth' })}
+          className="font-display font-bold text-[13px] tracking-[.1em] uppercase
+            text-white/60 hover:text-white transition-colors">
+          GP<span className="text-green">.</span>ASFALTO
+        </button>
+        <span className="hidden md:block text-[9px] tracking-[.08em] text-white/15">
           © 2025 {company.razao} · Rio Verde, GO
         </span>
+        <a href={'https://wa.me/' + company.whatsapp} target="_blank"
+          className="text-[10px] tracking-[.12em] uppercase text-white/30
+            hover:text-green transition-colors">
+          WhatsApp
+        </a>
       </div>
     </section>
   )
