@@ -8,9 +8,9 @@ export const site = {
 
   // ── EMPRESA
   company: {
-    name:      'GP Asfalto Brasil',
+    name:      'GP Asfalto',
     cnpj:      '22.674.189/0001-30',
-    razao:     'G.P. Concreto e Asfalto Ltda',
+    razao:     'GPAsfalto Ltda',
     founded:   '1998',           // ano de fundação — confirmar
     location:  'Rio Verde · GO · Brasil',
     address:   'Rua dos Trabalhadores, 350 — Setor Industrial, Rio Verde · GO',
