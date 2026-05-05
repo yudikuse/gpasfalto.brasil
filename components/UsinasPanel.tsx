@@ -4,7 +4,7 @@ export default function UsinasPanel() {
   const { usinas, specs } = site
 
   return (
-    <section className="panel bg-navy2" id="p6">
+    <section className="panel bg-navy2" id="usinas">
       <div className="h-full grid grid-cols-1 md:grid-cols-2 overflow-y-auto md:overflow-hidden">
 
         {/* LEFT */}
