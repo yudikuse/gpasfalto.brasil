@@ -28,7 +28,7 @@ body {
 
 /* ── MAIN SCROLL CONTAINER */
 .scroll-container {
-  height: 100vh;
+  height: 100svh;
   overflow-y: scroll;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
@@ -36,10 +36,9 @@ body {
   scrollbar-color: var(--green) rgba(255,255,255,.05);
 }
 
-/* ── PANEL */
 .panel {
   scroll-snap-align: start;
-  height: 100vh;
+  height: 100svh;
   position: relative;
   overflow: hidden;
 }
