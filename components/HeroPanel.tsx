@@ -1,6 +1,13 @@
 'use client'
 import { site } from '@/data/content'
 
+const trustItems = [
+  '3 usinas CBUQ próprias',
+  '50+ loteamentos entregues',
+  '25 anos de mercado',
+  'Centro-Oeste',
+]
+
 export default function HeroPanel() {
   const { hero, company } = site
 
@@ -9,7 +16,7 @@ export default function HeroPanel() {
     '&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=3'
 
   return (
-    <section className="panel bg-[#080808]" id="p1">
+    <section className="panel bg-[#080808]" id="hero">
 
       {hero.videoLocal ? (
         <video autoPlay muted loop playsInline
@@ -35,7 +42,7 @@ export default function HeroPanel() {
         {company.location}
       </div>
 
-      <div className="absolute inset-0 z-[3] flex flex-col justify-end px-10 pb-14 md:px-12">
+      <div className="absolute inset-0 z-[3] flex flex-col justify-end px-10 pb-10 md:px-12">
 
         <div className="anim-1 flex items-center gap-3 mb-5">
           <span className="w-5 h-px bg-white block drop-shadow-sm" />
@@ -61,26 +68,35 @@ export default function HeroPanel() {
             {hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
-            <a href="#p7"
-              onClick={e => {
-                e.preventDefault()
-                document.getElementById('p7')?.scrollIntoView({ behavior: 'smooth' })
-              }}
+            <a href="#contato"
+              onClick={e => { e.preventDefault(); document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' }) }}
               className="text-[12px] font-medium tracking-[.14em] uppercase
                 text-white bg-green px-8 py-4 hover:bg-green2 transition-colors whitespace-nowrap">
               Solicitar Orçamento
             </a>
-            <a href="#p3"
-              onClick={e => {
-                e.preventDefault()
-                document.getElementById('p3')?.scrollIntoView({ behavior: 'smooth' })
-              }}
+            <a href="#obras"
+              onClick={e => { e.preventDefault(); document.getElementById('obras')?.scrollIntoView({ behavior: 'smooth' }) }}
               className="text-[12px] font-light tracking-[.12em] uppercase
                 text-white/50 hover:text-white/90 transition-colors
                 drop-shadow-[0_1px_3px_rgba(0,0,0,.6)]">
               Ver obras executadas →
             </a>
           </div>
+        </div>
+
+        {/* TRUST BAR */}
+        <div className="anim-3 flex items-center gap-0 mt-8 flex-wrap">
+          {trustItems.map((item, i) => (
+            <div key={item} className="flex items-center gap-0">
+              <span className="text-[10px] font-medium tracking-[.1em] uppercase
+                text-white/35 whitespace-nowrap py-2 pr-4">
+                {item}
+              </span>
+              {i < trustItems.length - 1 && (
+                <span className="text-white/15 pr-4">·</span>
+              )}
+            </div>
+          ))}
         </div>
 
       </div>
