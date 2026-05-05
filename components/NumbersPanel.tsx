@@ -1,0 +1,86 @@
+'use client'
+import { useEffect, useRef, useState } from 'react'
+import { site } from '@/data/content'
+
+function Counter({ target, suffix }: { target: number; suffix: string }) {
+  const [val, setVal] = useState(0)
+  const ref = useRef<HTMLSpanElement>(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !started.current) {
+        started.current = true
+        const duration = 1600
+        const start = performance.now()
+        const tick = (now: number) => {
+          const p = Math.min((now - start) / duration, 1)
+          setVal(Math.round((1 - (1 - p) ** 3) * target))
+          if (p < 1) requestAnimationFrame(tick)
+        }
+        requestAnimationFrame(tick)
+        obs.disconnect()
+      }
+    }, { threshold: 0.5 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [target])
+
+  return (
+    <span ref={ref} className="counter-value">
+      {val}{suffix}
+    </span>
+  )
+}
+
+export default function NumbersPanel() {
+  const { numbers, company } = site
+
+  return (
+    <section className="panel bg-white" id="p2">
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 relative">
+
+        {/* label */}
+        <div className="flex items-center gap-4 mb-12">
+          <span className="text-[9px] font-medium tracking-[.28em] uppercase text-navy/30">
+            {company.name}
+          </span>
+          <div className="flex-1 h-px bg-navy/10" />
+        </div>
+
+        {/* grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+          {numbers.map((n, i) => (
+            <div
+              key={i}
+              className="flex flex-col justify-center py-8 px-4 md:px-8
+                border-r border-navy/10 last:border-r-0
+                [&:nth-child(2)]:border-r-0 md:[&:nth-child(2)]:border-r"
+            >
+              <span className="font-display font-black text-navy leading-none"
+                style={{ fontSize: 'clamp(56px, 8vw, 100px)' }}>
+                <Counter target={n.value} suffix={n.suffix} />
+              </span>
+              <span className="text-[11px] font-normal tracking-[.06em] text-navy/40 mt-1.5 whitespace-pre-line leading-snug">
+                {n.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* bottom */}
+        <div className="absolute bottom-11 left-6 right-6 md:left-12 md:right-12
+          flex justify-between border-t border-navy/7 pt-4">
+          <span className="text-[9px] font-medium tracking-[.18em] uppercase text-navy/25">
+            {company.address}
+          </span>
+          <span className="text-[9px] font-medium tracking-[.12em] uppercase text-green border border-green/30 px-4 py-1.5">
+            Est. {company.founded}
+          </span>
+        </div>
+      </div>
+    </section>
+  )
+}
