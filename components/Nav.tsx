@@ -35,7 +35,7 @@ export default function Nav() {
 
         <button onClick={() => scrollTo('p1')} className="flex items-center hover:opacity-85 transition-opacity">
           <Image src="/images/logo-white.png" alt={site.company.name}
-            width={160} height={44} className="h-12 w-auto object-contain" priority />
+            width={160} height={44} className="h-20 w-auto object-contain" priority />
         </button>
 
         <ul className="hidden md:flex gap-8 list-none">
