@@ -42,41 +42,39 @@ export default function NumbersPanel() {
     <section className="panel bg-navy" id="p2">
       <div className="h-full flex flex-col justify-center px-6 md:px-12 relative">
 
-        {/* label */}
         <div className="flex items-center gap-4 mb-12">
-          <span className="text-[9px] font-medium tracking-[.28em] uppercase text-navy/30">
+          <span className="text-[9px] font-medium tracking-[.28em] uppercase text-cream/30">
             {company.name}
           </span>
-          <div className="flex-1 h-px bg-navy/10" />
+          <div className="flex-1 h-px bg-cream/10" />
         </div>
 
-        {/* grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
           {numbers.map((n, i) => (
             <div
               key={i}
               className="flex flex-col justify-center py-8 px-4 md:px-8
-                border-r border-navy/10 last:border-r-0
+                border-r border-cream/10 last:border-r-0
                 [&:nth-child(2)]:border-r-0 md:[&:nth-child(2)]:border-r"
             >
-              <span className="font-display font-black text-navy leading-none"
+              <span className="font-display font-black text-cream leading-none"
                 style={{ fontSize: 'clamp(56px, 8vw, 100px)' }}>
                 <Counter target={n.value} suffix={n.suffix} />
               </span>
-              <span className="text-[11px] font-normal tracking-[.06em] text-navy/40 mt-1.5 whitespace-pre-line leading-snug">
+              <span className="text-[11px] font-normal tracking-[.06em] text-cream/40 mt-1.5 whitespace-pre-line leading-snug">
                 {n.label}
               </span>
             </div>
           ))}
         </div>
 
-        {/* bottom */}
         <div className="absolute bottom-11 left-6 right-6 md:left-12 md:right-12
-          flex justify-between border-t border-navy/7 pt-4">
-          <span className="text-[9px] font-medium tracking-[.18em] uppercase text-navy/25">
+          flex justify-between border-t border-cream/10 pt-4">
+          <span className="text-[9px] font-medium tracking-[.18em] uppercase text-cream/25">
             {company.address}
           </span>
-          <span className="text-[9px] font-medium tracking-[.12em] uppercase text-green border border-green/30 px-4 py-1.5">
+          <span className="text-[9px] font-medium tracking-[.12em] uppercase
+            text-green border border-green/30 px-4 py-1.5">
             Est. {company.founded}
           </span>
         </div>
