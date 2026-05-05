@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { site } from '@/data/content'
 
 export default function Nav() {
@@ -24,27 +25,25 @@ export default function Nav() {
         transition-all duration-300
         ${solid ? 'nav-solid' : 'bg-transparent'}`}
     >
-      {/* LOGO */}
       <button
         onClick={() => scrollTo('p1')}
-        className="flex items-center gap-2.5 text-cream hover:opacity-90 transition-opacity"
+        className="flex items-center hover:opacity-85 transition-opacity"
       >
-        <div className="w-9 h-9 border-2 border-green bg-navy3 rounded-sm
-          flex items-center justify-center
-          font-display font-black text-[13px] tracking-wider text-white">
-          GP
-        </div>
-        <span className="font-display font-bold text-[17px] tracking-[.1em] uppercase text-white">
-          GP<span className="text-green">.</span>ASFALTO
-        </span>
+        <Image
+          src="/images/logo-white.png"
+          alt={site.company.name}
+          width={160}
+          height={44}
+          className="h-10 w-auto object-contain"
+          priority
+        />
       </button>
 
-      {/* LINKS */}
       <ul className="hidden md:flex gap-8 list-none">
         {[
-          { label: 'Empresa',   id: 'p2' },
-          { label: 'Obras',     id: 'p3' },
-          { label: 'Usinas',    id: 'p6' },
+          { label: 'Empresa', id: 'p2' },
+          { label: 'Obras',   id: 'p3' },
+          { label: 'Usinas',  id: 'p6' },
         ].map(l => (
           <li key={l.id}>
             <button
@@ -58,7 +57,6 @@ export default function Nav() {
         ))}
       </ul>
 
-      {/* CTA */}
       <button
         onClick={() => scrollTo('p7')}
         className="text-[12px] font-medium tracking-[.1em] uppercase
