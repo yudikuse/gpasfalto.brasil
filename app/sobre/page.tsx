@@ -2,7 +2,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/content'
-
+export default function Home() {
+  return (
+    <div className="scroll-lock" style={{ height: '100svh', overflow: 'hidden' }}>
+      <Nav />
+      <PageIndicator />
+      <WaButton />
+      <main id="scrl" className="scroll-container">
+        ...
+      </main>
+    </div>
+  )
+}
 export default function Sobre() {
   const { company } = site
 
