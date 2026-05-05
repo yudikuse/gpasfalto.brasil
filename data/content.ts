@@ -33,7 +33,7 @@ export const site = {
     videoYoutubeId: 'vS6B71Pfu7c',
     // Quando tiver o .mp4 local: colocar em /public/video/hero.mp4
     // e trocar videoYoutubeId por videoLocal: '/video/hero.mp4'
-    videoLocal: '',
+    videoLocal: '/video/hero.mp4',
   },
 
   // ── NÚMEROS (trust bar)
