@@ -33,7 +33,7 @@ export const site = {
     videoYoutubeId: 'vS6B71Pfu7c',
     // Quando tiver o .mp4 local: colocar em /public/video/hero.mp4
     // e trocar videoYoutubeId por videoLocal: '/video/hero.mp4'
-    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/v1777985749/15107729_1920_1080_50fps_wgsue8.mp4',
+    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/v1777986525/17215135-uhd_3840_2160_30fps_lyotyu.mp4',
   },
 
   // ── NÚMEROS (trust bar)
