@@ -16,7 +16,7 @@ export const site = {
     address:   'Rua dos Trabalhadores, 350 — Setor Industrial, Rio Verde · GO',
     whatsapp:  '5564999317039',  // formato internacional sem + ou espaços
     phone:     '(64) 3622-0902',
-    email:     'contato@gpasfaltobrasil.com',
+    email:     'contato@gpasfalto.com',
     instagram: 'https://instagram.com/gp.asfalto',
     youtube:   'https://www.youtube.com/@tmb_brand',
   },
