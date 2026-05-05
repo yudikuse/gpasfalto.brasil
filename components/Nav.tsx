@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { site } from '@/data/content'
 
 const links = [
-  { label: 'Obras',   id: 'p3' },
-  { label: 'Usinas',  id: 'p6' },
-  { label: 'Contato', id: 'p7' },
+  { label: 'Obras',   id: 'obras'   },
+  { label: 'Usinas',  id: 'usinas'  },
+  { label: 'Contato', id: 'contato' },
 ]
 
 export default function Nav() {
@@ -33,7 +33,8 @@ export default function Nav() {
         px-6 md:px-10 h-[68px] border-b border-transparent transition-all duration-300
         ${solid || open ? 'nav-solid' : 'bg-transparent'}`}>
 
-        <button onClick={() => scrollTo('p1')} className="flex items-center hover:opacity-85 transition-opacity">
+        <button onClick={() => scrollTo('hero')}
+          className="flex items-center hover:opacity-85 transition-opacity">
           <Image src="/images/logo-white.png" alt={site.company.name}
             width={160} height={44} className="h-20 w-auto object-contain" priority />
         </button>
@@ -58,7 +59,7 @@ export default function Nav() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <button onClick={() => scrollTo('p7')}
+          <button onClick={() => scrollTo('contato')}
             className="text-[11px] md:text-[12px] font-medium tracking-[.1em] uppercase
               text-white bg-green px-4 md:px-6 py-2.5 hover:bg-green2 transition-colors">
             Orçamento
