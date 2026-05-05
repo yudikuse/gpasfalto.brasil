@@ -26,10 +26,11 @@ export default function HeroPanel() {
       <div className="grain z-[1]" />
 
       <div className="absolute inset-0 z-[2]" style={{
-        background: 'linear-gradient(to bottom, rgba(0,0,0,.5) 0%, rgba(0,0,0,.1) 35%, rgba(0,0,0,.1) 55%, rgba(0,0,0,.88) 100%), linear-gradient(to right, rgba(0,0,0,.55) 0%, transparent 60%)'
+        background: 'linear-gradient(to bottom, rgba(0,0,0,.72) 0%, rgba(0,0,0,.2) 35%, rgba(0,0,0,.1) 55%, rgba(0,0,0,.88) 100%), linear-gradient(to right, rgba(0,0,0,.55) 0%, transparent 60%)'
       }} />
 
-      <div className="absolute top-20 right-12 z-[3] hidden md:block text-[9px] font-medium tracking-[.28em] uppercase text-white/20"
+      <div className="absolute top-20 right-12 z-[3] hidden md:block
+        text-[9px] font-medium tracking-[.28em] uppercase text-white/20"
         style={{ writingMode: 'vertical-rl' }}>
         {company.location}
       </div>
@@ -37,8 +38,9 @@ export default function HeroPanel() {
       <div className="absolute inset-0 z-[3] flex flex-col justify-end px-10 pb-14 md:px-12">
 
         <div className="anim-1 flex items-center gap-3 mb-5">
-          <span className="w-5 h-px bg-green block" />
-          <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">
+          <span className="w-5 h-px bg-white block drop-shadow-sm" />
+          <span className="text-[11px] font-medium tracking-[.26em] uppercase text-white
+            drop-shadow-[0_1px_4px_rgba(0,0,0,.9)]">
             {hero.eyebrow}
           </span>
         </div>
@@ -54,19 +56,29 @@ export default function HeroPanel() {
         </h1>
 
         <div className="anim-3 flex flex-wrap items-end justify-between gap-5 mt-8">
-          <p className="text-[15px] font-light leading-[1.85] text-white/50 max-w-[380px]">
+          <p className="text-[15px] font-light leading-[1.85] text-white/55
+            max-w-[380px] drop-shadow-[0_1px_3px_rgba(0,0,0,.6)]">
             {hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
             <a href="#p7"
-              onClick={e => { e.preventDefault(); document.getElementById('p7')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="text-[12px] font-medium tracking-[.14em] uppercase text-white bg-green px-8 py-4 hover:bg-green2 transition-colors whitespace-nowrap">
+              onClick={e => {
+                e.preventDefault()
+                document.getElementById('p7')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-[12px] font-medium tracking-[.14em] uppercase
+                text-white bg-green px-8 py-4 hover:bg-green2 transition-colors whitespace-nowrap">
               Solicitar Orçamento
             </a>
             <a href="#p3"
-              onClick={e => { e.preventDefault(); document.getElementById('p3')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="text-[12px] font-light tracking-[.12em] uppercase text-white/40 hover:text-white/80 transition-colors">
-              Ver obras executadas
+              onClick={e => {
+                e.preventDefault()
+                document.getElementById('p3')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="text-[12px] font-light tracking-[.12em] uppercase
+                text-white/50 hover:text-white/90 transition-colors
+                drop-shadow-[0_1px_3px_rgba(0,0,0,.6)]">
+              Ver obras executadas →
             </a>
           </div>
         </div>
