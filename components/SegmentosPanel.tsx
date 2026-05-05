@@ -1,5 +1,4 @@
 'use client'
-import { site } from '@/data/content'
 
 const segmentos = [
   {
@@ -33,20 +32,16 @@ const segmentos = [
 ]
 
 export default function SegmentosPanel() {
-  const { company } = site
-
-  const scrollTo = (id: string) => {
+  const scrollTo = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
 
   return (
     <section className="panel bg-navy" id="segs" style={{ height: 'auto', minHeight: '100svh' }}>
       <div className="flex flex-col justify-center px-6 md:px-12 py-24 md:py-20">
 
-        {/* HEADER */}
         <div className="flex items-center gap-3 mb-4">
           <span className="w-5 h-px bg-green block flex-shrink-0" />
-          <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">
+          <span className="text-[12px] font-medium tracking-[.22em] uppercase text-green">
             Para quem atendemos
           </span>
         </div>
@@ -58,9 +53,8 @@ export default function SegmentosPanel() {
           </span>
         </h2>
 
-        {/* GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {segmentos.map((s, i) => (
+          {segmentos.map((s) => (
             <div key={s.code}
               className="group border-b border-white/8 last:border-b-0
                 md:[&:nth-child(odd)]:border-r md:border-white/8
@@ -68,7 +62,7 @@ export default function SegmentosPanel() {
               onClick={() => scrollTo('p7')}>
 
               <div className="flex items-start justify-between mb-5">
-                <span className="font-display font-black text-[11px] tracking-[.2em] text-green">
+                <span className="font-display font-black text-[12px] tracking-[.2em] text-green/50">
                   {s.code}
                 </span>
                 <span className="text-white/20 text-[18px] group-hover:text-green
@@ -76,26 +70,25 @@ export default function SegmentosPanel() {
               </div>
 
               <h3 className="font-display font-bold text-cream mb-3 leading-tight"
-                style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
+                style={{ fontSize: 'clamp(26px, 3vw, 38px)' }}>
                 {s.title}
               </h3>
 
-              <p className="text-[13px] font-light leading-[1.85] text-cream/45 mb-6 max-w-sm">
+              <p className="text-[14px] font-light leading-[1.85] text-cream/45 mb-6 max-w-sm">
                 {s.desc}
               </p>
 
-              <ul className="flex flex-col gap-2 mb-8">
+              <ul className="flex flex-col gap-2.5 mb-8">
                 {s.items.map(item => (
                   <li key={item}
-                    className="flex items-center gap-2 text-[11px] tracking-[.04em] text-cream/30">
+                    className="flex items-center gap-2 text-[13px] tracking-[.03em] text-cream/35">
                     <span className="w-3 h-px bg-green flex-shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
 
-              <span className="text-[10px] font-medium tracking-[.16em] uppercase
-                text-green group-hover:gap-3 transition-all">
+              <span className="text-[11px] font-medium tracking-[.16em] uppercase text-green">
                 {s.cta} →
               </span>
             </div>
