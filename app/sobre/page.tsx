@@ -1,19 +1,7 @@
-'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/content'
-export default function Home() {
-  return (
-    <div className="scroll-lock" style={{ height: '100svh', overflow: 'hidden' }}>
-      <Nav />
-      <PageIndicator />
-      <WaButton />
-      <main id="scrl" className="scroll-container">
-        ...
-      </main>
-    </div>
-  )
-}
+
 export default function Sobre() {
   const { company } = site
 
@@ -51,21 +39,15 @@ export default function Sobre() {
       <section className="px-10 md:px-16 py-20 border-b border-cream/8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl">
           <div>
-            <h2 className="font-display font-bold text-[32px] text-cream mb-6 uppercase tracking-wide">
-              Nossa História
-            </h2>
+            <h2 className="font-display font-bold text-[32px] text-cream mb-6 uppercase tracking-wide">Nossa História</h2>
             <p className="text-[15px] font-light leading-[1.9] text-cream/55">
-              Fundada em {company.founded} em Rio Verde — GO, a GP Asfalto nasceu para atender
-              a crescente demanda por infraestrutura de qualidade no coração do agronegócio brasileiro.
+              Fundada em {company.founded} em Rio Verde — GO, a GP Asfalto nasceu para atender a crescente demanda por infraestrutura de qualidade no coração do agronegócio brasileiro.
             </p>
             <p className="text-[15px] font-light leading-[1.9] text-cream/55 mt-4">
-              Acreditamos que o futuro se constrói com trabalho, desenvolvimento e tecnologia.
-              Nossas principais matérias-primas são tradição, seriedade, profissionalismo e
-              foco na qualidade.
+              Acreditamos que o futuro se constrói com trabalho, desenvolvimento e tecnologia. Nossas principais matérias-primas são tradição, seriedade, profissionalismo e foco na qualidade.
             </p>
             <p className="text-[15px] font-light leading-[1.9] text-cream/55 mt-4">
-              Hoje operamos com três usinas próprias de CBUQ, frota completa de terraplenagem
-              e equipe técnica com décadas de obra no Cerrado.
+              Hoje operamos com três usinas próprias de CBUQ, frota completa de terraplenagem e equipe técnica com décadas de obra no Cerrado.
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -87,8 +69,8 @@ export default function Sobre() {
       <section className="bg-navy2 px-10 md:px-16 py-20 border-b border-cream/8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-6xl">
           {[
-            { title: 'Missão', text: 'Planejar e executar serviços de infraestrutura urbana, loteamentos, terraplenagem, pavimentação asfáltica, drenagem, saneamento básico e pontes com qualidade e sustentabilidade, em harmonia socioambiental, gerando satisfação para nossos clientes.' },
-            { title: 'Visão', text: 'Tornar-se a maior referência no mercado de loteamentos, construção pesada e industrial pela excelência em gerenciamento de projetos públicos e privados, respeitando prazos, colaboradores, clientes e sociedade.' },
+            { title: 'Missão', text: 'Planejar e executar serviços de infraestrutura urbana, loteamentos, terraplenagem, pavimentação asfáltica, drenagem, saneamento básico e pontes com qualidade e sustentabilidade, em harmonia socioambiental.' },
+            { title: 'Visão', text: 'Tornar-se a maior referência no mercado de loteamentos e construção pesada pela excelência em gerenciamento de projetos públicos e privados, respeitando prazos, colaboradores, clientes e sociedade.' },
             { title: 'Política de Qualidade', text: 'Garantir a satisfação dos clientes, a execução de obras com qualidade, a busca constante de tecnologias inovadoras e o foco em melhoria contínua dos processos.' },
           ].map((item, i) => (
             <div key={i} className="px-8 py-10 border-r border-cream/8 last:border-r-0 first:pl-0 last:pr-0">
@@ -114,16 +96,14 @@ export default function Sobre() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
           {[
-            { title: 'Usinagem de Asfalto CBUQ', desc: 'Três usinas próprias com filtro de mangas para proteção ambiental. Produção de CBUQ com dosagem Marshall certificada e controle tecnológico completo. Fornecemos também para terceiros licitantes.' },
-            { title: 'Terraplanagem', desc: 'Técnicas avançadas, equipamentos de qualidade e profissionais qualificados para execução de processos de drenagem geométrica e geotécnica, com controle tecnológico total.' },
+            { title: 'Usinagem de Asfalto CBUQ', desc: 'Três usinas próprias com filtro de mangas. Produção de CBUQ com dosagem Marshall certificada e controle tecnológico completo. Fornecemos também para terceiros licitantes.' },
+            { title: 'Terraplanagem', desc: 'Técnicas avançadas e equipamentos de qualidade para execução de processos de drenagem geométrica e geotécnica com controle tecnológico total.' },
             { title: 'Saneamento Básico', desc: 'Execução de obras de canalização de água tratada, rede de esgoto e galerias pluviais com rigor técnico e normativo.' },
             { title: 'Pavimentação Asfáltica', desc: 'Elevado padrão de pavimentação com CBUQ de qualidade e resistência diferenciadas. Tecnologias inovadoras com resultado comprovadamente superior.' },
-            { title: 'Loteamentos', desc: 'Mais de 50 loteamentos executados com infraestrutura completa: ruas asfaltadas, meio-fio, galeria pluvial, rede de água e esgoto com qualidade certificada.' },
-            { title: 'Infraestrutura Urbana', desc: 'Estrutura completa para incorporação e infraestrutura em áreas urbanas e rurais, loteamentos abertos ou fechados, com experiência, ética e qualidade.' },
+            { title: 'Loteamentos', desc: 'Mais de 50 loteamentos executados com infraestrutura completa: ruas asfaltadas, meio-fio, galeria pluvial, rede de água e esgoto.' },
+            { title: 'Infraestrutura Urbana', desc: 'Estrutura completa para incorporação e infraestrutura em áreas urbanas e rurais, loteamentos abertos ou fechados.' },
           ].map((s, i) => (
-            <div key={i} className="py-10 px-8 border-b border-r border-cream/8
-              odd:pl-0 lg:[&:nth-child(3n+1)]:pl-0 lg:[&:nth-child(3n)]:border-r-0
-              md:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r">
+            <div key={i} className="py-10 px-8 border-b border-r border-cream/8">
               <h3 className="font-display font-bold text-[22px] text-cream uppercase mb-4 leading-tight">{s.title}</h3>
               <p className="text-[14px] font-light leading-[1.85] text-cream/45">{s.desc}</p>
             </div>
@@ -143,14 +123,11 @@ export default function Sobre() {
           </div>
           <div className="flex flex-col gap-3 flex-shrink-0">
             <Link href="/#p7"
-              className="text-[12px] font-medium tracking-[.14em] uppercase
-                text-white bg-green px-10 py-4 hover:bg-green2 transition-colors text-center">
+              className="text-[12px] font-medium tracking-[.14em] uppercase text-white bg-green px-10 py-4 hover:bg-green2 transition-colors text-center">
               Solicitar Orçamento
             </Link>
-            <a href={`https://wa.me/${company.whatsapp}`} target="_blank"
-              className="text-[12px] font-medium tracking-[.14em] uppercase
-                text-cream/40 border border-cream/15 px-10 py-4
-                hover:border-green hover:text-green transition-colors text-center">
+            <a href={'https://wa.me/' + company.whatsapp} target="_blank"
+              className="text-[12px] font-medium tracking-[.14em] uppercase text-cream/40 border border-cream/15 px-10 py-4 hover:border-green hover:text-green transition-colors text-center">
               WhatsApp
             </a>
           </div>
@@ -162,7 +139,7 @@ export default function Sobre() {
           GP<span className="text-green">.</span>ASFALTO BRASIL
         </Link>
         <span className="text-[9px] tracking-[.08em] text-cream/20">
-          © 2025 {company.razao} · Rio Verde, GO
+          2025 {company.razao} · Rio Verde, GO
         </span>
       </footer>
 
