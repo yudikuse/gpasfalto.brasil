@@ -39,7 +39,7 @@ export default function NumbersPanel() {
   const { numbers, company } = site
 
   return (
-    <section className="panel bg-white" id="p2">
+    <section className="panel bg-navy" id="p2">
       <div className="h-full flex flex-col justify-center px-6 md:px-12 relative">
 
         {/* label */}
