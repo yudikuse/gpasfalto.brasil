@@ -38,33 +38,33 @@ const dores = [
 const solucoes = [
   {
     num: '01',
-    title: 'Terraplanagem de base',
-    desc: 'Solo nivelado, drenado e compactado antes do asfalto. Base errada é o principal motivo de pátio que afunda com graneleiro carregado.',
+    title: 'Terra preparada antes do asfalto',
+    desc: 'Terraplanagem, nivelamento e compactação do solo antes de asfaltar. Base errada é o principal motivo de pátio que afunda com caminhão carregado.',
   },
   {
     num: '02',
-    title: 'CBUQ para carga pesada',
-    desc: 'Massa produzida nas nossas 3 usinas, dosagem Marshall certificada para eixo de 74 toneladas. Não é asfalto urbano — é CBUQ dimensionado para operação agroindustrial.',
+    title: 'Asfalto de alta resistência',
+    desc: 'Massa produzida nas nossas 3 usinas, dosada e certificada para eixo de 74 toneladas. Não é asfalto de rua — é pavimento dimensionado para graneleiro pesado em operação diária.',
   },
   {
     num: '03',
     title: 'Uma empresa do início ao fim',
-    desc: 'Terraplanagem, base, massa e aplicação — tudo próprio. Sem subcontratação de massa, sem dependência de terceiro, sem surpresa no prazo.',
+    desc: 'Terraplanagem, base, massa e aplicação — tudo nosso. Sem depender de terceiro para produzir o asfalto, sem surpresa no prazo.',
   },
   {
     num: '04',
     title: 'Documentação completa',
-    desc: 'Laudo Marshall, ART de execução, LO Ativa SEMAD-GO. Para compliance corporativo, financiamento rural ou auditoria — tudo disponível.',
+    desc: 'Laudo técnico, ART de execução, licença ambiental ativa. Para quem precisa de papel para financiamento, auditoria ou compliance corporativo.',
   },
 ]
 
 const specs = [
-  { key: 'Carga de projeto',    value: '74 t',        sub: 'por eixo' },
-  { key: 'Raio de atendimento', value: '90 km',       sub: 'das usinas' },
-  { key: 'Usinas próprias',     value: '3',           sub: 'em operação' },
-  { key: 'Norma',               value: 'DNIT',        sub: '/ NBR 7207' },
-  { key: 'Licença ambiental',   value: 'LO Ativa',    sub: 'SEMAD-GO' },
-  { key: 'Ensaio Marshall',     value: 'Certificado', sub: 'por traço' },
+  { key: 'Carga de projeto',         value: '74 t',        sub: 'por eixo' },
+  { key: 'Raio de atendimento',      value: '90 km',       sub: 'das usinas' },
+  { key: 'Usinas próprias',          value: '3',           sub: 'em operação' },
+  { key: 'Tipo de pavimento',        value: 'CBUQ',        sub: 'dosagem Marshall' },
+  { key: 'Norma de referência',      value: 'DNIT',        sub: '/ NBR 7207' },
+  { key: 'Licença ambiental',        value: 'LO Ativa',    sub: 'SEMAD-GO' },
 ]
 
 const maskPhone = (v: string) => {
@@ -91,9 +91,9 @@ export default function LPSilos() {
     if (Date.now() - loadTime.current < 5000) return
     if (!form.nome || !form.whatsapp) return
     const msg = encodeURIComponent(
-      'Olá! Tenho interesse em pavimentação para silo/armazém.\n' +
+      'Olá! Tenho interesse em asfaltar o pátio do meu silo/armazém.\n' +
       'Nome: ' + form.nome + '\n' +
-      'Empresa/Fazenda: ' + (form.empresa || 'Não informado') + '\n' +
+      'Fazenda/Empresa: ' + (form.empresa || 'Não informado') + '\n' +
       'Cidade: ' + (form.cidade || 'Não informado') + '\n' +
       'WhatsApp: ' + form.whatsapp
     )
@@ -104,7 +104,7 @@ export default function LPSilos() {
   return (
     <div className="bg-[#070e1a] text-cream font-body">
 
-      {/* ── NAV */}
+      {/* NAV */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
         px-6 md:px-12 h-[64px] bg-[#070e1a]/96 backdrop-blur-sm border-b border-white/[.06]">
         <Link href="/">
@@ -114,16 +114,16 @@ export default function LPSilos() {
         <button onClick={scrollToForm}
           className="text-[11px] font-medium tracking-[.14em] uppercase
             text-white bg-green px-5 py-2.5 hover:bg-green2 transition-colors">
-          Solicitar estudo técnico
+          Quero asfaltar meu pátio
         </button>
       </header>
 
-      {/* ── HERO */}
+      {/* HERO */}
       <section className="relative min-h-screen flex items-end pb-16 pt-[64px]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/lp/hero-silos.jpg"
-            alt="Pavimentação CBUQ em armazém industrial GP Asfalto"
+            alt="Pavimentação asfáltica em armazém industrial"
             fill className="object-cover object-center" priority sizes="100vw"
           />
         </div>
@@ -138,7 +138,7 @@ export default function LPSilos() {
           <div className="flex items-center gap-3 mb-6">
             <span className="w-6 h-px bg-green block" />
             <span className="text-[11px] font-medium tracking-[.28em] uppercase text-green">
-              Pavimentação CBUQ · Silos e Armazéns · Goiás
+              Asfalto para Silos e Armazéns · Goiás e região
             </span>
           </div>
 
@@ -153,18 +153,18 @@ export default function LPSilos() {
             O pátio não pode tirar esse poder de você.
           </p>
           <p className="text-[14px] md:text-[15px] font-light text-white/38
-            leading-[1.75] max-w-[500px] mb-10">
-            Pátio enlameado fecha a entrada na safra. Caminhão não entra,
-            grão fica no campo, e a decisão de venda sai do seu controle.
-            A GP asfalta com CBUQ próprio — terraplanagem, base e
-            pavimentação, uma empresa só.
+            leading-[1.8] max-w-[500px] mb-10">
+            Pátio sem asfalto fecha na primeira chuva da safra. Caminhão não
+            entra, grão fica no campo e a decisão de venda sai do seu controle.
+            A GP asfalta pátio de silo há mais de 40 anos —
+            terraplanagem, base e asfalto resistente, uma empresa só.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-14">
             <button onClick={scrollToForm}
               className="text-[13px] font-medium tracking-[.14em] uppercase
                 text-white bg-green px-10 py-4 hover:bg-green2 transition-colors">
-              Solicitar estudo técnico gratuito
+              Quero asfaltar meu pátio
             </button>
             <a href={'https://wa.me/' + company.whatsapp} target="_blank"
               className="text-[13px] font-medium tracking-[.14em] uppercase
@@ -176,10 +176,10 @@ export default function LPSilos() {
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {[
-              '40+ anos de mercado',
-              '3 usinas CBUQ próprias',
-              '90 km de raio',
-              'LO Ativa SEMAD-GO',
+              '40+ anos asfaltando no Cerrado',
+              '3 usinas de asfalto próprias',
+              '90 km de raio de atendimento',
+              'Licença ambiental ativa',
             ].map((t, i, arr) => (
               <span key={t} className="flex items-center gap-3">
                 <span className="text-[11px] font-medium tracking-[.08em] uppercase text-white/28">{t}</span>
@@ -190,7 +190,7 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* ── LOGOS */}
+      {/* LOGOS */}
       <section className="py-10 px-6 md:px-12 border-y border-black/20"
         style={{ background: '#e8e3da' }}>
         <p className="text-[10px] font-medium tracking-[.28em] uppercase text-navy/32
@@ -199,14 +199,14 @@ export default function LPSilos() {
         </p>
         <div className="flex justify-center items-center overflow-x-auto">
           <img
-            src="/images/lp/logos-clientes.png"
-            alt="Clientes GP Asfalto"
-            className="h-8 md:h-10 w-auto opacity-70"
+            src="/images/lp/logos_strip.png"
+            alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
+            className="h-8 md:h-10 w-auto opacity-75"
           />
         </div>
       </section>
 
-      {/* ── CONCEITO CENTRAL */}
+      {/* CONCEITO CENTRAL */}
       <section className="py-24 px-6 md:px-12" style={{ background: '#0b1828' }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
@@ -218,45 +218,48 @@ export default function LPSilos() {
             </div>
             <h2 className="font-display font-black text-white leading-[.9] mb-8"
               style={{ fontSize: 'clamp(34px, 4vw, 60px)' }}>
-              O SILO É SEU<br />INSTRUMENTO<br />
-              <span className="text-green">DE PREÇO.</span>
+              SILO BOM<br />COM PÁTIO RUIM<br />
+              <span className="text-green">NÃO FECHA A CONTA.</span>
             </h2>
             <p className="text-[15px] font-light text-white/45 leading-[1.9] mb-5">
-              Produtores com armazenagem própria vendem entre 4 e 6 meses
-              após a colheita — quando a entressafra reduz a oferta e o preço sobe.
-              Estudos mostram ganho de até 55% sobre o preço de colheita.
+              Quem tem armazém próprio pode guardar a safra e vender
+              quando o mercado manda — não quando a cooperativa enche.
+              Produtores que armazenam chegam a ganhar 20% a mais
+              sobre o preço de colheita na hora que vendem.
             </p>
             <p className="text-[15px] font-light text-white/45 leading-[1.9]">
-              Você construiu esse ativo para ter esse controle.
-              Um pátio sem pavimentação é o elo mais fraco da
-              operação — e o primeiro a falhar na hora mais crítica.
+              Mas esse ganho depende de um pátio que funciona.
+              Na chuva, na lama, com 60 caminhões por dia.
+              É isso que a GP entrega.
             </p>
           </div>
 
           <div className="flex flex-col gap-0">
             {[
-              { label: 'Ganho médio vendendo na entressafra',    value: '6–20%',     cor: 'text-green' },
-              { label: 'Produtores que armazenam 4–6 meses (GO)', value: '54%',      cor: 'text-white' },
-              { label: 'Tempo médio de payback do silo',          value: '5 anos',   cor: 'text-white' },
-              { label: 'Déficit de armazenagem em GO e MT',       value: 'crítico',  cor: 'text-red-400' },
+              { label: 'Ganho médio vendendo na entressafra vs. colheita',  value: '6–20%',   cor: 'text-green' },
+              { label: 'Produtores em GO que guardam 4 a 6 meses',          value: '54%',     cor: 'text-white' },
+              { label: 'Tempo médio de retorno do investimento no silo',    value: '5 anos',  cor: 'text-white' },
+              { label: 'Potencial de ganho com armazenagem estratégica',    value: 'até 55%', cor: 'text-green' },
             ].map((s, i) => (
-              <div key={i}
-                className="flex justify-between items-baseline py-5
-                  border-b border-white/[.06] first:border-t">
+              <div key={i} className="flex justify-between items-baseline py-5
+                border-b border-white/[.06] first:border-t">
                 <span className="text-[13px] text-white/35 max-w-[260px] leading-snug">{s.label}</span>
                 <span className={'font-display font-black text-[24px] ' + s.cor}>{s.value}</span>
               </div>
             ))}
+            <p className="text-[10px] text-white/20 mt-3 leading-relaxed">
+              Fontes: CNA — Pesquisa Nacional de Armazenagem (2022), Aegro/Siacon.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── DORES */}
+      {/* DORES */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <span className="w-5 h-px bg-green block" />
           <span className="text-[11px] font-medium tracking-[.24em] uppercase text-green">
-            O que acontece sem pavimentação
+            O que acontece sem asfalto
           </span>
         </div>
         <h2 className="font-display font-black text-white mb-16 leading-[.9]"
@@ -272,11 +275,9 @@ export default function LPSilos() {
                 [&:nth-child(2n)]:border-r-0
                 [&:nth-child(n+3)]:border-b-0
                 p-8 md:p-10 hover:bg-white/[.025] transition-colors">
-              <div className="flex items-start justify-between mb-5">
-                <span className="font-display font-black text-[11px] tracking-[.2em] text-green/40">
-                  {d.num}
-                </span>
-              </div>
+              <span className="font-display font-black text-[11px] tracking-[.2em] text-green/40 block mb-4">
+                {d.num}
+              </span>
               <div className="mb-4">
                 <span className="font-display font-black text-[34px] text-white leading-none block">
                   {d.destaque}
@@ -286,31 +287,30 @@ export default function LPSilos() {
               <h3 className="font-display font-bold text-[19px] text-white uppercase mb-3 leading-tight">
                 {d.title}
               </h3>
-              <p className="text-[14px] font-light leading-[1.85] text-white/38">
-                {d.desc}
-              </p>
+              <p className="text-[14px] font-light leading-[1.85] text-white/38">{d.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── SOLUÇÃO */}
+      {/* SOLUÇÃO */}
       <section className="py-24 px-6 md:px-12" style={{ background: '#0b1828' }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <span className="w-5 h-px bg-green block" />
             <span className="text-[11px] font-medium tracking-[.24em] uppercase text-green">
-              Como a GP resolve
+              Como fazemos
             </span>
           </div>
           <h2 className="font-display font-black text-white mb-3 leading-[.9]"
             style={{ fontSize: 'clamp(34px, 5vw, 66px)' }}>
-            DO SOLO AO ASFALTO<br />
+            DA TERRA AO ASFALTO<br />
             <span className="text-green">UMA EMPRESA SÓ</span>
           </h2>
           <p className="text-[15px] font-light text-white/38 mb-16 max-w-xl leading-relaxed">
-            Sem subcontratação de massa. Sem dependência de terceiro para o CBUQ.
-            Três usinas próprias em Rio Verde — produzimos, aplicamos e entregamos com documentação completa.
+            Produzimos nosso próprio asfalto em três usinas em Rio Verde.
+            Fazemos a terraplanagem, preparamos a base e aplicamos o asfalto —
+            tudo com nossa equipe. Sem subcontratação, sem surpresa no prazo.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
@@ -332,20 +332,23 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* ── SPECS */}
+      {/* SPECS — aqui sim pode ter os termos técnicos */}
       <section className="py-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <span className="w-5 h-px bg-green block" />
             <span className="text-[11px] font-medium tracking-[.24em] uppercase text-green">
-              Capacidade técnica
+              Ficha técnica
             </span>
           </div>
-          <h2 className="font-display font-black text-white mb-16 leading-[.9]"
+          <h2 className="font-display font-black text-white mb-4 leading-[.9]"
             style={{ fontSize: 'clamp(34px, 4vw, 60px)' }}>
-            CBUQ DIMENSIONADO<br />
-            <span className="text-white/22">PARA TRÁFEGO DE GRANELEIRO</span>
+            ASFALTO DIMENSIONADO<br />
+            <span className="text-white/22">PARA GRANELEIRO PESADO</span>
           </h2>
+          <p className="text-[14px] font-light text-white/35 mb-16 max-w-lg leading-relaxed">
+            Para quem precisa de especificação técnica, documentação ou laudo — temos tudo.
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-16">
             {specs.map((s, i) => (
@@ -363,15 +366,14 @@ export default function LPSilos() {
             ))}
           </div>
 
-          {/* CLIENTES STRIP INLINE */}
           <div className="border border-white/[.06] p-8 md:p-10">
             <p className="text-[10px] font-medium tracking-[.24em] uppercase text-white/25 mb-6">
               Operações que confiam na GP Asfalto
             </p>
-            <div className="overflow-x-auto" style={{ background: '#e8e3da', padding: '16px 24px', borderRadius: 2 }}>
+            <div style={{ background: '#e8e3da', padding: '14px 24px' }}>
               <img
-                src="/images/lp/logos-clientes.png"
-                alt="Clientes GP Asfalto"
+                src="/images/lp/logos_strip.png"
+                alt="LDC, COMIGO, Raízen, Nutrien, Mosaic e outros"
                 className="h-7 md:h-9 w-auto opacity-80"
               />
             </div>
@@ -379,24 +381,24 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* ── FORM */}
+      {/* FORM */}
       <section ref={formRef} className="py-24 px-6 md:px-12" style={{ background: '#0b1828' }}>
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <span className="w-5 h-px bg-green block" />
             <span className="text-[11px] font-medium tracking-[.24em] uppercase text-green">
-              Estudo técnico gratuito
+              Visita técnica gratuita
             </span>
           </div>
           <h2 className="font-display font-black text-white mb-4 leading-[.9]"
             style={{ fontSize: 'clamp(34px, 4.5vw, 60px)' }}>
-            SUA OPERAÇÃO<br />NÃO PODE DEPENDER<br />
-            <span className="text-green">DO TEMPO.</span>
+            A GENTE VAI<br />ATÉ VOCÊ.<br />
+            <span className="text-green">SEM COMPROMISSO.</span>
           </h2>
           <p className="text-[15px] font-light text-white/38 mb-12 leading-relaxed max-w-md">
-            Nossa equipe vai até sua propriedade, avalia o pátio e apresenta
-            um estudo com especificações técnicas e estimativa de investimento.
-            Sem compromisso.
+            Nossa equipe visita sua propriedade, avalia o pátio e
+            apresenta uma proposta com preço e prazo. Você decide
+            se quer avançar — sem pressão.
           </p>
 
           {sent ? (
@@ -405,10 +407,10 @@ export default function LPSilos() {
                 <span className="font-display font-black text-green text-lg">OK</span>
               </div>
               <h3 className="font-display font-bold text-[28px] text-white mb-3">
-                Solicitação enviada!
+                Recebemos sua solicitação!
               </h3>
               <p className="text-[14px] text-white/38 mb-8 max-w-xs mx-auto leading-relaxed">
-                Nossa equipe entra em contato em até 24 horas para agendar a visita técnica.
+                Nosso time entra em contato em até 24 horas para agendar a visita.
               </p>
               <button
                 onClick={() => { setSent(false); setForm({ nome: '', empresa: '', whatsapp: '', cidade: '' }) }}
@@ -420,16 +422,15 @@ export default function LPSilos() {
             </div>
           ) : (
             <div>
-              {/* HONEYPOT */}
               <input name="website" tabIndex={-1} autoComplete="off"
                 style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', height: 0 }}
                 onChange={e => setHoneypot(e.target.value)} />
 
               <div className="flex flex-col gap-0">
                 {[
-                  { key: 'nome',    label: 'Nome',              type: 'text', ph: 'Seu nome completo',   req: true  },
-                  { key: 'empresa', label: 'Fazenda / Empresa', type: 'text', ph: 'Nome da propriedade', req: false },
-                  { key: 'cidade',  label: 'Cidade do silo',    type: 'text', ph: 'Onde fica o silo?',   req: false },
+                  { key: 'nome',    label: 'Seu nome',          type: 'text', ph: 'Como você se chama?',      req: true  },
+                  { key: 'empresa', label: 'Fazenda ou empresa', type: 'text', ph: 'Nome da propriedade',     req: false },
+                  { key: 'cidade',  label: 'Cidade',             type: 'text', ph: 'Onde fica o silo?',       req: false },
                 ].map(f => (
                   <div key={f.key} className="flex flex-col border-b border-white/[.08] first:border-t">
                     <label className="text-[10px] font-medium tracking-[.22em] uppercase
@@ -462,19 +463,19 @@ export default function LPSilos() {
                   bg-green text-white text-[13px] font-medium tracking-[.14em] uppercase
                   hover:bg-green2 transition-colors
                   disabled:opacity-30 disabled:cursor-not-allowed">
-                Nossa equipe vai até você — sem compromisso
+                Quero agendar visita técnica
                 <span className="text-[18px]">↗</span>
               </button>
 
               <p className="text-[11px] text-white/18 text-center mt-4 leading-relaxed">
-                Retorno em até 24 horas · Visita técnica gratuita · Rio Verde, GO
+                Retorno em até 24 horas · Visita gratuita e sem compromisso · Rio Verde, GO
               </p>
             </div>
           )}
         </div>
       </section>
 
-      {/* ── FOOTER */}
+      {/* FOOTER */}
       <footer className="border-t border-white/[.06] px-6 md:px-12 py-6
         flex flex-col md:flex-row items-center justify-between gap-4"
         style={{ background: '#040a14' }}>
