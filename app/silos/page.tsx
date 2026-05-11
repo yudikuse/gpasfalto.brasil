@@ -162,7 +162,7 @@ export default function LPSilos() {
         {/* VIDEO BG */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <iframe
-            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=6`}
+            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=5`}
             style={{
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -199,15 +199,19 @@ export default function LPSilos() {
               <span className="text-green">VENDER.</span>
             </h1>
 
-            <p className="text-[16px] font-light text-white/50 leading-[1.75] mb-8 max-w-md">
+            <p className="text-[15px] font-light text-white/50 leading-[1.75] mb-6 max-w-md hidden md:block">
               O pátio não pode tirar esse poder de você.
               Pátio sem asfalto fecha na primeira chuva da safra.
               A GP asfalta pátio de silo há <strong className="text-white/70 font-normal">mais de 40 anos</strong> —
               terraplanagem, base e asfalto resistente, uma empresa só.
             </p>
 
-            {/* TRUST */}
-            <div className="flex flex-col gap-2">
+            <p className="text-[15px] font-light text-white/50 leading-[1.75] mb-6 md:hidden">
+              Pátio sem asfalto fecha na primeira chuva. A GP resolve — terraplanagem, base e asfalto, uma empresa só.
+            </p>
+
+            {/* bullets — só desktop */}
+            <div className="hidden md:flex flex-col gap-2 mb-8">
               {[
                 '3 usinas de asfalto próprias em Rio Verde, GO',
                 'Terraplanagem + base + asfalto — sem subcontratação',
@@ -230,16 +234,16 @@ export default function LPSilos() {
       </section>
 
       {/* LOGOS */}
-      <section className="py-12 px-6 md:px-12" style={{ background: '#e8e3da' }}>
-        <p className="text-[10px] font-medium tracking-[.26em] uppercase text-navy/28
-          text-center mb-8">
+      <section className="py-7 px-6 md:px-12" style={{ background: '#e8e3da' }}>
+        <p className="text-[9px] font-medium tracking-[.22em] uppercase text-navy/28
+          text-center mb-5">
           Fazemos parte da infraestrutura dessas operações
         </p>
         <div className="flex justify-center">
           <img
             src="/images/lp/logos_strip.png"
             alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
-            className="h-10 md:h-12 w-auto"
+            className="h-7 md:h-9 w-auto"
             style={{ mixBlendMode: 'multiply' }}
           />
         </div>
