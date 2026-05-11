@@ -191,17 +191,17 @@ export default function LPSilos() {
       </section>
 
       {/* LOGOS */}
-      <section className="py-10 px-6 md:px-12 border-y border-black/20"
+      <section className="py-14 px-6 md:px-12 border-y border-black/10"
         style={{ background: '#e8e3da' }}>
-        <p className="text-[10px] font-medium tracking-[.28em] uppercase text-navy/32
-          text-center mb-7">
+        <p className="text-[10px] font-medium tracking-[.28em] uppercase text-navy/30
+          text-center mb-10">
           Fazemos parte da infraestrutura dessas operações
         </p>
-        <div className="flex justify-center items-center overflow-x-auto">
+        <div className="flex justify-center items-center">
           <img
             src="/images/lp/logos_strip.png"
             alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
-            className="h-8 md:h-10 w-auto opacity-75"
+            className="h-10 md:h-12 w-auto"
           />
         </div>
       </section>
@@ -366,17 +366,15 @@ export default function LPSilos() {
             ))}
           </div>
 
-          <div className="border border-white/[.06] p-8 md:p-10">
-            <p className="text-[10px] font-medium tracking-[.24em] uppercase text-white/25 mb-6">
+          <div className="mt-4 py-10 px-8 md:px-10" style={{ background: '#e8e3da' }}>
+            <p className="text-[10px] font-medium tracking-[.24em] uppercase text-navy/30 mb-7">
               Operações que confiam na GP Asfalto
             </p>
-            <div style={{ background: '#e8e3da', padding: '14px 24px' }}>
-              <img
-                src="/images/lp/logos_strip.png"
-                alt="LDC, COMIGO, Raízen, Nutrien, Mosaic e outros"
-                className="h-7 md:h-9 w-auto opacity-80"
-              />
-            </div>
+            <img
+              src="/images/lp/logos_strip.png"
+              alt="LDC, COMIGO, Raízen, Nutrien, Mosaic e outros"
+              className="h-8 md:h-10 w-auto"
+            />
           </div>
         </div>
       </section>
