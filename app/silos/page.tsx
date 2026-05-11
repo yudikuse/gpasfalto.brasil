@@ -126,7 +126,7 @@ export default function LPSilos() {
         {/* VIDEO BG */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <iframe
-            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=3&enablejsapi=1`}
+            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=6&enablejsapi=1`}
             style={{
               position: 'absolute',
               top: '50%',
@@ -219,13 +219,27 @@ export default function LPSilos() {
             src="/images/lp/logos_strip.png"
             alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
             className="h-12 md:h-14 w-auto"
+            style={{ mixBlendMode: 'multiply' }}
           />
         </div>
       </section>
 
-      {/* CONCEITO */}
-      <section className="py-24 px-6 md:px-12" style={{ background: '#0b1828' }}>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      {/* CONCEITO — silo como bg à direita */}
+      <section className="py-24 px-6 md:px-12 relative overflow-hidden" style={{ background: '#0b1828' }}>
+
+        {/* SILO PHOTO — fundo direito */}
+        <div className="absolute inset-y-0 right-0 w-1/2 z-0 hidden md:block">
+          <Image
+            src="/images/lp/silo-bg.jpg"
+            alt="Silo de grãos"
+            fill className="object-cover object-center opacity-30"
+            sizes="50vw"
+          />
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(to right, #0b1828 0%, rgba(11,24,40,.5) 40%, transparent 100%)' }} />
+        </div>
+
+        <div className="relative z-[1] max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
             <div className="flex items-center gap-3 mb-5">
               <span className="w-5 h-px bg-green block" />
@@ -397,6 +411,7 @@ export default function LPSilos() {
               src="/images/lp/logos_strip.png"
               alt="LDC, COMIGO, Raízen, Nutrien, Mosaic e outros"
               className="h-10 md:h-12 w-auto"
+              style={{ mixBlendMode: 'multiply' }}
             />
           </div>
         </div>
