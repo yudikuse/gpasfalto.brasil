@@ -230,7 +230,7 @@ export default function LPSilos() {
         {/* SILO PHOTO — fundo direito */}
         <div className="absolute inset-y-0 right-0 w-1/2 z-0 hidden md:block">
           <Image
-            src="/images/lp/silo-bg.jpg"
+            src="/images/lp/silo-bg.png"
             alt="Silo de grãos"
             fill className="object-cover object-center opacity-30"
             sizes="50vw"
