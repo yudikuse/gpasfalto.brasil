@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/content'
 
+const VIDEO_ID = 'kCa5jGxJ080'
+
 const dores = [
   {
     num: '01',
@@ -59,12 +61,12 @@ const solucoes = [
 ]
 
 const specs = [
-  { key: 'Carga de projeto',         value: '74 t',        sub: 'por eixo' },
-  { key: 'Raio de atendimento',      value: '90 km',       sub: 'das usinas' },
-  { key: 'Usinas próprias',          value: '3',           sub: 'em operação' },
-  { key: 'Tipo de pavimento',        value: 'CBUQ',        sub: 'dosagem Marshall' },
-  { key: 'Norma de referência',      value: 'DNIT',        sub: '/ NBR 7207' },
-  { key: 'Licença ambiental',        value: 'LO Ativa',    sub: 'SEMAD-GO' },
+  { key: 'Carga de projeto',    value: '74 t',        sub: 'por eixo' },
+  { key: 'Usinas próprias',     value: '3',           sub: 'Rio Verde, GO' },
+  { key: 'Tipo de pavimento',   value: 'CBUQ',        sub: 'dosagem Marshall' },
+  { key: 'Norma de referência', value: 'DNIT',        sub: '/ NBR 7207' },
+  { key: 'Licença ambiental',   value: 'LO Ativa',    sub: 'SEMAD-GO' },
+  { key: 'Ensaio Marshall',     value: 'Certificado', sub: 'por traço' },
 ]
 
 const maskPhone = (v: string) => {
@@ -106,10 +108,10 @@ export default function LPSilos() {
 
       {/* NAV */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
-        px-6 md:px-12 h-[64px] bg-[#070e1a]/96 backdrop-blur-sm border-b border-white/[.06]">
+        px-6 md:px-12 h-[72px] bg-[#070e1a]/96 backdrop-blur-sm border-b border-white/[.06]">
         <Link href="/">
           <Image src="/images/logo-white.png" alt="GP Asfalto"
-            width={140} height={40} className="h-10 w-auto object-contain" />
+            width={200} height={56} className="h-16 md:h-20 w-auto object-contain" />
         </Link>
         <button onClick={scrollToForm}
           className="text-[11px] font-medium tracking-[.14em] uppercase
@@ -118,15 +120,30 @@ export default function LPSilos() {
         </button>
       </header>
 
-      {/* HERO */}
-      <section className="relative min-h-screen flex items-end pb-16 pt-[64px]">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/lp/hero-silos.jpg"
-            alt="Pavimentação asfáltica em armazém industrial"
-            fill className="object-cover object-center" priority sizes="100vw"
+      {/* HERO — vídeo YouTube */}
+      <section className="relative min-h-screen flex items-end pb-16 pt-[72px]">
+
+        {/* VIDEO BG */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <iframe
+            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=3&enablejsapi=1`}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '177.78vh',
+              minWidth: '100%',
+              height: '56.25vw',
+              minHeight: '100%',
+            }}
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
           />
         </div>
+
+        {/* OVERLAY */}
         <div className="absolute inset-0 z-[1]" style={{
           background: [
             'linear-gradient(to right, rgba(4,10,22,.96) 0%, rgba(4,10,22,.7) 50%, rgba(4,10,22,.2) 100%)',
@@ -134,6 +151,7 @@ export default function LPSilos() {
           ].join(',')
         }} />
 
+        {/* CONTENT */}
         <div className="relative z-[2] w-full max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex items-center gap-3 mb-6">
             <span className="w-6 h-px bg-green block" />
@@ -178,8 +196,8 @@ export default function LPSilos() {
             {[
               '40+ anos asfaltando no Cerrado',
               '3 usinas de asfalto próprias',
-              '90 km de raio de atendimento',
               'Licença ambiental ativa',
+              'Documentação completa',
             ].map((t, i, arr) => (
               <span key={t} className="flex items-center gap-3">
                 <span className="text-[11px] font-medium tracking-[.08em] uppercase text-white/28">{t}</span>
@@ -191,8 +209,7 @@ export default function LPSilos() {
       </section>
 
       {/* LOGOS */}
-      <section className="py-14 px-6 md:px-12 border-y border-black/10"
-        style={{ background: '#e8e3da' }}>
+      <section className="py-14 px-6 md:px-12" style={{ background: '#e8e3da' }}>
         <p className="text-[10px] font-medium tracking-[.28em] uppercase text-navy/30
           text-center mb-10">
           Fazemos parte da infraestrutura dessas operações
@@ -201,12 +218,12 @@ export default function LPSilos() {
           <img
             src="/images/lp/logos_strip.png"
             alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
-            className="h-10 md:h-12 w-auto"
+            className="h-12 md:h-14 w-auto"
           />
         </div>
       </section>
 
-      {/* CONCEITO CENTRAL */}
+      {/* CONCEITO */}
       <section className="py-24 px-6 md:px-12" style={{ background: '#0b1828' }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
@@ -248,7 +265,7 @@ export default function LPSilos() {
               </div>
             ))}
             <p className="text-[10px] text-white/20 mt-3 leading-relaxed">
-              Fontes: CNA — Pesquisa Nacional de Armazenagem (2022), Aegro/Siacon.
+              Fontes: CNA — Pesquisa Nacional de Armazenagem (2022), Aegro.
             </p>
           </div>
         </div>
@@ -319,7 +336,8 @@ export default function LPSilos() {
                 className="border-b sm:border-b-0 border-r border-white/[.07]
                   last:border-r-0 p-8 lg:p-10 first:pl-0 last:pr-0
                   [&:nth-child(2)]:sm:border-r-0 lg:[&:nth-child(2)]:border-r">
-                <div className="w-8 h-8 border border-green/40 flex items-center justify-center mb-6">
+                <div className="w-8 h-8 border border-green/40 flex items-center
+                  justify-center mb-6">
                   <span className="font-display font-black text-[11px] text-green">{s.num}</span>
                 </div>
                 <h3 className="font-display font-bold text-[17px] text-white uppercase mb-3 leading-tight">
@@ -332,7 +350,7 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* SPECS — aqui sim pode ter os termos técnicos */}
+      {/* SPECS */}
       <section className="py-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
@@ -350,13 +368,17 @@ export default function LPSilos() {
             Para quem precisa de especificação técnica, documentação ou laudo — temos tudo.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mb-14">
             {specs.map((s, i) => (
               <div key={i}
                 className="flex justify-between items-baseline py-5
-                  border-b border-white/[.06] first:border-t
-                  md:[&:nth-child(odd)]:pr-16 md:[&:nth-child(even)]:pl-16
-                  md:[&:nth-child(even)]:border-l md:border-white/[.06]">
+                  border-b border-white/[.06] border-t-0
+                  first:border-t
+                  md:[&:nth-child(odd)]:pr-16
+                  md:[&:nth-child(even)]:pl-16
+                  md:[&:nth-child(even)]:border-l
+                  md:[&:nth-child(2)]:border-t
+                  md:border-white/[.06]">
                 <span className="text-[13px] font-normal text-white/28">{s.key}</span>
                 <span className="font-display font-bold text-[22px] text-white">
                   {s.value}
@@ -366,14 +388,15 @@ export default function LPSilos() {
             ))}
           </div>
 
-          <div className="mt-4 py-10 px-8 md:px-10" style={{ background: '#e8e3da' }}>
+          {/* LOGOS dentro de specs */}
+          <div className="py-10 px-8 md:px-10" style={{ background: '#e8e3da' }}>
             <p className="text-[10px] font-medium tracking-[.24em] uppercase text-navy/30 mb-7">
               Operações que confiam na GP Asfalto
             </p>
             <img
               src="/images/lp/logos_strip.png"
               alt="LDC, COMIGO, Raízen, Nutrien, Mosaic e outros"
-              className="h-8 md:h-10 w-auto"
+              className="h-10 md:h-12 w-auto"
             />
           </div>
         </div>
@@ -426,9 +449,9 @@ export default function LPSilos() {
 
               <div className="flex flex-col gap-0">
                 {[
-                  { key: 'nome',    label: 'Seu nome',          type: 'text', ph: 'Como você se chama?',      req: true  },
-                  { key: 'empresa', label: 'Fazenda ou empresa', type: 'text', ph: 'Nome da propriedade',     req: false },
-                  { key: 'cidade',  label: 'Cidade',             type: 'text', ph: 'Onde fica o silo?',       req: false },
+                  { key: 'nome',    label: 'Seu nome',          type: 'text', ph: 'Como você se chama?',  req: true  },
+                  { key: 'empresa', label: 'Fazenda ou empresa', type: 'text', ph: 'Nome da propriedade', req: false },
+                  { key: 'cidade',  label: 'Cidade',             type: 'text', ph: 'Onde fica o silo?',   req: false },
                 ].map(f => (
                   <div key={f.key} className="flex flex-col border-b border-white/[.08] first:border-t">
                     <label className="text-[10px] font-medium tracking-[.22em] uppercase
@@ -466,7 +489,7 @@ export default function LPSilos() {
               </button>
 
               <p className="text-[11px] text-white/18 text-center mt-4 leading-relaxed">
-                Retorno em até 24 horas · Visita gratuita e sem compromisso · Rio Verde, GO
+                Retorno em até 24 horas · Visita gratuita · Sem compromisso
               </p>
             </div>
           )}
@@ -479,8 +502,8 @@ export default function LPSilos() {
         style={{ background: '#040a14' }}>
         <Link href="/">
           <Image src="/images/logo-white.png" alt="GP Asfalto"
-            width={120} height={34}
-            className="h-8 w-auto object-contain opacity-45 hover:opacity-85 transition-opacity" />
+            width={140} height={40}
+            className="h-10 w-auto object-contain opacity-45 hover:opacity-85 transition-opacity" />
         </Link>
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
           <span className="text-[10px] tracking-[.1em] uppercase text-white/18">{company.cnpj}</span>
