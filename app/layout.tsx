@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Barlow_Condensed, DM_Sans } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import { site } from '@/data/content'
 
@@ -37,6 +38,20 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18158017809"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-18158017809');
+          `}
+        </Script>
+      </head>
       <body className="font-body bg-navy text-cream">{children}</body>
     </html>
   )
