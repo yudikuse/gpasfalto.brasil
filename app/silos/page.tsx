@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/content'
 
-const VIDEO_ID = 'kCa5jGxJ080'
+const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4'
 const WA = '5564993273958'
 
 const dores = [
@@ -12,21 +12,21 @@ const dores = [
     num: '01',
     stat: 'Fila no pátio',
     title: 'Pátio de terra cria fila. Fila custa dinheiro.',
-    desc: 'Pátio irregular e enlameado aumenta o tempo de descarga de 20 minutos para mais de uma hora. Com 60 carretas por dia na safra, você perde dias de operação. Caminhão que foi embora não volta.',
+    desc: 'Pátio irregular trava a descarga em qualquer operação. Na armazenadora, cada minuto de fila é custo operacional e produtor que vai buscar outra unidade. Na fazenda, é grão parado no campo enquanto o pátio não abre.',
     fonte: 'Ref: SIACON — Manual de Gestão de Unidades Armazenadoras',
   },
   {
     num: '02',
     stat: 'Desconto na balança',
     title: 'Poeira do pátio entra no grão.',
-    desc: 'Pátio de terra levanta poeira na descarga. O grão absorve impureza ainda na recepção. Você guardou meses esperando o preço certo — e na hora da venda, o desconto por impureza come parte da margem que a entressafra deveria dar.',
+    desc: 'Pátio de terra levanta poeira na descarga. O grão absorve impureza ainda na recepção. Na armazenadora, isso afeta a classificação do lote inteiro. Na fazenda, come a margem que a entressafra deveria proteger.',
     fonte: 'Ref: EMBRAPA Circular Técnica 196 — Armazenamento de Soja com Qualidade',
   },
   {
     num: '03',
     stat: 'Venda forçada',
     title: 'Pátio fecha na chuva. Você vende na hora errada.',
-    desc: 'O Brasil tem capacidade para guardar apenas 64% de uma safra. Quem tem silo próprio tem vantagem — mas só se conseguir encher o silo a tempo. Pátio enlameado fecha a entrada no pico da colheita. Você vende parte na cooperativa, no pico da baixa.',
+    desc: 'O Brasil armazena menos de 80% da própria safra. Quem tem silo ou armazém próprio tem vantagem — mas só se conseguir operar no pico. Pátio enlameado fecha a entrada na colheita. Você vende forçado, no preço da baixa.',
     fonte: 'Ref: CONAB — Capacidade Estática de Armazenagem 2024/25',
   },
 ]
@@ -35,7 +35,7 @@ const como = [
   {
     n: '01',
     t: 'Visita técnica gratuita',
-    d: 'Nossa equipe vai até sua propriedade, avalia o pátio e apresenta proposta com preço e prazo. Sem compromisso.',
+    d: 'Nossa equipe vai até sua unidade, avalia o pátio e apresenta proposta com preço e prazo. Sem compromisso.',
   },
   {
     n: '02',
@@ -58,7 +58,7 @@ const maskPhone = (v: string) => {
 }
 
 function Form() {
-  const [form, setForm]         = useState({ nome: '', empresa: '', whatsapp: '', cidade: '' })
+  const [form, setForm]         = useState({ nome: '', perfil: '', whatsapp: '', cidade: '' })
   const [sent, setSent]         = useState(false)
   const [honeypot, setHoneypot] = useState('')
   const loadTime                = useRef(Date.now())
@@ -68,9 +68,9 @@ function Form() {
     if (Date.now() - loadTime.current < 5000) return
     if (!form.nome || !form.whatsapp) return
     const msg = encodeURIComponent(
-      'Olá! Tenho interesse em asfaltar o pátio do meu silo.\n' +
+      'Olá! Tenho interesse em asfaltar o pátio.\n' +
       'Nome: ' + form.nome + '\n' +
-      'Fazenda/Empresa: ' + (form.empresa || 'Não informado') + '\n' +
+      'Perfil: ' + (form.perfil || 'Não informado') + '\n' +
       'Cidade: ' + (form.cidade || 'Não informado') + '\n' +
       'WhatsApp: ' + form.whatsapp
     )
@@ -86,7 +86,7 @@ function Form() {
       <p className="font-display font-bold text-[22px] text-white mb-2">Recebemos!</p>
       <p className="text-[13px] text-white/40 mb-6">Retorno em até 24 horas.</p>
       <button
-        onClick={() => { setSent(false); setForm({ nome: '', empresa: '', whatsapp: '', cidade: '' }) }}
+        onClick={() => { setSent(false); setForm({ nome: '', perfil: '', whatsapp: '', cidade: '' }) }}
         className="text-[11px] font-medium tracking-[.14em] uppercase
           text-green border border-green/30 px-6 py-2.5
           hover:bg-green hover:text-white transition-colors">
@@ -104,9 +104,8 @@ function Form() {
 
       <div className="flex flex-col gap-0">
         {[
-          { key: 'nome',    label: 'Seu nome',     type: 'text', ph: 'Como você se chama?', req: true  },
-          { key: 'empresa', label: 'Fazenda',       type: 'text', ph: 'Nome da propriedade', req: false },
-          { key: 'cidade',  label: 'Cidade',        type: 'text', ph: 'Onde fica o silo?',   req: false },
+          { key: 'nome',   label: 'Seu nome',  type: 'text', ph: 'Como você se chama?', req: true  },
+          { key: 'cidade', label: 'Cidade',    type: 'text', ph: 'Onde fica a unidade?', req: false },
         ].map(f => (
           <div key={f.key} className="flex flex-col border-b border-white/[.08] first:border-t">
             <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
@@ -119,6 +118,24 @@ function Form() {
                 text-white pb-3 placeholder:text-white/12 caret-green" />
           </div>
         ))}
+
+        {/* PERFIL SELECT */}
+        <div className="flex flex-col border-b border-white/[.08]">
+          <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
+            Você é
+          </label>
+          <select
+            value={form.perfil}
+            onChange={e => setForm(p => ({ ...p, perfil: e.target.value }))}
+            className="bg-transparent border-none outline-none text-[15px] font-light
+              text-white pb-3 caret-green appearance-none
+              [&>option]:bg-[#0b1828] [&>option]:text-white">
+            <option value="" disabled>Selecione seu perfil</option>
+            <option value="Armazenadora / Cooperativa">Armazenadora / Cooperativa</option>
+            <option value="Produtor Rural / Fazenda">Produtor Rural / Fazenda</option>
+            <option value="Grupo / Holding Rural">Grupo / Holding Rural</option>
+          </select>
+        </div>
 
         <div className="flex flex-col border-b border-white/[.08]">
           <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
@@ -179,7 +196,7 @@ export default function LPSilos() {
           />
         </div>
 
-        {/* OVERLAY — escuro à esquerda (texto), revela silo à direita */}
+        {/* OVERLAY */}
         <div className="absolute inset-0 z-[1]" style={{
           background: [
             'linear-gradient(to right, rgba(4,10,22,.98) 0%, rgba(4,10,22,.88) 45%, rgba(4,10,22,.55) 70%, rgba(4,10,22,.40) 100%)',
@@ -205,23 +222,19 @@ export default function LPSilos() {
               <span className="text-green">VENDER.</span>
             </h1>
 
-            {/* Desktop */}
             <p className="text-[15px] font-light text-white/50 leading-[1.8] mb-6 max-w-md hidden md:block">
               O pátio não pode tirar esse poder de você.
-              Pátio sem asfalto fecha na primeira chuva da safra — caminhão
-              não entra, grão fica no campo. A GP Asfalto resolve:
-              terraplenagem, base e asfalto resistente,{' '}
+              Pátio sem asfalto fecha na primeira chuva da safra — na fazenda ou no armazém.
+              A GP Asfalto resolve: terraplenagem, base e asfalto resistente,{' '}
               <strong className="text-white/70 font-normal">mais de 40 anos</strong> asfaltando
               pátio de silo no Cerrado.
             </p>
 
-            {/* Mobile */}
             <p className="text-[14px] font-light text-white/50 leading-[1.8] mb-6 md:hidden">
               Pátio sem asfalto fecha na chuva. A GP Asfalto resolve —
               terraplenagem, base e asfalto, uma empresa só.
             </p>
 
-            {/* Bullets — só desktop */}
             <div className="hidden md:flex flex-col gap-2">
               {[
                 '3 usinas de asfalto próprias em Rio Verde, GO',
@@ -270,19 +283,9 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* ── DORES — silo campo como bg */}
-      <section className="relative py-20 px-6 md:px-12 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/lp/silo-campo.jpg"
-            alt="Silos no campo"
-            fill className="object-cover object-center opacity-18"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-[#070e1a]/82" />
-        </div>
-
-        <div className="relative z-[1] max-w-7xl mx-auto">
+      {/* ── DORES — fundo escuro sólido */}
+      <section className="py-20 px-6 md:px-12" style={{ background: '#070e1a' }}>
+        <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <span className="w-5 h-px bg-green block" />
             <span className="text-[10px] font-medium tracking-[.24em] uppercase text-green">
@@ -323,21 +326,22 @@ export default function LPSilos() {
         </div>
       </section>
 
-      {/* ── COMO FUNCIONA — vídeo como bg */}
+      {/* ── COMO FUNCIONA — vídeo Cloudinary nativo */}
       <section className="relative py-20 px-6 md:px-12 overflow-hidden">
 
-        {/* VIDEO BG */}
+        {/* VIDEO BG — Cloudinary */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <iframe
-            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&start=5`}
+          <video
+            autoPlay muted loop playsInline
             style={{
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%,-50%)',
               width: '177.78vh', minWidth: '100%',
               height: '56.25vw', minHeight: '100%',
-            }}
-            frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen
-          />
+              objectFit: 'cover',
+            }}>
+            <source src={VIDEO_CLOUDINARY} type="video/mp4" />
+          </video>
         </div>
         <div className="absolute inset-0 z-[1]"
           style={{ background: 'rgba(4,10,22,.87)' }} />
