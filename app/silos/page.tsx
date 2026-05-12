@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/content'
 
-const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4'
+const VIDEO_CLOUDINARY = 'const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4#t=5''
 const WA = '5564993273958'
 
 const dores = [
