@@ -15,143 +15,125 @@ type FormState = {
 const WHATSAPP_NUMBER = "5564993273958";
 
 const WHATSAPP_BASE_MSG = encodeURIComponent(
-  "Olá, vim pela página de aplicação de CBUQ da GP Asfalto. Gostaria de uma avaliação da minha área."
+  "Olá, vim pela página de pavimentação CBUQ da GP Asfalto. Gostaria de uma avaliação técnica da minha área."
 );
 
 const areaTypes = [
-  "Pátio empresarial",
-  "Estacionamento",
-  "Acesso / entrada",
+  "Pátio industrial / logístico",
   "Via interna",
+  "Acesso / entrada",
+  "Estacionamento",
   "Recapeamento",
-  "Área rural / fazenda",
-  "Área industrial / logística",
+  "Área rural / cerealista",
+  "Base e subbase",
   "Outro",
 ];
 
 const clients = [
-  "COMIGO",
-  "LDC",
-  "Raízen",
-  "Nutrien",
-  "Mosaic",
-  "Mercado Livre",
-  "Fetz",
-  "Grupo Cereal",
+  { name: "COMIGO",        logo: "/images/logos/comigo.png" },
+  { name: "LDC",           logo: "/images/logos/ldc.png" },
+  { name: "Raízen",        logo: "/images/logos/raizen.png" },
+  { name: "Nutrien",       logo: "/images/logos/nutrien.png" },
+  { name: "Mosaic",        logo: "/images/logos/mosaic.png" },
+  { name: "Mercado Livre", logo: "/images/logos/mercado-livre.png" },
+  { name: "Fetz",          logo: "/images/logos/fetz.png" },
+  { name: "Grupo Cereal",  logo: "/images/logos/grupo-cereal.png" },
 ];
 
 const applications = [
   {
-    title: "Pátios empresariais",
-    text: "Pavimentação para áreas de operação diária. Reduz poeira, lama e custo com manutenção provisória.",
-  },
-  {
-    title: "Estacionamentos",
-    text: "Melhora a circulação e a experiência de quem chega — clientes, equipes e fornecedores.",
-  },
-  {
-    title: "Acessos e entradas",
-    text: "Transforma entradas irregulares em pavimento seguro e trafegável em qualquer época do ano.",
+    title: "Pátios industriais e logísticos",
+    text: "Pavimentação dimensionada para tráfego de caminhões pesados, forklifts e operações contínuas. Especificação conforme carga real.",
   },
   {
     title: "Vias internas",
-    text: "Circulação de veículos leves, caminhões e operação logística sem improviso.",
+    text: "Projeto de via para fluxo contínuo de veículos e equipamentos. Espessura e estrutura definidas conforme intensidade de uso.",
+  },
+  {
+    title: "Acessos e entradas",
+    text: "Infraestrutura de acesso projetada para tráfego crítico. Eliminação de pontos de risco para operação e segurança.",
   },
   {
     title: "Recapeamento",
-    text: "Recuperação de pavimento desgastado com nova camada de CBUQ, conforme avaliação da base.",
+    text: "Avaliação estrutural do pavimento existente e recuperação com nova camada de CBUQ. Solução definitiva para pavimentos degradados.",
   },
   {
-    title: "Áreas rurais e industriais",
-    text: "Acessos, balanças, pátios de carga, cerealistas, fazendas e áreas produtivas do agronegócio.",
+    title: "Áreas rurais e cerealistas",
+    text: "Pátios de balança, carga e descarga, acessos de fazenda. Pavimentação para operações do agronegócio em Goiás.",
+  },
+  {
+    title: "Base e subbase",
+    text: "Execução completa da estrutura de pavimento — base, subbase, regularização e revestimento — sem necessidade de outro fornecedor.",
   },
 ];
 
 const faq = [
   {
-    q: "Vocês vendem só a massa ou também aplicam?",
-    a: "O foco desta página é fornecimento com aplicação completa: massa, equipe e equipamentos no mesmo atendimento. Para demandas específicas de venda de massa sem aplicação, avaliamos separadamente.",
+    q: "A GP Asfalto executa base e subbase ou apenas o revestimento CBUQ?",
+    a: "A GP Asfalto executa o pacote completo: base, subbase, regularização e revestimento em CBUQ. Avaliamos a condição estrutural existente e incluímos a preparação necessária no escopo — sem necessidade de contratar outro fornecedor para cada etapa.",
   },
   {
-    q: "Qual a metragem mínima atendida?",
-    a: "Não há um mínimo fixo. Para obras em Rio Verde e cidades próximas, conseguimos avaliar áreas a partir de 300–500 m². Para localidades mais distantes, precisamos de mais volume para viabilizar a logística. Manda a cidade e a metragem pelo WhatsApp.",
+    q: "É possível adquirir apenas a massa CBUQ sem aplicação?",
+    a: "Sim. A GP Asfalto fornece CBUQ de usina própria para equipes com capacidade de aplicação própria. Para projetos com aplicação completa, atendemos com equipe técnica e maquinário.",
   },
   {
-    q: "Preciso preparar a base antes?",
-    a: "Não necessariamente. A equipe avalia a condição da base e, se necessário, executa a preparação — base, subbase ou regularização fazem parte dos serviços da GP Asfalto. Você não precisa contratar etapas separadas com outro fornecedor.",
+    q: "Como é feito o dimensionamento da espessura do pavimento?",
+    a: "O dimensionamento considera tipo de tráfego, peso das cargas, frequência de uso e condição da base existente. A equipe técnica avalia esses fatores antes de definir a especificação — não utilizamos espessura padrão sem avaliação.",
   },
   {
-    q: "Dá para fazer orçamento por foto?",
-    a: "Sim. Fotos e vídeos pelo WhatsApp já resolvem a avaliação inicial. Para proposta final com metragem e espessura, pode ser necessária uma visita, mas o primeiro contato já esclarece a maior parte das dúvidas.",
+    q: "Qual a área mínima para atendimento?",
+    a: "Não há mínimo fixo. Para obras em Rio Verde e municípios próximos, atendemos áreas a partir de 300 m². Para localidades mais distantes, o volume depende da logística. Informe a cidade e a metragem para análise.",
   },
   {
-    q: "Atendem minha cidade?",
-    a: "A GP Asfalto atende Rio Verde e cidades de Goiás e região. Manda a cidade no WhatsApp — confirmamos a viabilidade rapidamente.",
+    q: "É possível uma avaliação preliminar por fotos e plantas?",
+    a: "Sim. Fotos, vídeos e plantas permitem uma avaliação inicial consistente. Para proposta técnica com especificação de espessura e custo definitivo, pode ser necessária visita de campo.",
   },
   {
-    q: "Quanto tempo leva a aplicação?",
-    a: "Depende da metragem e do escopo. Obras de pátios e estacionamentos costumam ser executadas em poucos dias após a preparação da base. A equipe estima o prazo na avaliação inicial.",
+    q: "Qual a área de atendimento?",
+    a: "A GP Asfalto atende Rio Verde e municípios de Goiás e região. Informe a cidade para confirmarmos viabilidade de logística e agenda.",
   },
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-function onlyDigits(value: string) {
-  return value.replace(/\D/g, "");
-}
+function onlyDigits(v: string) { return v.replace(/\D/g, ""); }
 
-function maskPhone(value: string) {
-  const d = onlyDigits(value).slice(0, 11);
+function maskPhone(v: string) {
+  const d = onlyDigits(v).slice(0, 11);
   if (d.length <= 2) return d;
-  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
-  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
 }
 
-function buildWhatsAppMessage(data: FormState) {
+function buildMessage(data: FormState) {
   return [
-    "Olá, vim pela página de aplicação de CBUQ da GP Asfalto.",
+    "Olá, vim pela página de pavimentação CBUQ da GP Asfalto.",
     "",
     `Nome: ${data.nome || "-"}`,
     `WhatsApp: ${data.telefone || "-"}`,
     `Cidade/UF: ${data.cidade || "-"}`,
     `Tipo de área: ${data.tipoArea || "-"}`,
     "",
-    "Gostaria de uma avaliação da minha área.",
+    "Gostaria de solicitar uma avaliação técnica.",
   ].join("\n");
 }
 
 // ── Componente ─────────────────────────────────────────────────────────────
 export default function LP3Page() {
-  const [form, setForm] = useState<FormState>({
-    nome: "",
-    telefone: "",
-    cidade: "",
-    tipoArea: "",
-  });
-
+  const [form, setForm] = useState<FormState>({ nome: "", telefone: "", cidade: "", tipoArea: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const whatsappHref = useMemo(() => {
-    const msg = encodeURIComponent(buildWhatsAppMessage(form));
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-  }, [form]);
+  const waHref = useMemo(() => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(form))}`, [form]);
+  const waBase = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_BASE_MSG}`;
 
-  const whatsappBase = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_BASE_MSG}`;
-
-  function updateField(field: keyof FormState, value: string) {
-    setForm((prev) => ({
-      ...prev,
-      [field]: field === "telefone" ? maskPhone(value) : value,
-    }));
+  function update(field: keyof FormState, value: string) {
+    setForm(p => ({ ...p, [field]: field === "telefone" ? maskPhone(value) : value }));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (onlyDigits(form.telefone).length < 10) {
-      alert("Informe um WhatsApp válido para contato.");
-      return;
-    }
-    window.open(whatsappHref, "_blank", "noopener,noreferrer");
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (onlyDigits(form.telefone).length < 10) { alert("Informe um WhatsApp válido."); return; }
+    window.open(waHref, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -159,1245 +141,878 @@ export default function LP3Page() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="hero">
-        <div className="heroShade" />
-
+        <div className="heroOverlay" />
         <header className="topbar">
-          {/* Logo sem link — não vazar tráfego pago de volta ao site */}
-          <span className="brand">
-            <img src="/images/logo-white.png" alt="GP Asfalto" />
-          </span>
-          <a className="topCta" href={whatsappBase} target="_blank" rel="noreferrer">
-            Falar com a equipe
+          <span className="brand"><img src="/images/logo-white.png" alt="GP Asfalto" /></span>
+          <a className="topCta" href={waBase} target="_blank" rel="noreferrer">
+            Falar com a equipe técnica
           </a>
         </header>
 
         <div className="heroInner">
           <div className="heroCopy">
-            <div className="eyebrow">CBUQ • Pátios • Cerrado</div>
-
-            <h1>Seu pátio sem poeira, lama ou buraco.</h1>
-
+            <div className="tag">Pavimentação CBUQ · Industrial · Agronegócio · Goiás</div>
+            <h1>Pavimento que sustenta a operação.</h1>
             <p>
-              Fornecemos o CBUQ, levamos a equipe e compactamos o pavimento.
-              Um único atendimento para pátios, estacionamentos e acessos no Cerrado.
+              A GP Asfalto dimensiona, fornece e executa pavimentação CBUQ para pátios
+              industriais, vias internas e acessos críticos — com produção própria,
+              equipe técnica e maquinário. Da base ao revestimento.
             </p>
-
-            <div className="heroActions">
-              <a className="primaryButton" href={whatsappBase} target="_blank" rel="noreferrer">
-                Pedir avaliação pelo WhatsApp
-              </a>
-            </div>
-
-            <p className="microcopy">Sem compromisso. Manda cidade, metragem e fotos.</p>
+            <a className="heroCta" href={waBase} target="_blank" rel="noreferrer">
+              Solicitar avaliação técnica
+            </a>
+            <p className="heroSub">Informe a área, metragem e cidade para análise.</p>
           </div>
 
-          <div className="heroCard">
-            <span>Por que a GP Asfalto</span>
-            <strong>3 usinas próprias no Cerrado</strong>
-            <div className="heroCardStats">
+          <aside className="heroCard">
+            <p className="cardLabel">Por que a GP Asfalto</p>
+            <h2 className="cardTitle">3 usinas próprias em operação</h2>
+            <div className="cardStats">
               <div>
-                <b>40+</b>
-                <small>anos de operação</small>
+                <strong>40+</strong>
+                <span>anos de engenharia em Goiás</span>
               </div>
               <div>
-                <b>Massa + equipe</b>
-                <small>no mesmo atendimento</small>
+                <strong>Da base ao revestimento</strong>
+                <span>sem terceirização de etapas</span>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </section>
 
-      {/* ── CLIENT STRIP ──────────────────────────────────────────────────── */}
-      <section className="clientStrip">
-        <p className="stripLabel">Atendemos as maiores operações do agronegócio do Cerrado</p>
-        <div className="clientList">
+      {/* ── LOGOS ─────────────────────────────────────────────────────────── */}
+      <div className="logoStrip">
+        <p className="logoLabel">Referência em pavimentação para as maiores operações do agronegócio</p>
+        <div className="logoRow">
           {clients.map((c) => (
-            <span key={c}>{c}</span>
+            <figure key={c.name} className="logoFig">
+              <img src={c.logo} alt={c.name} className="logoImg" />
+            </figure>
+          ))}
+        </div>
+      </div>
+
+      {/* ── BENEFÍCIOS ────────────────────────────────────────────────────── */}
+      <section className="benefits">
+        <header className="secHead center">
+          <span className="pill">Diferencial técnico</span>
+          <h2>Infraestrutura de pavimento não é improviso.</h2>
+        </header>
+        <div className="benefitsGrid">
+          {[
+            { n: "01", t: "Dimensionado para a carga real",       d: "Espessura e especificação definidas conforme tráfego, tipo de carga e intensidade de uso — não uma estimativa genérica aplicada a qualquer situação." },
+            { n: "02", t: "Execução sem paralisia da operação",    d: "Cronograma coordenado com sua equipe. Mobilização de usina, transporte e maquinário planejados para minimizar impacto na rotina operacional." },
+            { n: "03", t: "Sem fragmentação de fornecedores",      d: "Base, subbase e revestimento CBUQ no mesmo contrato. Uma equipe, uma responsabilidade técnica, um único interlocutor para toda a obra." },
+          ].map(({ n, t, d }) => (
+            <article key={n} className="benefitCard">
+              <span className="bNum">{n}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* ── INTRO / BENEFÍCIOS ────────────────────────────────────────────── */}
-      <section className="intro">
-        <div className="introText">
-          <span className="kicker">O que muda</span>
-          <h2>Não é só asfalto. É área pronta para operar.</h2>
-        </div>
-        <div className="introGrid">
-          <article>
-            <strong>Fim da poeira e da lama</strong>
-            <p>Controle total em período seco e chuvoso. Área limpa o ano inteiro.</p>
-          </article>
-          <article>
-            <strong>Zero manutenção provisória</strong>
-            <p>Acaba a dependência de cascalho, patrola e correções que nunca terminam.</p>
-          </article>
-          <article>
-            <strong>Operação sem interrupção</strong>
-            <p>Caminhões, veículos e equipes circulam sem travar a produção.</p>
-          </article>
-        </div>
-      </section>
-
-      {/* ── PAIN ──────────────────────────────────────────────────────────── */}
-      <section className="split pain">
-        <div className="splitImage" />
-        <div className="splitCopy">
-          <span className="kicker">O custo escondido</span>
-          <h2>Chão ruim custa mais do que parece</h2>
+      {/* ── DOR ───────────────────────────────────────────────────────────── */}
+      <section className="pain">
+        <div className="painImg" />
+        <div className="painCopy">
+          <span className="pill">Custo real</span>
+          <h2>Infraestrutura precária tem custo operacional alto.</h2>
           <p>
-            Buracos, poeira e lama atrapalham a operação, desgastam veículos,
-            afastam fornecedores e passam uma imagem ruim para quem visita a empresa.
+            Pavimento inadequado não é só estética. Afeta diretamente a operação,
+            a segurança do trabalho, a vida útil da frota e a imagem da empresa.
           </p>
-          <div className="tagList">
-            <span>Buracos recorrentes</span>
-            <span>Poeira no período seco</span>
-            <span>Lama no período de chuva</span>
-            <span>Caminhões com dificuldade</span>
-            <span>Aparência improvisada</span>
-            <span>Manutenção frequente</span>
-          </div>
+          <ul className="painList">
+            {["Desgaste prematuro de frota e equipamentos",
+              "Risco à segurança do trabalho",
+              "Manutenção corretiva recorrente e imprevisível",
+              "Perda de eficiência logística",
+              "Infraestrutura incompatível com a escala de carga",
+              "Imagem inadequada para auditorias e clientes"].map(t => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
+      {/* ── SOLUÇÃO ───────────────────────────────────────────────────────── */}
       <section className="solution">
-        <div className="sectionTitle left">
-          <span className="kicker">Solução GP Asfalto</span>
-          <h2>Massa, equipe e equipamentos no mesmo atendimento</h2>
+        <header className="secHead left">
+          <span className="pill light">Capacidade técnica</span>
+          <h2>Produção própria. Equipe técnica. Execução completa.</h2>
           <p>
-            Nada de contratar etapas separadas. A GP Asfalto avalia a área, estima o
-            volume, orienta a preparação da base e executa a aplicação.
+            Com três usinas próprias em operação, a GP Asfalto controla toda a
+            cadeia — produção de CBUQ, logística, preparação de base e execução —
+            sem depender de terceiros nas etapas críticas.
           </p>
-        </div>
+        </header>
         <div className="solutionGrid">
-          {[
-            "Fornecimento do CBUQ da usina própria",
-            "Transporte até a obra",
-            "Equipe de aplicação especializada",
-            "Equipamentos de espalhamento e compactação",
-            "Orientação sobre base e espessura",
-            "Execução em áreas comerciais, industriais e rurais",
-          ].map((item) => (
-            <div key={item}>
-              <span />
-              {item}
+          {["Produção de CBUQ em usinas próprias",
+            "Transporte com temperatura controlada",
+            "Equipe técnica de campo especializada",
+            "Maquinário de espalhamento e compactação",
+            "Execução de base, subbase e regularização",
+            "Dimensionamento por tipo de tráfego e carga",
+          ].map(item => (
+            <div key={item} className="solItem">
+              <span className="dot" />{item}
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── PROCESS ───────────────────────────────────────────────────────── */}
+      {/* ── PROCESSO ──────────────────────────────────────────────────────── */}
       <section className="process">
-        <div className="sectionTitle">
-          <span className="kicker">Como funciona</span>
-          <h2>Do primeiro contato à aplicação</h2>
-        </div>
-        <div className="timeline">
+        <header className="secHead center">
+          <span className="pill">Fluxo de atendimento</span>
+          <h2>Do primeiro contato à entrega da obra.</h2>
+        </header>
+        <div className="steps">
           {[
-            ["01", "Você envia cidade, fotos e metragem aproximada"],
-            ["02", "A equipe avalia tipo de área, base e logística"],
-            ["03", "Estimativa de viabilidade, volume e prazo"],
-            ["04", "Aplicação executada com equipe e equipamentos"],
-          ].map(([number, text]) => (
-            <article key={number}>
-              <strong>{number}</strong>
+            ["01", "Avaliação técnica",   "Análise da área, base existente, tipo de tráfego e logística de acesso."],
+            ["02", "Dimensionamento",     "Especificação de espessura, estrutura e volume de CBUQ conforme projeto."],
+            ["03", "Mobilização",         "Coordenação de usina, transporte, equipe e maquinário para a obra."],
+            ["04", "Execução e entrega",  "Aplicação, compactação e controle de qualidade até a entrega final."],
+          ].map(([n, t, d]) => (
+            <article key={n} className="step">
+              <span className="stepN">{n}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ── APLICAÇÕES ────────────────────────────────────────────────────── */}
+      <section className="areas">
+        <header className="secHead center">
+          <span className="pill">Escopo de aplicação</span>
+          <h2>Para cada tipo de área, o projeto correto.</h2>
+        </header>
+        <div className="areasGrid">
+          {applications.map(({ title, text }) => (
+            <article key={title} className="areaCard">
+              <div className="areaBar" />
+              <h3>{title}</h3>
               <p>{text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      {/* ── AREAS ─────────────────────────────────────────────────────────── */}
-      <section className="areas">
-        <div className="sectionTitle">
-          <span className="kicker">Onde aplicar</span>
-          <h2>CBUQ para quem precisa de pavimento de verdade</h2>
-        </div>
-        <div className="areasGrid">
-          {applications.map((item) => (
-            <article key={item.title}>
-              <span />
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* ── PROOF ─────────────────────────────────────────────────────────── */}
+      {/* ── PROVA ─────────────────────────────────────────────────────────── */}
       <section className="proof">
-        <div className="mosaic">
-          <div className="photo photoA" />
-          <div className="photo photoB" />
-          <div className="photo photoC" />
+        <div className="proofPhotos">
+          <div className="ph phA" />
+          <div className="ph phB" />
+          <div className="ph phC" />
         </div>
-        <div className="proofText">
-          <span className="kicker">40+ anos de campo</span>
-          <h2>Execução que exige mais do que promessa</h2>
+        <div className="proofCopy">
+          <span className="pill">Capacidade comprovada</span>
+          <h2>40 anos de engenharia e campo.</h2>
           <p>
-            Aplicação de CBUQ coordena massa, transporte, temperatura, equipe e
-            compactação ao mesmo tempo. Por isso a GP Asfalto entrega tudo junto —
-            usina, logística e campo.
+            Aplicação de CBUQ exige coordenação precisa de produção, transporte,
+            temperatura, compactação e base. A GP Asfalto opera essa cadeia há décadas
+            para clientes que não aceitam imprecisão.
           </p>
-          <div className="proofStats">
-            <div>
-              <strong>3 usinas próprias</strong>
-              <span>Produção contínua de CBUQ no Cerrado</span>
-            </div>
-            <div>
-              <strong>40+ anos de operação</strong>
-              <span>Aplicação de CBUQ em Goiás e região</span>
-            </div>
-            <div>
-              <strong>Rio Verde e região</strong>
-              <span>Obras conforme agenda e logística operacional</span>
-            </div>
+          <div className="kpis">
+            {[
+              ["3 usinas próprias",   "Produção contínua de CBUQ em Goiás"],
+              ["40+ anos",            "De engenharia e pavimentação em operação"],
+              ["Rio Verde e Goiás",   "Obras conforme agenda e logística operacional"],
+            ].map(([s, d]) => (
+              <div key={s} className="kpi">
+                <strong>{s}</strong><span>{d}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="comparison">
-        <div className="sectionTitle">
-          <span className="kicker">Comparativo</span>
-          <h2>Cascalho resolve hoje. CBUQ resolve a operação.</h2>
-        </div>
+      {/* ── COMPARATIVO ───────────────────────────────────────────────────── */}
+      <section className="compare">
+        <header className="secHead center">
+          <span className="pill">Comparativo</span>
+          <h2>Manutenção corretiva versus infraestrutura definitiva.</h2>
+        </header>
         <div className="compareGrid">
-          <article>
-            <h3>Solução provisória</h3>
-            <p><span className="no">✗</span> Buracos voltam com a chuva</p>
-            <p><span className="no">✗</span> Poeira e lama constantes</p>
-            <p><span className="no">✗</span> Manutenção recorrente</p>
-            <p><span className="no">✗</span> Aparência improvisada</p>
-            <p><span className="no">✗</span> Custo acumulado alto</p>
-          </article>
-          <article className="featured">
-            <h3>CBUQ aplicado</h3>
-            <p><span className="yes">✓</span> Superfície estável e durável</p>
-            <p><span className="yes">✓</span> Área limpa o ano todo</p>
-            <p><span className="yes">✓</span> Sem manutenção provisória</p>
-            <p><span className="yes">✓</span> Imagem profissional</p>
-            <p><span className="yes">✓</span> Investimento com retorno</p>
-          </article>
+          <div className="compareCol">
+            <span className="colHead dimmed">Solução provisória</span>
+            {["Custo recorrente sem solução definitiva",
+              "Falha estrutural com chuva e carga pesada",
+              "Risco operacional e de segurança do trabalho",
+              "Manutenção frequente e imprevisível",
+              "Infraestrutura incompatível com a operação",
+            ].map(t => (
+              <div key={t} className="cRow"><span className="ico no">✕</span>{t}</div>
+            ))}
+          </div>
+          <div className="compareCol dark">
+            <span className="colHead white">CBUQ aplicado — GP Asfalto</span>
+            {["Investimento único com vida útil longa",
+              "Pavimento estruturado para a carga real",
+              "Superfície segura e previsível",
+              "Manutenção apenas preventiva",
+              "Infraestrutura adequada à escala da operação",
+            ].map(t => (
+              <div key={t} className="cRow"><span className="ico yes">✓</span>{t}</div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── QUOTE CTA (substituiu a seção de fatores de preço) ─────────────── */}
-      <section className="quoteCta">
-        <div className="quoteInner">
-          <span className="kicker">Orçamento</span>
-          <h2>5 minutos para uma estimativa real</h2>
+      {/* ── CTA INTERMEDIÁRIO ─────────────────────────────────────────────── */}
+      <section className="midCta">
+        <div className="midInner">
+          <span className="pill">Avaliação técnica</span>
+          <h2>5 minutos para uma estimativa de viabilidade.</h2>
           <p>
-            Conta pra nós: cidade, tipo de área e metragem aproximada.
-            A equipe analisa e retorna com uma avaliação de viabilidade — sem enrolação.
+            Informe cidade, tipo de área e metragem aproximada. A equipe técnica
+            analisa e retorna com viabilidade, dimensionamento preliminar e logística.
           </p>
-          <a className="primaryButton" href={whatsappBase} target="_blank" rel="noreferrer">
-            Pedir avaliação pelo WhatsApp
+          <a className="ctaBtn" href={waBase} target="_blank" rel="noreferrer">
+            Solicitar avaliação pelo WhatsApp
           </a>
         </div>
       </section>
 
-      {/* ── FORM ──────────────────────────────────────────────────────────── */}
+      {/* ── FORMULÁRIO ────────────────────────────────────────────────────── */}
       <section id="formulario" className="formSection">
-        <div className="formCopy">
-          <span className="kicker">Avaliação inicial</span>
-          <h2>Manda os dados da área</h2>
+        <div className="formInfo">
+          <span className="pill light">Primeiro passo</span>
+          <h2>Solicite uma avaliação técnica.</h2>
           <p>
-            Preenche com cidade, tipo e metragem aproximada.
-            A equipe avalia e retorna pelo WhatsApp com uma estimativa rápida.
+            Preencha com os dados da área. Nossa equipe analisa viabilidade,
+            dimensionamento preliminar e logística para a sua operação.
           </p>
-          <ul className="formBullets">
-            <li>Sem compromisso</li>
-            <li>Retorno direto pelo WhatsApp</li>
-            <li>Avaliação gratuita</li>
+          <ul className="checks">
+            {["Sem compromisso", "Retorno técnico via WhatsApp", "Avaliação preliminar gratuita"].map(t => (
+              <li key={t}>{t}</li>
+            ))}
           </ul>
         </div>
 
-        {/* 4 campos apenas — menos fricção, mais conversão */}
         <form className="leadForm" onSubmit={handleSubmit}>
           <label>
             Nome
-            <input
-              value={form.nome}
-              onChange={(e) => updateField("nome", e.target.value)}
-              placeholder="Seu nome"
-              required
-            />
+            <input value={form.nome} onChange={e => update("nome", e.target.value)}
+              placeholder="Seu nome" required />
           </label>
-
           <label>
             WhatsApp
-            <input
-              value={form.telefone}
-              onChange={(e) => updateField("telefone", e.target.value)}
-              placeholder="(64) 99999-9999"
-              inputMode="tel"
-              required
-            />
+            <input value={form.telefone} onChange={e => update("telefone", e.target.value)}
+              placeholder="(64) 99999-9999" inputMode="tel" required />
           </label>
-
           <label>
             Cidade / UF
-            <input
-              value={form.cidade}
-              onChange={(e) => updateField("cidade", e.target.value)}
-              placeholder="Ex.: Rio Verde / GO"
-              required
-            />
+            <input value={form.cidade} onChange={e => update("cidade", e.target.value)}
+              placeholder="Ex.: Rio Verde / GO" required />
           </label>
-
           <label>
             Tipo de área
-            <select
-              value={form.tipoArea}
-              onChange={(e) => updateField("tipoArea", e.target.value)}
-              required
-            >
+            <select value={form.tipoArea} onChange={e => update("tipoArea", e.target.value)} required>
               <option value="">Selecione</option>
-              {areaTypes.map((area) => (
-                <option key={area} value={area}>
-                  {area}
-                </option>
-              ))}
+              {areaTypes.map(a => <option key={a} value={a}>{a}</option>)}
             </select>
           </label>
-
-          <button type="submit" className="full">
-            Quero avaliação da minha área →
-          </button>
-
-          <small className="full">
-            Ao clicar, abriremos o WhatsApp com sua mensagem pronta para envio.
-          </small>
+          <button type="submit" className="span2">Solicitar avaliação técnica →</button>
+          <small className="span2">Ao clicar, abriremos o WhatsApp com sua solicitação pronta para envio.</small>
         </form>
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="faq">
-        <div className="sectionTitle">
-          <span className="kicker">Dúvidas comuns</span>
-          <h2>Antes de pedir avaliação</h2>
-        </div>
+        <header className="secHead center">
+          <span className="pill">Dúvidas técnicas</span>
+          <h2>Perguntas frequentes.</h2>
+        </header>
         <div className="faqList">
-          {faq.map((item, index) => (
-            <button
-              key={item.q}
-              className={openFaq === index ? "active" : ""}
-              onClick={() => setOpenFaq(openFaq === index ? null : index)}
-              type="button"
-            >
-              <div>
-                <strong>{item.q}</strong>
-                <span>{openFaq === index ? "−" : "+"}</span>
-              </div>
-              {openFaq === index && <p>{item.a}</p>}
-            </button>
+          {faq.map(({ q, a }, i) => (
+            <div key={q} className={`faqItem${openFaq === i ? " open" : ""}`}>
+              <button type="button" className="faqQ"
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                <span>{q}</span>
+                <span className="faqIcon">{openFaq === i ? "−" : "+"}</span>
+              </button>
+              {openFaq === i && <p className="faqA">{a}</p>}
+            </div>
           ))}
         </div>
       </section>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <section className="finalCta">
-        <img src="/images/logo-white.png" alt="GP Asfalto" />
-        <h2>Transforme a área hoje. CBUQ da usina à compactação.</h2>
-        <p>Manda cidade, metragem e fotos. A equipe avalia e retorna rápido.</p>
-        <a href={whatsappBase} target="_blank" rel="noreferrer" className="primaryButton">
-          Pedir avaliação pelo WhatsApp
+        <img src="/images/logo-white.png" alt="GP Asfalto" className="finalLogo" />
+        <h2>Da usina à compactação. Para quem não aceita improviso.</h2>
+        <p>Informe a área, metragem e cidade. A equipe técnica analisa e retorna com viabilidade.</p>
+        <a href={waBase} target="_blank" rel="noreferrer" className="ctaBtn">
+          Solicitar avaliação pelo WhatsApp
         </a>
       </section>
 
       {/* ── MOBILE STICKY ─────────────────────────────────────────────────── */}
-      <a className="mobileSticky" href={whatsappBase} target="_blank" rel="noreferrer">
-        Avaliar minha área →
+      <a className="sticky" href={waBase} target="_blank" rel="noreferrer">
+        Solicitar avaliação técnica
       </a>
 
-      {/* ── STYLES ────────────────────────────────────────────────────────── */}
+      {/* ══════════════════════════════════════════════════════════════════
+          ESTILOS
+      ══════════════════════════════════════════════════════════════════ */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
-        /* ── Tokens ─────────────────────────────────────── */
         :root {
-          --navy:   #0C1D38;
-          --navy2:  #071228;
-          --green:  #2C8836;
-          --green2: #1e6326;
-          --cream:  #F0EBE2;
-          --bg:     #f4f6f5;
-          --paper:  #ffffff;
-          --text:   #151719;
-          --muted:  #5a6472;
-          --line:   rgba(12, 29, 56, 0.11);
+          --navy:  #0C1D38;
+          --navy2: #071228;
+          --green: #2C8836;
+          --green2:#1e6326;
+          --cream: #F0EBE2;
+          --bg:    #F5F7F6;
+          --paper: #FFFFFF;
+          --text:  #1A1D1F;
+          --muted: #5E6778;
+          --line:  rgba(12,29,56,0.09);
         }
 
-        *, *::before, *::after { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body { margin: 0; }
 
         .lp3 {
-          min-height: 100vh;
-          background: var(--bg);
-          color: var(--text);
           font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+          color: var(--text);
+          background: var(--bg);
           overflow-x: hidden;
         }
 
-        /* ── HERO ───────────────────────────────────────── */
+        h1, h2, h3 {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: -0.01em;
+          line-height: 0.95;
+        }
+
+        /* ── HERO ────────────────────────────────────── */
         .hero {
           position: relative;
           min-height: 100vh;
           color: white;
           background:
-            linear-gradient(90deg,
-              rgba(7,18,40,0.95) 0%,
-              rgba(7,18,40,0.80) 38%,
-              rgba(7,18,40,0.30) 72%),
+            linear-gradient(100deg,
+              rgba(7,18,40,0.97) 0%,
+              rgba(7,18,40,0.84) 42%,
+              rgba(7,18,40,0.26) 75%),
             url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
-          padding: 26px clamp(20px, 5vw, 72px) 70px;
+          padding: 28px clamp(24px,5vw,72px) 80px;
+          display: flex;
+          flex-direction: column;
         }
 
-        .heroShade {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          background: linear-gradient(180deg, transparent 55%, rgba(7,18,40,0.60));
+        .heroOverlay {
+          position: absolute; inset: 0; pointer-events: none;
+          background: linear-gradient(180deg, transparent 50%, rgba(7,18,40,0.60));
         }
-
-        .topbar,
-        .heroInner { position: relative; z-index: 1; }
 
         .topbar {
-          max-width: 1220px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 24px;
+          position: relative; z-index: 2;
+          max-width: 1240px; width: 100%; margin: 0 auto;
+          display: flex; align-items: center; justify-content: space-between; gap: 20px;
         }
 
-        .brand { display: inline-flex; align-items: center; cursor: default; }
-        .brand img { width: 178px; height: auto; display: block; }
+        .brand { display: inline-flex; align-items: center; }
+        .brand img { width: 172px; height: auto; display: block; }
 
         .topCta {
-          color: white;
-          background: var(--green);
-          text-decoration: none;
-          padding: 12px 22px;
-          border-radius: 999px;
-          font-weight: 700;
-          font-size: 15px;
-          transition: background 0.2s;
-          box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+          color: white; background: var(--green);
+          text-decoration: none; padding: 11px 22px; border-radius: 999px;
+          font-weight: 600; font-size: 14px; letter-spacing: 0.01em;
+          transition: background 0.2s; white-space: nowrap;
         }
         .topCta:hover { background: var(--green2); }
 
         .heroInner {
-          max-width: 1220px;
-          margin: 110px auto 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) 320px;
-          gap: 44px;
-          align-items: end;
+          position: relative; z-index: 2;
+          max-width: 1240px; width: 100%; margin: auto; padding-top: 80px;
+          display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: end;
         }
 
-        .heroCopy { max-width: 820px; }
-
-        .eyebrow,
-        .kicker {
-          display: inline-flex;
-          align-items: center;
-          width: fit-content;
-          color: white;
-          background: var(--green);
+        .tag {
+          display: inline-block;
+          color: rgba(255,255,255,0.68);
+          background: rgba(255,255,255,0.09);
+          border: 1px solid rgba(255,255,255,0.16);
           border-radius: 999px;
-          padding: 7px 14px;
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.10em;
-          white-space: nowrap;
+          padding: 6px 14px;
+          font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+          margin-bottom: 20px;
         }
 
-        .hero h1 {
-          font-family: 'Barlow Condensed', sans-serif;
-          margin: 22px 0 0;
-          font-size: clamp(52px, 8vw, 100px);
-          line-height: 0.91;
-          letter-spacing: -0.02em;
-          font-weight: 900;
-          text-transform: uppercase;
-          max-width: 920px;
+        .heroCopy h1 {
+          font-size: clamp(54px,7.5vw,104px);
+          color: white; max-width: 900px; margin-bottom: 24px;
         }
 
         .heroCopy > p {
-          max-width: 600px;
-          color: rgba(255,255,255,0.82);
-          font-size: clamp(17px, 1.9vw, 21px);
-          line-height: 1.52;
-          margin: 26px 0 0;
+          font-size: clamp(16px,1.6vw,19px);
+          color: rgba(255,255,255,0.76); line-height: 1.64;
+          max-width: 570px; margin-bottom: 32px;
         }
 
-        .heroActions { margin-top: 34px; }
+        .heroCta {
+          display: inline-flex; align-items: center; min-height: 56px;
+          padding: 0 32px; background: var(--green); color: white;
+          font-weight: 700; font-size: 16px; border-radius: 999px;
+          text-decoration: none; box-shadow: 0 16px 40px rgba(44,136,54,0.32);
+          transition: transform 0.18s, background 0.18s;
+        }
+        .heroCta:hover { background: var(--green2); transform: translateY(-2px); }
 
-        /* ── CTAs ─────────────────────────────────────── */
-        .primaryButton,
-        .leadForm button,
-        .finalCta a {
-          min-height: 56px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          text-decoration: none;
-          font-family: 'DM Sans', sans-serif;
-          font-weight: 700;
-          font-size: 16px;
-          transition: transform 0.18s ease, box-shadow 0.18s ease;
-          cursor: pointer;
-          color: white;
-          background: var(--green);
-          border: 0;
-          padding: 0 30px;
-          box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+        .heroSub {
+          margin-top: 14px !important; font-size: 13px !important;
+          color: rgba(255,255,255,0.44) !important; line-height: 1.4 !important;
         }
 
-        .primaryButton:hover,
-        .leadForm button:hover,
-        .finalCta a:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 22px 46px rgba(0,0,0,0.28);
-          background: var(--green2);
-        }
-
-        .microcopy {
-          color: rgba(255,255,255,0.56) !important;
-          font-size: 13px !important;
-          margin-top: 14px !important;
-        }
-
-        /* ── HERO CARD ─────────────────────────────────── */
         .heroCard {
-          padding: 26px;
-          border-radius: 24px;
-          background: rgba(255,255,255,0.09);
-          border: 1px solid rgba(255,255,255,0.20);
-          backdrop-filter: blur(14px);
-          box-shadow: 0 28px 64px rgba(0,0,0,0.22);
+          padding: 28px; border-radius: 20px;
+          background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+          backdrop-filter: blur(16px); box-shadow: 0 32px 72px rgba(0,0,0,0.22);
         }
 
-        .heroCard > span {
-          display: block;
-          color: rgba(255,255,255,0.52);
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          font-weight: 700;
-          margin-bottom: 14px;
+        .cardLabel {
+          font-size: 11px; font-weight: 700; text-transform: uppercase;
+          letter-spacing: 0.12em; color: rgba(255,255,255,0.44); margin-bottom: 14px;
         }
 
-        .heroCard > strong {
-          display: block;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 30px;
-          font-weight: 900;
-          line-height: 1.0;
-          letter-spacing: -0.01em;
-          text-transform: uppercase;
+        .cardTitle {
+          font-size: 28px; color: white; margin-bottom: 20px; line-height: 1.02;
         }
 
-        .heroCardStats {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 9px;
-          margin-top: 18px;
+        .cardStats { display: grid; gap: 9px; }
+
+        .cardStats > div {
+          padding: 14px 16px; border-radius: 12px;
+          background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.10);
         }
 
-        .heroCardStats > div {
-          padding: 14px;
-          border-radius: 14px;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.12);
+        .cardStats strong {
+          display: block; font-family: 'Barlow Condensed', sans-serif;
+          font-size: 19px; font-weight: 900; color: white;
+          text-transform: uppercase; margin-bottom: 3px;
         }
 
-        .heroCardStats b {
-          display: block;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 20px;
-          font-weight: 900;
-          color: white;
-        }
+        .cardStats span { font-size: 12px; color: rgba(255,255,255,0.52); line-height: 1.3; }
 
-        .heroCardStats small {
-          display: block;
-          font-size: 12px;
-          color: rgba(255,255,255,0.58);
-          margin-top: 3px;
-          line-height: 1.3;
-        }
-
-        /* ── CLIENT STRIP ──────────────────────────────── */
-        .clientStrip {
+        /* ── LOGOS ───────────────────────────────────── */
+        .logoStrip {
           background: var(--navy);
-          padding: 28px clamp(20px, 5vw, 72px);
+          padding: 32px clamp(24px,5vw,72px);
           text-align: center;
         }
 
-        .stripLabel {
-          color: rgba(255,255,255,0.46);
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.10em;
-          margin: 0 0 16px;
+        .logoLabel {
+          font-size: 11px; font-weight: 600; text-transform: uppercase;
+          letter-spacing: 0.10em; color: rgba(255,255,255,0.36); margin-bottom: 22px;
         }
 
-        .clientList {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: center;
-          gap: 6px 14px;
+        .logoRow {
+          display: flex; flex-wrap: wrap;
+          align-items: center; justify-content: center;
+          gap: 8px 36px; max-width: 1100px; margin: 0 auto;
         }
 
-        .clientList span {
-          color: rgba(255,255,255,0.72);
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 18px;
-          font-weight: 700;
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-          padding: 4px 12px;
-          border-radius: 6px;
-          border: 1px solid rgba(255,255,255,0.12);
+        .logoFig { display: flex; align-items: center; justify-content: center; height: 36px; }
+
+        .logoImg {
+          height: 36px; width: auto; max-width: 110px; object-fit: contain;
+          filter: brightness(0) invert(1); opacity: 0.58;
+          transition: opacity 0.2s;
+        }
+        .logoImg:hover { opacity: 0.90; }
+
+        /* ── SEÇÃO BASE ──────────────────────────────── */
+        section { padding: 88px clamp(24px,5vw,72px); }
+
+        .pill {
+          display: inline-flex; align-items: center;
+          background: var(--green); color: white;
+          border-radius: 999px; padding: 6px 14px;
+          font-size: 11px; font-weight: 700; text-transform: uppercase;
+          letter-spacing: 0.09em; margin-bottom: 16px; white-space: nowrap;
         }
 
-        /* ── SECTION BASE ──────────────────────────────── */
-        section { padding: 84px clamp(20px, 5vw, 72px); }
-        .clientStrip { padding: 28px clamp(20px, 5vw, 72px); }
-
-        .sectionTitle {
-          max-width: 820px;
-          margin: 0 auto 38px;
-          text-align: center;
+        .pill.light {
+          background: rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.20);
+          color: rgba(255,255,255,0.78);
         }
 
-        .sectionTitle.left { margin-left: 0; text-align: left; }
-
-        h2 {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          text-transform: uppercase;
-          letter-spacing: -0.01em;
+        .secHead {
+          display: flex; flex-direction: column;
+          margin-bottom: 48px;
         }
 
-        .sectionTitle h2,
-        .introText h2,
-        .splitCopy h2,
-        .proofText h2,
-        .formCopy h2,
-        .finalCta h2,
-        .quoteCta h2 {
-          margin: 12px 0 0;
-          color: var(--navy);
-          font-size: clamp(34px, 5vw, 64px);
-          line-height: 0.95;
+        .secHead.center { max-width: 820px; margin-left: auto; margin-right: auto; text-align: center; align-items: center; }
+        .secHead.left   { text-align: left; align-items: flex-start; }
+
+        .secHead h2 { color: var(--navy); font-size: clamp(36px,5vw,66px); }
+        .secHead.left h2 { color: white; }
+
+        .secHead p {
+          color: var(--muted); font-size: 17px; line-height: 1.68;
+          margin-top: 16px; max-width: 640px;
+        }
+        .secHead.left p { color: rgba(255,255,255,0.62); }
+
+        /* ── BENEFÍCIOS ──────────────────────────────── */
+        .benefits { background: var(--paper); }
+
+        .benefitsGrid {
+          max-width: 1200px; margin: 0 auto;
+          display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
         }
 
-        .sectionTitle p,
-        .splitCopy p,
-        .proofText p,
-        .formCopy p,
-        .finalCta p,
-        .quoteCta p {
-          color: var(--muted);
-          font-size: 18px;
-          line-height: 1.62;
-          margin-top: 18px;
+        .benefitCard {
+          padding: 32px; border-radius: 18px;
+          background: var(--bg); border: 1px solid var(--line);
+          transition: box-shadow 0.22s, transform 0.22s;
+        }
+        .benefitCard:hover { box-shadow: 0 10px 32px rgba(12,29,56,0.10); transform: translateY(-2px); }
+
+        .bNum {
+          display: block; font-family: 'Barlow Condensed', sans-serif;
+          font-size: 46px; font-weight: 900; color: var(--green);
+          letter-spacing: -0.04em; line-height: 1; margin-bottom: 18px;
         }
 
-        /* ── INTRO ─────────────────────────────────────── */
-        .intro {
-          background: var(--paper);
-          display: grid;
-          grid-template-columns: 0.82fr 1.18fr;
-          gap: 40px;
-          align-items: start;
-        }
+        .benefitCard h3 { color: var(--navy); font-size: 22px; line-height: 1.15; margin-bottom: 12px; }
+        .benefitCard p  { color: var(--muted); font-size: 15px; line-height: 1.68; }
 
-        .introGrid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-        }
-
-        .introGrid article {
-          min-height: 200px;
-          padding: 22px;
-          border-radius: 20px;
+        /* ── DOR ─────────────────────────────────────── */
+        .pain {
           background: var(--bg);
-          border: 1px solid var(--line);
+          display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
         }
 
-        .introGrid strong {
-          display: block;
-          color: var(--navy);
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 24px;
-          font-weight: 800;
-          line-height: 1.1;
-          text-transform: uppercase;
-        }
-
-        .introGrid p {
-          color: var(--muted);
-          line-height: 1.55;
-          margin: 14px 0 0;
-          font-size: 15px;
-        }
-
-        /* ── SPLIT / PAIN ──────────────────────────────── */
-        .split {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 46px;
-          align-items: center;
-          background: var(--bg);
-        }
-
-        .splitImage {
-          min-height: 580px;
-          border-radius: 28px;
+        .painImg {
+          min-height: 560px; border-radius: 24px;
           background:
-            linear-gradient(180deg, rgba(12,29,56,0.02), rgba(12,29,56,0.14)),
-            url("/images/lp3/patio-logistico.jpg") center / cover no-repeat;
-          box-shadow: 0 28px 72px rgba(12,29,56,0.11);
+            linear-gradient(180deg,rgba(12,29,56,0.02),rgba(12,29,56,0.12)),
+            url("/images/lp3/patio-logistico.jpg") center/cover no-repeat;
+          box-shadow: 0 24px 72px rgba(12,29,56,0.12);
         }
 
-        .tagList {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 9px;
-          margin-top: 26px;
+        .painCopy h2 { color: var(--navy); font-size: clamp(36px,4.5vw,60px); margin: 16px 0 18px; }
+        .painCopy > p { color: var(--muted); font-size: 17px; line-height: 1.65; margin-bottom: 26px; }
+
+        .painList {
+          list-style: none;
+          display: grid; grid-template-columns: 1fr 1fr; gap: 9px;
         }
 
-        .tagList span {
-          padding: 12px 14px;
-          border-radius: 12px;
-          background: var(--paper);
-          border: 1px solid var(--line);
-          color: var(--navy);
-          font-size: 13px;
-          font-weight: 700;
+        .painList li {
+          padding: 12px 16px; border-radius: 10px;
+          background: var(--paper); border: 1px solid var(--line);
+          color: var(--navy); font-size: 13px; font-weight: 600; line-height: 1.4;
         }
 
-        /* ── SOLUTION ──────────────────────────────────── */
+        /* ── SOLUÇÃO ─────────────────────────────────── */
         .solution {
           background:
-            linear-gradient(180deg, rgba(7,18,40,0.93), rgba(7,18,40,0.97)),
-            url("/images/lp3/textura-asfalto.jpg") center / cover no-repeat;
+            linear-gradient(155deg, rgba(7,18,40,0.96) 0%, rgba(12,29,56,0.98) 100%),
+            url("/images/lp3/textura-asfalto.jpg") center/cover no-repeat;
           color: white;
         }
 
-        .solution .sectionTitle h2 { color: white; }
-        .solution .sectionTitle p  { color: rgba(255,255,255,0.66); }
-
         .solutionGrid {
-          max-width: 1180px;
-          margin: 32px auto 0;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
+          max-width: 1200px; margin: 0 auto;
+          display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
         }
 
-        .solutionGrid div {
-          min-height: 80px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 18px;
-          border-radius: 16px;
-          background: rgba(255,255,255,0.07);
-          border: 1px solid rgba(255,255,255,0.11);
-          color: rgba(255,255,255,0.86);
-          font-weight: 700;
-          font-size: 15px;
+        .solItem {
+          display: flex; align-items: center; gap: 14px;
+          padding: 20px 22px; border-radius: 14px;
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
+          color: rgba(255,255,255,0.86); font-size: 15px; font-weight: 600; line-height: 1.35;
+          transition: background 0.2s;
         }
+        .solItem:hover { background: rgba(255,255,255,0.09); }
 
-        .solutionGrid span {
-          width: 9px;
-          height: 9px;
-          flex: 0 0 auto;
-          border-radius: 50%;
-          background: var(--green);
-        }
+        .dot { flex: 0 0 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 
-        /* ── PROCESS ───────────────────────────────────── */
+        /* ── PROCESSO ────────────────────────────────── */
         .process { background: var(--paper); }
 
-        .timeline {
-          max-width: 1180px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 12px;
+        .steps {
+          max-width: 1200px; margin: 0 auto;
+          display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;
         }
 
-        .timeline article {
-          min-height: 188px;
-          padding: 22px;
-          border-radius: 20px;
-          background: var(--bg);
-          border: 1px solid var(--line);
+        .step {
+          padding: 28px; border-radius: 18px;
+          background: var(--bg); border: 1px solid var(--line);
+          display: flex; flex-direction: column; gap: 12px;
         }
 
-        .timeline strong {
-          color: var(--green);
+        .stepN {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 46px;
-          font-weight: 900;
-          letter-spacing: -0.04em;
+          font-size: 52px; font-weight: 900; color: var(--green);
+          letter-spacing: -0.05em; line-height: 1;
         }
 
-        .timeline p {
-          color: var(--navy);
-          font-size: 16px;
-          line-height: 1.35;
-          font-weight: 700;
-          margin: 34px 0 0;
-        }
+        .step h3 { color: var(--navy); font-size: 20px; line-height: 1.15; }
+        .step p  { color: var(--muted); font-size: 14px; line-height: 1.62; margin-top: auto; }
 
-        /* ── AREAS ─────────────────────────────────────── */
+        /* ── APLICAÇÕES ──────────────────────────────── */
         .areas { background: var(--bg); }
 
         .areasGrid {
-          max-width: 1180px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
+          max-width: 1200px; margin: 0 auto;
+          display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
         }
 
-        .areasGrid article {
-          min-height: 210px;
-          padding: 24px;
-          border-radius: 20px;
-          background: var(--paper);
-          border: 1px solid var(--line);
-          box-shadow: 0 10px 30px rgba(12,29,56,0.05);
+        .areaCard {
+          padding: 28px; border-radius: 18px;
+          background: var(--paper); border: 1px solid var(--line);
+          box-shadow: 0 2px 8px rgba(12,29,56,0.05);
+          transition: box-shadow 0.22s, transform 0.22s;
         }
+        .areaCard:hover { box-shadow: 0 10px 32px rgba(12,29,56,0.10); transform: translateY(-2px); }
 
-        .areasGrid article > span {
-          display: block;
-          width: 40px;
-          height: 4px;
-          border-radius: 99px;
-          background: var(--green);
-          margin-bottom: 36px;
-        }
+        .areaBar { width: 36px; height: 3px; border-radius: 99px; background: var(--green); margin-bottom: 26px; }
+        .areaCard h3 { color: var(--navy); font-size: 21px; line-height: 1.1; margin-bottom: 10px; }
+        .areaCard p  { color: var(--muted); font-size: 14px; line-height: 1.65; }
 
-        .areasGrid h3 {
-          font-family: 'Barlow Condensed', sans-serif;
-          color: var(--navy);
-          font-size: 26px;
-          font-weight: 800;
-          line-height: 1.05;
-          text-transform: uppercase;
-          margin: 0 0 10px;
-        }
-
-        .areasGrid p {
-          color: var(--muted);
-          line-height: 1.55;
-          margin: 0;
-          font-size: 15px;
-        }
-
-        /* ── PROOF ─────────────────────────────────────── */
+        /* ── PROVA ───────────────────────────────────── */
         .proof {
-          display: grid;
-          grid-template-columns: 1.1fr 0.9fr;
-          gap: 46px;
-          align-items: center;
           background: var(--paper);
+          display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 52px; align-items: center;
         }
 
-        .mosaic {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
+        .proofPhotos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .ph {
+          border-radius: 18px; background-size: cover; background-position: center;
+          border: 1px solid var(--line); box-shadow: 0 12px 36px rgba(12,29,56,0.09);
         }
 
-        .photo {
-          border-radius: 22px;
-          background-size: cover;
-          background-position: center;
-          border: 1px solid var(--line);
-          box-shadow: 0 16px 42px rgba(12,29,56,0.09);
+        .phA { min-height: 480px; grid-row: span 2; background-image: url("/images/lp3/hero-cbuq.jpg"); }
+        .phB { min-height: 232px; background-image: url("/images/lp3/patio-logistico.jpg"); }
+        .phC { min-height: 232px; background-image: url("/images/lp3/textura-asfalto.jpg"); }
+
+        .proofCopy h2 { color: var(--navy); font-size: clamp(36px,4.5vw,60px); margin: 16px 0 18px; }
+        .proofCopy > p { color: var(--muted); font-size: 16px; line-height: 1.70; margin-bottom: 28px; }
+
+        .kpis { display: flex; flex-direction: column; gap: 9px; }
+
+        .kpi {
+          padding: 16px 20px; border-radius: 13px;
+          background: var(--bg); border: 1px solid var(--line);
         }
 
-        .photoA {
-          min-height: 500px;
-          grid-row: span 2;
-          background-image: url("/images/lp3/hero-cbuq.jpg");
+        .kpi strong {
+          display: block; font-family: 'Barlow Condensed', sans-serif;
+          font-size: 22px; font-weight: 900; color: var(--navy);
+          text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 3px;
         }
 
-        .photoB {
-          min-height: 244px;
-          background-image: url("/images/lp3/patio-logistico.jpg");
-        }
+        .kpi span { font-size: 13px; color: var(--muted); }
 
-        .photoC {
-          min-height: 244px;
-          background-image: url("/images/lp3/textura-asfalto.jpg");
-        }
-
-        .proofStats {
-          display: grid;
-          gap: 9px;
-          margin-top: 26px;
-        }
-
-        .proofStats div {
-          padding: 16px 18px;
-          border-radius: 14px;
-          background: var(--bg);
-          border: 1px solid var(--line);
-        }
-
-        .proofStats strong {
-          display: block;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 22px;
-          font-weight: 900;
-          color: var(--navy);
-          text-transform: uppercase;
-          letter-spacing: -0.01em;
-        }
-
-        .proofStats span {
-          display: block;
-          color: var(--muted);
-          font-size: 14px;
-          margin-top: 3px;
-        }
-
-        /* ── COMPARISON ────────────────────────────────── */
-        .comparison { background: var(--bg); }
+        /* ── COMPARATIVO ─────────────────────────────── */
+        .compare { background: var(--bg); }
 
         .compareGrid {
-          max-width: 960px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          max-width: 1000px; margin: 0 auto;
+          display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
         }
 
-        .compareGrid article {
-          padding: 28px;
-          border-radius: 24px;
-          background: var(--paper);
-          border: 1px solid var(--line);
+        .compareCol {
+          padding: 32px; border-radius: 20px;
+          background: var(--paper); border: 1px solid var(--line);
         }
 
-        .compareGrid article.featured {
-          color: white;
-          background: var(--navy);
-          border-color: transparent;
+        .compareCol.dark {
+          background: var(--navy); border-color: transparent;
+          box-shadow: 0 24px 64px rgba(12,29,56,0.18);
         }
 
-        .compareGrid h3 {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 28px;
-          font-weight: 900;
-          text-transform: uppercase;
-          margin: 0 0 20px;
-          color: inherit;
+        .colHead {
+          display: block; font-family: 'Barlow Condensed', sans-serif;
+          font-size: 22px; font-weight: 900; text-transform: uppercase;
+          margin-bottom: 22px; line-height: 1.1;
         }
 
-        .compareGrid p {
-          min-height: 44px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin: 0;
-          border-top: 1px solid rgba(128,128,128,0.18);
-          font-weight: 600;
-          font-size: 15px;
-          color: inherit;
+        .colHead.dimmed { color: var(--muted); }
+        .colHead.white  { color: white; }
+
+        .cRow {
+          display: flex; align-items: flex-start; gap: 11px;
+          padding: 11px 0; border-top: 1px solid rgba(128,128,128,0.12);
+          font-size: 14px; font-weight: 500; line-height: 1.45;
         }
 
-        .compareGrid .no  { color: #d95757; font-weight: 900; }
-        .compareGrid .yes { color: var(--green); font-weight: 900; }
-        .compareGrid article.featured .yes { color: #72d87e; }
+        .compareCol:not(.dark) .cRow { color: var(--muted); }
+        .compareCol.dark .cRow       { color: rgba(255,255,255,0.80); }
 
-        /* ── QUOTE CTA ─────────────────────────────────── */
-        .quoteCta {
-          background: var(--cream);
-          text-align: center;
+        .ico { font-size: 14px; font-weight: 900; flex: 0 0 auto; line-height: 1.45; }
+        .ico.no  { color: #c94f4f; }
+        .ico.yes { color: #5ecf6a; }
+
+        /* ── MID CTA ─────────────────────────────────── */
+        .midCta { background: var(--cream); text-align: center; display: flex; align-items: center; justify-content: center; }
+
+        .midInner { max-width: 680px; display: flex; flex-direction: column; align-items: center; }
+        .midInner h2 { color: var(--navy); font-size: clamp(34px,4.5vw,58px); }
+        .midInner p  { color: var(--muted); font-size: 17px; line-height: 1.65; margin-top: 16px; max-width: 560px; }
+
+        /* ── CTA BUTTON GLOBAL ───────────────────────── */
+        .ctaBtn, .leadForm button {
+          display: inline-flex; align-items: center; justify-content: center;
+          min-height: 56px; padding: 0 32px; border-radius: 999px;
+          background: var(--green); color: white;
+          font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+          text-decoration: none; border: none; cursor: pointer;
+          box-shadow: 0 16px 40px rgba(44,136,54,0.26);
+          transition: transform 0.18s, background 0.18s, box-shadow 0.18s;
+          margin-top: 28px;
+        }
+        .ctaBtn:hover, .leadForm button:hover {
+          background: var(--green2); transform: translateY(-2px);
+          box-shadow: 0 22px 48px rgba(44,136,54,0.30);
         }
 
-        .quoteInner {
-          max-width: 700px;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .quoteCta h2   { color: var(--navy); }
-        .quoteCta .primaryButton { margin-top: 28px; }
-
-        /* ── FORM ──────────────────────────────────────── */
+        /* ── FORMULÁRIO ──────────────────────────────── */
         .formSection {
-          display: grid;
-          grid-template-columns: 0.82fr 1.18fr;
-          gap: 48px;
-          align-items: start;
-          background: var(--navy);
-          color: white;
+          background: var(--navy); color: white;
+          display: grid; grid-template-columns: 0.78fr 1.22fr; gap: 56px; align-items: start;
         }
 
-        .formCopy h2 { color: white; }
-        .formCopy p  { color: rgba(255,255,255,0.66); }
+        .formInfo h2 { color: white; font-size: clamp(34px,4.5vw,58px); margin: 16px 0 0; }
+        .formInfo p  { color: rgba(255,255,255,0.60); font-size: 16px; line-height: 1.68; margin-top: 16px; }
 
-        .formBullets {
-          list-style: none;
-          padding: 0;
-          margin: 22px 0 0;
-          display: flex;
-          flex-direction: column;
-          gap: 9px;
+        .checks { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 9px; }
+
+        .checks li {
+          display: flex; align-items: center; gap: 10px;
+          font-size: 15px; color: rgba(255,255,255,0.70);
         }
 
-        .formBullets li {
-          color: rgba(255,255,255,0.76);
-          font-size: 15px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .formBullets li::before {
-          content: '✓';
-          color: #72d87e;
-          font-weight: 900;
-        }
+        .checks li::before { content: '✓'; color: #72d87e; font-weight: 900; font-size: 14px; }
 
         .leadForm {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-          padding: 26px;
-          border-radius: 24px;
-          background: white;
-          box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+          padding: 28px; border-radius: 22px; background: white;
+          box-shadow: 0 32px 88px rgba(0,0,0,0.22);
+          display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
         }
 
         .leadForm label {
-          display: grid;
-          gap: 7px;
-          color: var(--navy);
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
+          display: flex; flex-direction: column; gap: 6px;
+          font-size: 11px; font-weight: 700; text-transform: uppercase;
+          letter-spacing: 0.09em; color: var(--navy);
         }
 
-        .leadForm .full,
-        .leadForm button,
-        .leadForm small {
-          grid-column: 1 / -1;
+        .leadForm input, .leadForm select {
+          width: 100%; border: 1.5px solid var(--line); border-radius: 10px;
+          background: #f7f9f8; padding: 13px 15px;
+          color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
+          outline: none; transition: border-color 0.18s, box-shadow 0.18s;
         }
 
-        .leadForm input,
-        .leadForm select {
-          width: 100%;
-          border: 1.5px solid var(--line);
-          border-radius: 12px;
-          background: #f7f9f8;
-          padding: 14px 16px;
-          color: var(--text);
-          font: inherit;
-          font-size: 15px;
-          outline: none;
-          transition: border-color 0.18s, box-shadow 0.18s;
+        .leadForm input:focus, .leadForm select:focus {
+          border-color: var(--green); box-shadow: 0 0 0 3px rgba(44,136,54,0.11);
         }
 
-        .leadForm input:focus,
-        .leadForm select:focus {
-          border-color: var(--green);
-          box-shadow: 0 0 0 4px rgba(44,136,54,0.12);
-        }
+        .span2 { grid-column: 1 / -1; }
+        .leadForm button { width: 100%; font-size: 16px; margin-top: 4px; }
+        .leadForm small  { display: block; text-align: center; font-size: 12px; color: var(--muted); }
 
-        .leadForm button { width: 100%; font-size: 16px; }
-
-        .leadForm small {
-          color: var(--muted);
-          text-align: center;
-          font-size: 13px;
-        }
-
-        /* ── FAQ ───────────────────────────────────────── */
+        /* ── FAQ ─────────────────────────────────────── */
         .faq { background: var(--bg); }
 
-        .faqList {
-          max-width: 860px;
-          margin: 0 auto;
-          display: grid;
-          gap: 8px;
+        .faqList { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+
+        .faqItem {
+          border-radius: 14px; background: var(--paper);
+          border: 1.5px solid var(--line); overflow: hidden; transition: border-color 0.18s;
         }
 
-        .faqList button {
-          width: 100%;
-          border: 1.5px solid var(--line);
-          border-radius: 16px;
-          background: var(--paper);
-          text-align: left;
-          padding: 0;
-          cursor: pointer;
-          overflow: hidden;
-          transition: border-color 0.18s;
+        .faqItem.open { border-color: var(--green); }
+
+        .faqQ {
+          width: 100%; display: flex; align-items: center;
+          justify-content: space-between; gap: 16px;
+          padding: 18px 22px; background: none; border: none; cursor: pointer; text-align: left;
         }
 
-        .faqList button.active { border-color: var(--green); }
+        .faqQ span:first-child { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.38; }
 
-        .faqList button > div {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          padding: 18px 20px;
+        .faqIcon {
+          flex: 0 0 28px; width: 28px; height: 28px; border-radius: 50%;
+          background: var(--green); color: white; font-weight: 900; font-size: 18px;
+          display: grid; place-items: center;
         }
 
-        .faqList strong {
-          color: var(--navy);
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 1.35;
-        }
+        .faqA { padding: 0 22px 18px; font-size: 14px; color: var(--muted); line-height: 1.70; }
 
-        .faqList button span {
-          width: 28px;
-          height: 28px;
-          display: grid;
-          place-items: center;
-          flex: 0 0 auto;
-          border-radius: 99px;
-          background: var(--green);
-          color: white;
-          font-weight: 900;
-          font-size: 18px;
-        }
-
-        .faqList p {
-          color: var(--muted);
-          line-height: 1.62;
-          margin: 0;
-          padding: 0 20px 18px;
-          font-size: 15px;
-        }
-
-        /* ── FINAL CTA ─────────────────────────────────── */
+        /* ── FINAL CTA ───────────────────────────────── */
         .finalCta {
-          text-align: center;
-          color: white;
+          text-align: center; color: white;
           background:
-            linear-gradient(180deg, rgba(7,18,40,0.80), rgba(7,18,40,0.94)),
-            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+            linear-gradient(180deg,rgba(7,18,40,0.84),rgba(7,18,40,0.96)),
+            url("/images/lp3/hero-cbuq.jpg") center/cover no-repeat;
+          display: flex; flex-direction: column; align-items: center;
         }
 
-        .finalCta img    { width: 180px; height: auto; margin-bottom: 26px; }
-        .finalCta h2     { color: white; max-width: 820px; }
-        .finalCta a      { margin-top: 22px; }
+        .finalLogo { width: 172px; height: auto; margin-bottom: 28px; }
+        .finalCta h2 { color: white; font-size: clamp(36px,5vw,70px); max-width: 800px; }
+        .finalCta p  { color: rgba(255,255,255,0.60); font-size: 17px; max-width: 580px; line-height: 1.65; margin-top: 16px; }
 
-        /* ── MOBILE STICKY ─────────────────────────────── */
-        .mobileSticky { display: none; }
+        /* ── STICKY ──────────────────────────────────── */
+        .sticky { display: none; }
 
-        /* ── RESPONSIVE ────────────────────────────────── */
-        @media (max-width: 980px) {
-          .hero { min-height: auto; padding-bottom: 80px; }
-
-          .heroInner { grid-template-columns: 1fr; margin-top: 80px; }
-          .heroCard  { max-width: 420px; }
-
-          .intro,
-          .split,
-          .proof,
-          .formSection { grid-template-columns: 1fr; }
-
-          .introGrid,
-          .areasGrid,
+        /* ══════════════════════════════════════════════
+           RESPONSIVO
+        ══════════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+          .heroInner       { grid-template-columns: 1fr; padding-top: 64px; }
+          .heroCard        { max-width: 440px; }
+          .benefitsGrid,
           .solutionGrid,
-          .compareGrid { grid-template-columns: 1fr 1fr; }
+          .areasGrid       { grid-template-columns: 1fr 1fr; }
+          .steps           { grid-template-columns: 1fr 1fr; }
+          .pain, .proof,
+          .formSection     { grid-template-columns: 1fr; }
+          .painImg         { min-height: 300px; }
+          .proofPhotos     { grid-template-columns: 1fr; }
+          .phA,.phB,.phC   { min-height: 240px; grid-row: auto; }
+        }
 
-          .timeline { grid-template-columns: 1fr 1fr; }
-
-          .splitImage { min-height: 340px; }
-
-          .mosaic { grid-template-columns: 1fr; }
-          .photoA, .photoB, .photoC {
-            min-height: 260px;
-            grid-row: auto;
-          }
-
+        @media (max-width: 768px) {
+          .hero    { min-height: auto; padding-bottom: 72px; }
+          section  { padding: 64px clamp(18px,5vw,40px); }
+          .logoStrip { padding: 24px clamp(18px,5vw,40px); }
+          .compareGrid, .benefitsGrid, .solutionGrid,
+          .areasGrid, .steps { grid-template-columns: 1fr; }
+          .painList { grid-template-columns: 1fr; }
           .leadForm { grid-template-columns: 1fr; }
-
-          .mobileSticky {
-            position: fixed;
-            left: 12px; right: 12px; bottom: 12px;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 56px;
-            border-radius: 999px;
-            color: white;
-            background: var(--green);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            box-shadow: 0 14px 38px rgba(0,0,0,0.28);
+          .logoImg  { height: 28px; }
+          .sticky {
+            position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 56px; border-radius: 999px; background: var(--green); color: white;
+            font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px;
+            text-decoration: none; box-shadow: 0 14px 40px rgba(0,0,0,0.26);
           }
         }
 
-        @media (max-width: 640px) {
-          .hero {
-            padding-left: 18px;
-            padding-right: 18px;
-            background-position: 68% center;
-          }
-
-          .brand img { width: 140px; }
-          .topCta    { display: none; }
-
-          .hero h1 { font-size: 52px; }
-          .heroCopy > p { font-size: 17px; }
-
-          section { padding: 60px 18px; }
-          .clientStrip { padding: 22px 18px; }
-
-          .clientList { gap: 4px 8px; }
-          .clientList span { font-size: 14px; }
-
-          .introGrid,
-          .areasGrid,
-          .solutionGrid,
-          .timeline,
-          .compareGrid { grid-template-columns: 1fr; }
-
-          .sectionTitle h2,
-          .introText h2,
-          .splitCopy h2,
-          .proofText h2,
-          .formCopy h2,
-          .finalCta h2,
-          .quoteCta h2 { font-size: 38px; }
-
-          .tagList { grid-template-columns: 1fr; }
+        @media (max-width: 480px) {
+          .brand img  { width: 136px; }
+          .topCta     { display: none; }
+          .heroCopy h1 { font-size: 52px; }
+          .secHead h2  { font-size: 36px; }
+          .logoImg     { height: 24px; max-width: 80px; }
         }
       `}</style>
     </main>
