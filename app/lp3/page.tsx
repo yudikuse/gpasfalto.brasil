@@ -1,5 +1,5 @@
-// app/LP3/page.tsx
-"use client"; 
+// app/lp3/page.tsx
+"use client";
 
 import { FormEvent, useMemo, useState } from "react";
 
@@ -12,7 +12,7 @@ type FormState = {
   mensagem: string;
 };
 
-const WHATSAPP_NUMBER = "5564993273958"; // TROCAR PELO NÚMERO REAL DA GP
+const WHATSAPP_NUMBER = "5564993273958";
 
 const areaTypes = [
   "Pátio empresarial",
@@ -28,27 +28,27 @@ const areaTypes = [
 const applications = [
   {
     title: "Pátios empresariais",
-    text: "Mais trafegabilidade, menos poeira e uma área com aparência mais profissional.",
+    text: "Reduza poeira, lama e manutenção provisória em áreas de operação diária.",
   },
   {
     title: "Estacionamentos",
-    text: "Melhore a entrada, circulação e percepção de clientes, fornecedores e motoristas.",
+    text: "Melhore circulação, aparência e experiência de clientes, equipes e fornecedores.",
   },
   {
     title: "Acessos e entradas",
-    text: "Solução para áreas que sofrem com lama, buracos, poeira ou fluxo intenso.",
+    text: "Transforme entradas irregulares em áreas mais seguras e trafegáveis.",
   },
   {
     title: "Vias internas",
-    text: "Aplicação para circulação de veículos, caminhões e operação diária.",
+    text: "Aplicação para circulação de veículos, caminhões e operação logística.",
   },
   {
     title: "Recapeamento",
-    text: "Recuperação de áreas desgastadas com nova camada de CBUQ, conforme avaliação.",
+    text: "Recuperação de pavimento desgastado com nova camada de CBUQ, conforme avaliação.",
   },
   {
-    title: "Áreas rurais e logísticas",
-    text: "Acessos, balanças, pátios de carga, áreas industriais e pontos de circulação pesada.",
+    title: "Áreas rurais e industriais",
+    text: "Acessos, balanças, pátios de carga, cerealistas, fazendas e áreas produtivas.",
   },
 ];
 
@@ -58,7 +58,7 @@ const priceFactors = [
   "Tipo de tráfego",
   "Condição da base",
   "Distância e logística",
-  "Acesso de caminhões",
+  "Acesso para caminhões",
   "Imprimação ou pintura de ligação",
   "Acabamento esperado",
 ];
@@ -159,27 +159,23 @@ export default function LP3Page() {
   return (
     <main className="lp3">
       <section className="hero">
-        <div className="heroOverlay" />
+        <div className="heroShade" />
 
         <header className="topbar">
-          <div className="brand">
-            <div className="brandMark">GP</div>
-            <div>
-              <strong>GP Asfalto</strong>
-              <span>CBUQ com aplicação</span>
-            </div>
-          </div>
+          <a className="brand" href="/">
+            <img src="/images/logo-white.png" alt="GP Asfalto" />
+          </a>
 
           <a className="topCta" href={whatsappHref} target="_blank" rel="noreferrer">
             Pedir avaliação
           </a>
         </header>
 
-        <div className="heroGrid">
+        <div className="heroInner">
           <div className="heroCopy">
             <div className="eyebrow">CBUQ aplicado • pátios • acessos • estacionamentos</div>
 
-            <h1>Aplicação de CBUQ para áreas que precisam voltar a operar melhor</h1>
+            <h1>Aplicação de CBUQ para áreas que precisam operar melhor</h1>
 
             <p>
               Massa asfáltica, equipe e equipamentos no mesmo atendimento para transformar áreas
@@ -191,7 +187,7 @@ export default function LP3Page() {
                 Pedir avaliação pelo WhatsApp
               </a>
 
-              <a className="secondaryButton" href="#formulario">
+              <a className="ghostButton" href="#formulario">
                 Enviar dados da área
               </a>
             </div>
@@ -201,49 +197,48 @@ export default function LP3Page() {
             </p>
           </div>
 
-          <div className="heroPanel">
-            <div>
-              <span>Aplicação com equipe de campo</span>
-              <strong>CBUQ + logística + compactação</strong>
-            </div>
+          <div className="heroCard">
+            <span>Venda com aplicação</span>
+            <strong>CBUQ + equipe + compactação</strong>
+            <p>Uma solução completa para quem precisa tirar a área do improviso.</p>
           </div>
         </div>
       </section>
 
-      <section className="impact">
-        <div className="sectionHeader">
-          <span>O ponto central</span>
+      <section className="intro">
+        <div className="introText">
+          <span className="kicker">O ponto central</span>
           <h2>Não é só asfalto. É área pronta para operação.</h2>
         </div>
 
-        <div className="impactGrid">
+        <div className="introGrid">
           <article>
             <strong>Menos poeira e lama</strong>
-            <p>Uma solução mais adequada para áreas que sofrem no período seco e chuvoso.</p>
+            <p>Mais controle para áreas que sofrem no período seco e chuvoso.</p>
           </article>
 
           <article>
             <strong>Menos manutenção provisória</strong>
-            <p>Reduz a dependência de correções recorrentes com cascalho, patrola e remendos.</p>
+            <p>Reduz a dependência de cascalho, patrola e correções recorrentes.</p>
           </article>
 
           <article>
             <strong>Melhor circulação</strong>
-            <p>Ajuda no fluxo de veículos, caminhões, clientes, fornecedores e operação diária.</p>
+            <p>Mais condição de tráfego para veículos, caminhões e operação diária.</p>
           </article>
         </div>
       </section>
 
-      <section className="applications">
-        <div className="sectionHeader">
-          <span>Onde aplicar</span>
+      <section className="areas">
+        <div className="sectionTitle">
+          <span className="kicker">Onde aplicar</span>
           <h2>Aplicação de CBUQ para áreas que precisam trabalhar melhor</h2>
         </div>
 
-        <div className="applicationGrid">
+        <div className="areasGrid">
           {applications.map((item) => (
-            <article key={item.title} className="applicationCard">
-              <div className="cardLine" />
+            <article key={item.title}>
+              <span />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
@@ -251,11 +246,11 @@ export default function LP3Page() {
         </div>
       </section>
 
-      <section className="pain">
-        <div className="painImage" />
+      <section className="split pain">
+        <div className="splitImage" />
 
-        <div className="painCopy">
-          <span>O custo escondido</span>
+        <div className="splitCopy">
+          <span className="kicker">Custo escondido</span>
           <h2>O chão ruim custa mais do que parece</h2>
 
           <p>
@@ -263,20 +258,20 @@ export default function LP3Page() {
             e passam uma imagem ruim para clientes, fornecedores e motoristas.
           </p>
 
-          <div className="painList">
-            <span>Cascalho que volta a abrir buraco</span>
+          <div className="tagList">
+            <span>Buracos recorrentes</span>
             <span>Poeira em período seco</span>
-            <span>Lama e poças em período de chuva</span>
-            <span>Caminhões circulando com dificuldade</span>
-            <span>Aparência improvisada da área</span>
-            <span>Manutenção recorrente</span>
+            <span>Lama em período de chuva</span>
+            <span>Caminhões com dificuldade</span>
+            <span>Aparência improvisada</span>
+            <span>Manutenção frequente</span>
           </div>
         </div>
       </section>
 
       <section className="solution">
-        <div className="sectionHeader left">
-          <span>Solução GP Asfalto</span>
+        <div className="sectionTitle left">
+          <span className="kicker">Solução GP Asfalto</span>
           <h2>A GP Asfalto entrega massa, equipe e aplicação</h2>
           <p>
             Em vez de contratar etapas separadas, você fala com uma equipe que entende da produção,
@@ -294,7 +289,7 @@ export default function LP3Page() {
             "Orientação sobre base e espessura",
             "Execução em áreas comerciais, industriais e rurais",
           ].map((item) => (
-            <div key={item} className="solutionItem">
+            <div key={item}>
               <span />
               {item}
             </div>
@@ -303,8 +298,8 @@ export default function LP3Page() {
       </section>
 
       <section className="process">
-        <div className="sectionHeader">
-          <span>Como funciona</span>
+        <div className="sectionTitle">
+          <span className="kicker">Como funciona</span>
           <h2>Do primeiro contato à aplicação</h2>
         </div>
 
@@ -324,8 +319,8 @@ export default function LP3Page() {
       </section>
 
       <section className="pricing">
-        <div className="pricingCopy">
-          <span>Orçamento responsável</span>
+        <div>
+          <span className="kicker">Orçamento responsável</span>
           <h2>O preço depende da área, da base e da logística</h2>
           <p>
             Para passar uma estimativa séria, é preciso entender metragem, espessura, tráfego,
@@ -335,19 +330,19 @@ export default function LP3Page() {
 
         <div className="factorGrid">
           {priceFactors.map((factor) => (
-            <div key={factor}>{factor}</div>
+            <article key={factor}>{factor}</article>
           ))}
         </div>
       </section>
 
       <section className="comparison">
-        <div className="sectionHeader">
-          <span>Comparativo</span>
+        <div className="sectionTitle">
+          <span className="kicker">Comparativo</span>
           <h2>Cascalho resolve hoje. CBUQ resolve a operação.</h2>
         </div>
 
         <div className="compareGrid">
-          <article className="compareBad">
+          <article>
             <h3>Solução provisória</h3>
             <p>Buracos recorrentes</p>
             <p>Poeira e lama</p>
@@ -355,7 +350,7 @@ export default function LP3Page() {
             <p>Aparência improvisada</p>
           </article>
 
-          <article className="compareGood">
+          <article className="featured">
             <h3>CBUQ aplicado</h3>
             <p>Superfície mais uniforme</p>
             <p>Área mais limpa</p>
@@ -366,14 +361,14 @@ export default function LP3Page() {
       </section>
 
       <section className="proof">
-        <div className="proofMosaic">
-          <div className="mosaicLarge" />
-          <div className="mosaicSmall one" />
-          <div className="mosaicSmall two" />
+        <div className="mosaic">
+          <div className="photo photoA" />
+          <div className="photo photoB" />
+          <div className="photo photoC" />
         </div>
 
-        <div className="proofCopy">
-          <span>Estrutura de campo</span>
+        <div className="proofText">
+          <span className="kicker">Estrutura de campo</span>
           <h2>Obra de pavimentação precisa de execução, não só promessa</h2>
 
           <p>
@@ -386,10 +381,12 @@ export default function LP3Page() {
               <strong>Rio Verde e região</strong>
               <span>Atendimento conforme logística</span>
             </div>
+
             <div>
               <strong>Equipe de campo</strong>
               <span>Aplicação com operação técnica</span>
             </div>
+
             <div>
               <strong>Maquinário</strong>
               <span>Espalhamento e compactação</span>
@@ -400,7 +397,7 @@ export default function LP3Page() {
 
       <section id="formulario" className="formSection">
         <div className="formCopy">
-          <span>Avaliação inicial</span>
+          <span className="kicker">Avaliação inicial</span>
           <h2>Quer avaliar sua área?</h2>
           <p>
             Envie as informações básicas. Fotos e vídeos ajudam a entender a condição da base,
@@ -482,8 +479,8 @@ export default function LP3Page() {
       </section>
 
       <section className="faq">
-        <div className="sectionHeader">
-          <span>Dúvidas comuns</span>
+        <div className="sectionTitle">
+          <span className="kicker">Dúvidas comuns</span>
           <h2>Antes de pedir orçamento</h2>
         </div>
 
@@ -491,7 +488,7 @@ export default function LP3Page() {
           {faq.map((item, index) => (
             <button
               key={item.q}
-              className={`faqItem ${openFaq === index ? "active" : ""}`}
+              className={openFaq === index ? "active" : ""}
               onClick={() => setOpenFaq(openFaq === index ? null : index)}
               type="button"
             >
@@ -507,8 +504,11 @@ export default function LP3Page() {
       </section>
 
       <section className="finalCta">
+        <img src="/images/logo-white.png" alt="GP Asfalto" />
         <h2>Transforme uma área ruim em pavimento pronto para operação</h2>
-        <p>Envie cidade, metragem e fotos da área. A equipe avalia o melhor caminho para aplicação de CBUQ.</p>
+        <p>
+          Envie cidade, metragem e fotos da área. A equipe avalia o melhor caminho para aplicação de CBUQ.
+        </p>
 
         <a href={whatsappHref} target="_blank" rel="noreferrer">
           Pedir avaliação pelo WhatsApp
@@ -521,15 +521,16 @@ export default function LP3Page() {
 
       <style>{`
         :root {
-          --bg: #f4f1ea;
-          --paper: #fffaf0;
-          --text: #151515;
-          --muted: #6f6a60;
-          --dark: #181814;
-          --dark-2: #24231e;
-          --line: rgba(21, 21, 21, 0.12);
-          --yellow: #f2b51d;
-          --orange: #d96b1b;
+          --bg: #f5f7f6;
+          --paper: #ffffff;
+          --text: #151719;
+          --muted: #667085;
+          --blue: #171b3f;
+          --blue2: #0f1432;
+          --green: #137a0b;
+          --green2: #083d05;
+          --silver: #aeb3b8;
+          --line: rgba(23, 27, 63, 0.12);
         }
 
         * {
@@ -545,6 +546,7 @@ export default function LP3Page() {
         }
 
         .lp3 {
+          min-height: 100vh;
           background: var(--bg);
           color: var(--text);
           font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -554,110 +556,99 @@ export default function LP3Page() {
         .hero {
           position: relative;
           min-height: 100vh;
-          background:
-            linear-gradient(90deg, rgba(0,0,0,.78), rgba(0,0,0,.42), rgba(0,0,0,.12)),
-            url("/lp3/hero-cbuq.jpg") center / cover no-repeat;
           color: white;
-          padding: 28px clamp(20px, 5vw, 72px) 72px;
+          background:
+            linear-gradient(90deg, rgba(15, 20, 50, 0.92) 0%, rgba(15, 20, 50, 0.76) 34%, rgba(15, 20, 50, 0.36) 72%),
+            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
+          padding: 26px clamp(20px, 5vw, 72px) 70px;
         }
 
-        .heroOverlay {
+        .heroShade {
           position: absolute;
           inset: 0;
-          background:
-            radial-gradient(circle at 20% 20%, rgba(242,181,29,.2), transparent 34%),
-            linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.68));
           pointer-events: none;
+          background:
+            radial-gradient(circle at 18% 18%, rgba(19, 122, 11, 0.28), transparent 32%),
+            linear-gradient(180deg, rgba(15, 20, 50, 0.18), rgba(15, 20, 50, 0.82));
         }
 
         .topbar,
-        .heroGrid {
+        .heroInner {
           position: relative;
           z-index: 1;
         }
 
         .topbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 24px;
-          max-width: 1200px;
+          max-width: 1220px;
           margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
         }
 
         .brand {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 12px;
+          text-decoration: none;
         }
 
-        .brandMark {
-          width: 44px;
-          height: 44px;
-          display: grid;
-          place-items: center;
-          border: 1px solid rgba(255,255,255,.35);
-          background: rgba(255,255,255,.12);
-          border-radius: 14px;
-          font-weight: 900;
-          letter-spacing: -1px;
-        }
-
-        .brand strong,
-        .brand span {
+        .brand img {
+          width: 178px;
+          height: auto;
           display: block;
         }
 
-        .brand span {
-          color: rgba(255,255,255,.66);
-          font-size: 13px;
-          margin-top: 2px;
-        }
-
         .topCta {
-          color: #171717;
-          background: var(--yellow);
+          color: white;
+          background: var(--green);
           text-decoration: none;
           padding: 12px 18px;
           border-radius: 999px;
-          font-weight: 800;
-          box-shadow: 0 14px 28px rgba(0,0,0,.2);
+          font-weight: 850;
+          box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
         }
 
-        .heroGrid {
-          max-width: 1200px;
-          margin: 130px auto 0;
+        .heroInner {
+          max-width: 1220px;
+          margin: 128px auto 0;
           display: grid;
-          grid-template-columns: minmax(0, 1.05fr) 380px;
-          gap: 56px;
+          grid-template-columns: minmax(0, 1fr) 340px;
+          gap: 44px;
           align-items: end;
         }
 
-        .eyebrow {
+        .heroCopy {
+          max-width: 840px;
+        }
+
+        .eyebrow,
+        .kicker {
           display: inline-flex;
-          color: #171717;
-          background: var(--yellow);
+          align-items: center;
+          width: fit-content;
+          color: white;
+          background: var(--green);
           border-radius: 999px;
-          padding: 9px 14px;
-          font-size: 13px;
+          padding: 8px 13px;
+          font-size: 12px;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: .04em;
-          margin-bottom: 26px;
+          letter-spacing: 0.08em;
         }
 
         .hero h1 {
-          max-width: 880px;
-          margin: 0;
-          font-size: clamp(42px, 7vw, 88px);
-          line-height: .93;
+          margin: 24px 0 0;
+          font-size: clamp(46px, 7vw, 88px);
+          line-height: 0.94;
           letter-spacing: -0.075em;
+          max-width: 960px;
         }
 
         .heroCopy > p {
-          max-width: 700px;
-          color: rgba(255,255,255,.82);
-          font-size: clamp(18px, 2vw, 24px);
+          max-width: 680px;
+          color: rgba(255, 255, 255, 0.84);
+          font-size: clamp(18px, 2vw, 23px);
           line-height: 1.45;
           margin: 26px 0 0;
         }
@@ -670,333 +661,321 @@ export default function LP3Page() {
         }
 
         .primaryButton,
-        .secondaryButton,
-        .finalCta a,
-        .leadForm button {
+        .ghostButton,
+        .leadForm button,
+        .finalCta a {
           min-height: 54px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          text-decoration: none;
           border-radius: 999px;
+          text-decoration: none;
           font-weight: 900;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
           cursor: pointer;
-          transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
         }
 
         .primaryButton,
-        .finalCta a,
-        .leadForm button {
-          color: #151515;
-          background: var(--yellow);
+        .leadForm button,
+        .finalCta a {
+          color: white;
+          background: var(--green);
+          border: 0;
           padding: 0 24px;
-          border: none;
-          box-shadow: 0 18px 38px rgba(0,0,0,.24);
+          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
         }
 
-        .secondaryButton {
+        .ghostButton {
           color: white;
-          border: 1px solid rgba(255,255,255,.35);
-          background: rgba(255,255,255,.1);
+          border: 1px solid rgba(255, 255, 255, 0.36);
+          background: rgba(255, 255, 255, 0.08);
           padding: 0 22px;
         }
 
         .primaryButton:hover,
-        .secondaryButton:hover,
-        .finalCta a:hover,
-        .leadForm button:hover {
+        .ghostButton:hover,
+        .leadForm button:hover,
+        .finalCta a:hover {
           transform: translateY(-2px);
         }
 
         .microcopy {
+          color: rgba(255, 255, 255, 0.66) !important;
           font-size: 14px !important;
-          color: rgba(255,255,255,.62) !important;
           margin-top: 14px !important;
         }
 
-        .heroPanel {
-          min-height: 260px;
-          display: flex;
-          align-items: end;
-          border: 1px solid rgba(255,255,255,.24);
-          border-radius: 30px;
-          background:
-            linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06)),
-            rgba(0,0,0,.22);
-          backdrop-filter: blur(10px);
-          padding: 28px;
+        .heroCard {
+          padding: 24px;
+          border-radius: 26px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.22);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
         }
 
-        .heroPanel span,
-        .heroPanel strong {
+        .heroCard span {
           display: block;
-        }
-
-        .heroPanel span {
-          color: rgba(255,255,255,.62);
-          font-size: 13px;
+          color: rgba(255, 255, 255, 0.62);
+          font-size: 12px;
           text-transform: uppercase;
-          letter-spacing: .08em;
+          letter-spacing: 0.1em;
           font-weight: 900;
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
 
-        .heroPanel strong {
+        .heroCard strong {
+          display: block;
           font-size: 30px;
           line-height: 1.05;
-          letter-spacing: -.04em;
+          letter-spacing: -0.045em;
+        }
+
+        .heroCard p {
+          color: rgba(255, 255, 255, 0.72);
+          line-height: 1.5;
+          margin: 16px 0 0;
         }
 
         section {
-          padding: 88px clamp(20px, 5vw, 72px);
+          padding: 86px clamp(20px, 5vw, 72px);
         }
 
-        .sectionHeader {
-          max-width: 850px;
+        .sectionTitle {
+          max-width: 820px;
           margin: 0 auto 38px;
           text-align: center;
         }
 
-        .sectionHeader.left {
+        .sectionTitle.left {
           margin-left: 0;
           text-align: left;
         }
 
-        .sectionHeader span,
-        .painCopy span,
-        .pricingCopy span,
-        .proofCopy span,
-        .formCopy span {
-          color: var(--orange);
-          font-size: 13px;
-          font-weight: 950;
-          text-transform: uppercase;
-          letter-spacing: .11em;
-        }
-
-        .sectionHeader h2,
-        .painCopy h2,
-        .pricingCopy h2,
-        .proofCopy h2,
+        .sectionTitle h2,
+        .introText h2,
+        .splitCopy h2,
+        .pricing h2,
+        .proofText h2,
         .formCopy h2,
         .finalCta h2 {
-          margin: 10px 0 0;
-          font-size: clamp(32px, 4.6vw, 62px);
-          line-height: .98;
-          letter-spacing: -.06em;
+          margin: 13px 0 0;
+          color: var(--blue);
+          font-size: clamp(32px, 4.8vw, 62px);
+          line-height: 0.98;
+          letter-spacing: -0.06em;
         }
 
-        .sectionHeader p,
-        .painCopy p,
-        .pricingCopy p,
-        .proofCopy p,
+        .sectionTitle p,
+        .splitCopy p,
+        .pricing p,
+        .proofText p,
         .formCopy p,
         .finalCta p {
           color: var(--muted);
           font-size: 18px;
-          line-height: 1.6;
+          line-height: 1.62;
           margin-top: 18px;
         }
 
-        .impact {
-          background: var(--dark);
-          color: white;
-        }
-
-        .impact .sectionHeader h2 {
-          color: white;
-        }
-
-        .impactGrid {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-        }
-
-        .impactGrid article {
-          min-height: 260px;
-          display: flex;
-          flex-direction: column;
-          justify-content: end;
-          border-radius: 30px;
-          padding: 26px;
-          background:
-            linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.8)),
-            url("/lp3/textura-asfalto.jpg") center / cover no-repeat;
-          border: 1px solid rgba(255,255,255,.12);
-        }
-
-        .impactGrid strong {
-          font-size: 26px;
-          letter-spacing: -.04em;
-        }
-
-        .impactGrid p {
-          color: rgba(255,255,255,.72);
-          line-height: 1.5;
-          margin-bottom: 0;
-        }
-
-        .applications,
-        .process,
-        .faq {
-          background: var(--bg);
-        }
-
-        .applicationGrid {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-        }
-
-        .applicationCard {
-          position: relative;
-          overflow: hidden;
-          min-height: 230px;
-          padding: 26px;
-          border-radius: 28px;
+        .intro {
           background: var(--paper);
+          display: grid;
+          grid-template-columns: 0.85fr 1.15fr;
+          gap: 38px;
+          align-items: start;
+        }
+
+        .introGrid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 14px;
+        }
+
+        .introGrid article {
+          min-height: 210px;
+          padding: 22px;
+          border-radius: 22px;
+          background: #f7f9f8;
           border: 1px solid var(--line);
         }
 
-        .applicationCard h3 {
-          margin: 50px 0 10px;
-          font-size: 25px;
-          letter-spacing: -.04em;
+        .introGrid strong {
+          display: block;
+          color: var(--blue);
+          font-size: 22px;
+          line-height: 1.12;
+          letter-spacing: -0.035em;
         }
 
-        .applicationCard p {
+        .introGrid p {
+          color: var(--muted);
+          line-height: 1.55;
+          margin: 18px 0 0;
+        }
+
+        .areas {
+          background: var(--bg);
+        }
+
+        .areasGrid {
+          max-width: 1180px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 14px;
+        }
+
+        .areasGrid article {
+          min-height: 215px;
+          padding: 24px;
+          border-radius: 22px;
+          background: var(--paper);
+          border: 1px solid var(--line);
+          box-shadow: 0 14px 36px rgba(15, 20, 50, 0.05);
+        }
+
+        .areasGrid article > span {
+          display: block;
+          width: 46px;
+          height: 5px;
+          border-radius: 99px;
+          background: var(--green);
+          margin-bottom: 42px;
+        }
+
+        .areasGrid h3 {
+          color: var(--blue);
+          font-size: 24px;
+          line-height: 1.1;
+          letter-spacing: -0.04em;
+          margin: 0 0 10px;
+        }
+
+        .areasGrid p {
           color: var(--muted);
           line-height: 1.55;
           margin: 0;
         }
 
-        .cardLine {
-          position: absolute;
-          top: 24px;
-          left: 26px;
-          width: 70px;
-          height: 8px;
-          background: var(--yellow);
-          border-radius: 99px;
-        }
-
-        .pain {
+        .split {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 44px;
+          gap: 46px;
           align-items: center;
           background: var(--paper);
         }
 
-        .painImage {
+        .splitImage {
           min-height: 620px;
-          border-radius: 34px;
+          border-radius: 30px;
           background:
-            linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.18)),
-            url("/lp3/patio-logistico.jpg") center / cover no-repeat;
-          box-shadow: 0 30px 80px rgba(0,0,0,.12);
+            linear-gradient(180deg, rgba(15, 20, 50, 0.02), rgba(15, 20, 50, 0.18)),
+            url("/images/lp3/patio-logistico.jpg") center / cover no-repeat;
+          box-shadow: 0 30px 80px rgba(15, 20, 50, 0.12);
         }
 
-        .painList {
+        .tagList {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          gap: 10px;
           margin-top: 28px;
         }
 
-        .painList span {
-          color: var(--text);
-          background: var(--bg);
+        .tagList span {
+          padding: 13px 14px;
+          border-radius: 14px;
+          background: #f5f7f6;
           border: 1px solid var(--line);
-          border-radius: 16px;
-          padding: 14px;
+          color: var(--blue);
           font-size: 14px;
           font-weight: 800;
-          text-transform: none;
-          letter-spacing: 0;
         }
 
         .solution {
-          background: var(--dark);
+          background:
+            linear-gradient(180deg, rgba(15, 20, 50, 0.9), rgba(15, 20, 50, 0.96)),
+            url("/images/lp3/textura-asfalto.jpg") center / cover no-repeat;
           color: white;
         }
 
-        .solution .sectionHeader h2,
-        .solution .sectionHeader p {
+        .solution .sectionTitle h2,
+        .solution .sectionTitle p {
           color: white;
         }
 
-        .solution .sectionHeader p {
-          color: rgba(255,255,255,.68);
+        .solution .sectionTitle p {
+          color: rgba(255, 255, 255, 0.7);
         }
 
         .solutionGrid {
-          max-width: 1200px;
+          max-width: 1180px;
+          margin: 34px auto 0;
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 14px;
-          margin: 32px auto 0;
+          gap: 12px;
         }
 
-        .solutionItem {
+        .solutionGrid div {
+          min-height: 84px;
           display: flex;
-          gap: 12px;
           align-items: center;
-          min-height: 86px;
-          padding: 20px;
-          border-radius: 22px;
-          background: rgba(255,255,255,.07);
-          border: 1px solid rgba(255,255,255,.12);
-          color: rgba(255,255,255,.86);
+          gap: 12px;
+          padding: 18px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.07);
+          border: 1px solid rgba(255, 255, 255, 0.13);
+          color: rgba(255, 255, 255, 0.86);
           font-weight: 800;
         }
 
-        .solutionItem span {
-          width: 10px;
-          height: 10px;
+        .solutionGrid span {
+          width: 9px;
+          height: 9px;
           flex: 0 0 auto;
           border-radius: 50%;
-          background: var(--yellow);
+          background: var(--green);
+        }
+
+        .process {
+          background: var(--bg);
         }
 
         .timeline {
-          max-width: 1200px;
+          max-width: 1180px;
           margin: 0 auto;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
+          gap: 14px;
         }
 
         .timeline article {
-          min-height: 220px;
-          padding: 24px;
-          border-radius: 28px;
+          min-height: 200px;
+          padding: 22px;
+          border-radius: 22px;
           background: var(--paper);
           border: 1px solid var(--line);
+          box-shadow: 0 14px 36px rgba(15, 20, 50, 0.05);
         }
 
         .timeline strong {
-          color: var(--orange);
-          font-size: 40px;
-          letter-spacing: -.07em;
+          color: var(--green);
+          font-size: 38px;
+          letter-spacing: -0.07em;
         }
 
         .timeline p {
-          margin-top: 42px;
-          font-size: 18px;
-          font-weight: 850;
+          color: var(--blue);
+          font-size: 17px;
           line-height: 1.35;
+          font-weight: 850;
+          margin: 40px 0 0;
         }
 
         .pricing {
           display: grid;
-          grid-template-columns: .9fr 1.1fr;
-          gap: 40px;
+          grid-template-columns: 0.85fr 1.15fr;
+          gap: 42px;
           align-items: start;
           background: var(--paper);
         }
@@ -1004,18 +983,19 @@ export default function LP3Page() {
         .factorGrid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
+          gap: 10px;
         }
 
-        .factorGrid div {
-          min-height: 96px;
+        .factorGrid article {
+          min-height: 90px;
           display: flex;
           align-items: end;
-          padding: 18px;
-          border-radius: 20px;
-          background: var(--bg);
+          padding: 16px;
+          border-radius: 18px;
+          background: #f5f7f6;
           border: 1px solid var(--line);
-          font-weight: 900;
+          color: var(--blue);
+          font-weight: 850;
         }
 
         .comparison {
@@ -1023,104 +1003,90 @@ export default function LP3Page() {
         }
 
         .compareGrid {
-          max-width: 1000px;
+          max-width: 980px;
           margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 18px;
-        }
-
-        .compareGrid article {
-          border-radius: 32px;
-          padding: 30px;
-        }
-
-        .compareBad {
-          background: #eee6d9;
-          border: 1px solid var(--line);
-        }
-
-        .compareGood {
-          background: var(--dark);
-          color: white;
-        }
-
-        .compareGrid h3 {
-          font-size: 30px;
-          letter-spacing: -.05em;
-          margin: 0 0 24px;
-        }
-
-        .compareGrid p {
-          display: flex;
-          align-items: center;
-          min-height: 48px;
-          border-top: 1px solid rgba(128,128,128,.25);
-          margin: 0;
-          font-weight: 800;
-        }
-
-        .proof {
-          display: grid;
-          grid-template-columns: 1.1fr .9fr;
-          gap: 44px;
-          align-items: center;
-          background: var(--dark);
-          color: white;
-        }
-
-        .proofMosaic {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 14px;
         }
 
-        .mosaicLarge,
-        .mosaicSmall {
-          border-radius: 28px;
+        .compareGrid article {
+          padding: 28px;
+          border-radius: 26px;
+          background: var(--paper);
+          border: 1px solid var(--line);
+        }
+
+        .compareGrid article.featured {
+          color: white;
+          background: var(--blue);
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .compareGrid h3 {
+          margin: 0 0 22px;
+          font-size: 28px;
+          letter-spacing: -0.05em;
+        }
+
+        .compareGrid p {
+          min-height: 46px;
+          display: flex;
+          align-items: center;
+          margin: 0;
+          border-top: 1px solid rgba(128, 128, 128, 0.24);
+          font-weight: 800;
+        }
+
+        .proof {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 46px;
+          align-items: center;
+          background: var(--paper);
+        }
+
+        .mosaic {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        .photo {
+          border-radius: 24px;
           background-size: cover;
           background-position: center;
-          border: 1px solid rgba(255,255,255,.12);
+          border: 1px solid var(--line);
+          box-shadow: 0 20px 50px rgba(15, 20, 50, 0.1);
         }
 
-        .mosaicLarge {
+        .photoA {
           min-height: 520px;
           grid-row: span 2;
-          background-image: url("/lp3/hero-cbuq.jpg");
+          background-image: url("/images/lp3/hero-cbuq.jpg");
         }
 
-        .mosaicSmall {
-          min-height: 253px;
+        .photoB {
+          min-height: 254px;
+          background-image: url("/images/lp3/patio-logistico.jpg");
         }
 
-        .mosaicSmall.one {
-          background-image: url("/lp3/patio-logistico.jpg");
-        }
-
-        .mosaicSmall.two {
-          background-image: url("/lp3/textura-asfalto.jpg");
-        }
-
-        .proofCopy h2,
-        .proofCopy p {
-          color: white;
-        }
-
-        .proofCopy p {
-          color: rgba(255,255,255,.68);
+        .photoC {
+          min-height: 254px;
+          background-image: url("/images/lp3/textura-asfalto.jpg");
         }
 
         .proofStats {
           display: grid;
-          gap: 12px;
+          gap: 10px;
           margin-top: 28px;
         }
 
         .proofStats div {
-          padding: 18px;
-          border-radius: 18px;
-          background: rgba(255,255,255,.07);
-          border: 1px solid rgba(255,255,255,.12);
+          padding: 17px;
+          border-radius: 16px;
+          background: #f5f7f6;
+          border: 1px solid var(--line);
         }
 
         .proofStats strong,
@@ -1128,17 +1094,31 @@ export default function LP3Page() {
           display: block;
         }
 
+        .proofStats strong {
+          color: var(--blue);
+        }
+
         .proofStats span {
+          color: var(--muted);
           margin-top: 4px;
-          color: rgba(255,255,255,.58);
         }
 
         .formSection {
           display: grid;
-          grid-template-columns: .85fr 1.15fr;
-          gap: 42px;
+          grid-template-columns: 0.85fr 1.15fr;
+          gap: 44px;
           align-items: start;
-          background: var(--paper);
+          background: var(--blue);
+          color: white;
+        }
+
+        .formCopy h2,
+        .formCopy p {
+          color: white;
+        }
+
+        .formCopy p {
+          color: rgba(255, 255, 255, 0.72);
         }
 
         .leadForm {
@@ -1146,20 +1126,20 @@ export default function LP3Page() {
           grid-template-columns: 1fr 1fr;
           gap: 14px;
           padding: 24px;
-          border-radius: 32px;
+          border-radius: 26px;
           background: white;
-          border: 1px solid var(--line);
-          box-shadow: 0 30px 80px rgba(0,0,0,.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
         }
 
         .leadForm label {
           display: grid;
           gap: 8px;
-          color: var(--text);
-          font-size: 13px;
+          color: var(--blue);
+          font-size: 12px;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: .06em;
+          letter-spacing: 0.06em;
         }
 
         .leadForm label.full,
@@ -1173,9 +1153,9 @@ export default function LP3Page() {
         .leadForm textarea {
           width: 100%;
           border: 1px solid var(--line);
-          border-radius: 16px;
-          background: #fbfaf7;
-          padding: 15px 14px;
+          border-radius: 14px;
+          background: #f8faf9;
+          padding: 14px;
           color: var(--text);
           font: inherit;
           outline: none;
@@ -1184,8 +1164,8 @@ export default function LP3Page() {
         .leadForm input:focus,
         .leadForm select:focus,
         .leadForm textarea:focus {
-          border-color: var(--orange);
-          box-shadow: 0 0 0 4px rgba(217,107,27,.12);
+          border-color: var(--green);
+          box-shadow: 0 0 0 4px rgba(19, 122, 11, 0.11);
         }
 
         .leadForm button {
@@ -1198,6 +1178,10 @@ export default function LP3Page() {
           text-align: center;
         }
 
+        .faq {
+          background: var(--bg);
+        }
+
         .faqList {
           max-width: 900px;
           margin: 0 auto;
@@ -1205,63 +1189,73 @@ export default function LP3Page() {
           gap: 10px;
         }
 
-        .faqItem {
+        .faqList button {
           width: 100%;
-          text-align: left;
           border: 1px solid var(--line);
-          border-radius: 20px;
+          border-radius: 18px;
           background: var(--paper);
+          text-align: left;
           padding: 0;
           cursor: pointer;
           overflow: hidden;
         }
 
-        .faqItem > div {
+        .faqList button > div {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          gap: 18px;
-          padding: 20px;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 19px;
         }
 
-        .faqItem strong {
+        .faqList strong {
+          color: var(--blue);
           font-size: 17px;
         }
 
-        .faqItem span {
+        .faqList button span {
           width: 28px;
           height: 28px;
           display: grid;
           place-items: center;
-          border-radius: 999px;
-          background: var(--yellow);
-          font-weight: 950;
+          flex: 0 0 auto;
+          border-radius: 99px;
+          background: var(--green);
+          color: white;
+          font-weight: 900;
         }
 
-        .faqItem p {
+        .faqList p {
           color: var(--muted);
           line-height: 1.55;
           margin: 0;
-          padding: 0 20px 20px;
+          padding: 0 19px 19px;
         }
 
         .finalCta {
           text-align: center;
-          background:
-            linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.78)),
-            url("/lp3/hero-cbuq.jpg") center / cover no-repeat;
           color: white;
+          background:
+            linear-gradient(180deg, rgba(15, 20, 50, 0.72), rgba(15, 20, 50, 0.88)),
+            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
+        }
+
+        .finalCta img {
+          width: 190px;
+          height: auto;
+          margin-bottom: 28px;
         }
 
         .finalCta h2 {
-          max-width: 900px;
+          color: white;
+          max-width: 850px;
           margin-left: auto;
           margin-right: auto;
         }
 
         .finalCta p {
-          max-width: 720px;
-          color: rgba(255,255,255,.74);
+          color: rgba(255, 255, 255, 0.76);
+          max-width: 700px;
           margin-left: auto;
           margin-right: auto;
         }
@@ -1277,47 +1271,45 @@ export default function LP3Page() {
         @media (max-width: 980px) {
           .hero {
             min-height: auto;
-            padding-bottom: 90px;
+            padding-bottom: 96px;
           }
 
-          .topCta {
-            display: none;
-          }
-
-          .heroGrid,
-          .pain,
+          .heroInner,
+          .intro,
+          .split,
           .pricing,
           .proof,
           .formSection {
             grid-template-columns: 1fr;
           }
 
-          .heroGrid {
-            margin-top: 84px;
+          .heroInner {
+            margin-top: 92px;
           }
 
-          .heroPanel {
-            min-height: 180px;
+          .heroCard {
+            max-width: 420px;
           }
 
-          .impactGrid,
-          .applicationGrid,
+          .introGrid,
+          .areasGrid,
           .solutionGrid,
           .timeline,
           .compareGrid {
             grid-template-columns: 1fr;
           }
 
-          .painImage {
+          .splitImage {
             min-height: 360px;
           }
 
-          .proofMosaic {
+          .mosaic {
             grid-template-columns: 1fr;
           }
 
-          .mosaicLarge,
-          .mosaicSmall {
+          .photoA,
+          .photoB,
+          .photoC {
             min-height: 280px;
           }
 
@@ -1336,11 +1328,11 @@ export default function LP3Page() {
             justify-content: center;
             min-height: 54px;
             border-radius: 999px;
-            background: var(--yellow);
-            color: #151515;
+            color: white;
+            background: var(--green);
             text-decoration: none;
             font-weight: 950;
-            box-shadow: 0 16px 42px rgba(0,0,0,.28);
+            box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
           }
         }
 
@@ -1348,14 +1340,19 @@ export default function LP3Page() {
           .hero {
             padding-left: 18px;
             padding-right: 18px;
+            background-position: 63% center;
           }
 
-          .brand span {
+          .brand img {
+            width: 146px;
+          }
+
+          .topCta {
             display: none;
           }
 
           .hero h1 {
-            font-size: 44px;
+            font-size: 43px;
           }
 
           .heroCopy > p {
@@ -1367,30 +1364,31 @@ export default function LP3Page() {
           }
 
           .primaryButton,
-          .secondaryButton {
+          .ghostButton {
             width: 100%;
           }
 
           section {
-            padding: 64px 18px;
+            padding: 62px 18px;
           }
 
-          .painList,
-          .factorGrid {
-            grid-template-columns: 1fr;
-          }
-
-          .sectionHeader {
+          .sectionTitle {
             text-align: left;
           }
 
-          .sectionHeader h2,
-          .painCopy h2,
-          .pricingCopy h2,
-          .proofCopy h2,
+          .sectionTitle h2,
+          .introText h2,
+          .splitCopy h2,
+          .pricing h2,
+          .proofText h2,
           .formCopy h2,
           .finalCta h2 {
-            font-size: 36px;
+            font-size: 35px;
+          }
+
+          .tagList,
+          .factorGrid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
