@@ -1,5 +1,5 @@
 // app/LP3/page.tsx
-"use client";
+"use client"; 
 
 import { FormEvent, useMemo, useState } from "react";
 
