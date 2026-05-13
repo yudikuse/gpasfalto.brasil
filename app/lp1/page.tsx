@@ -2,10 +2,30 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 import { site } from '@/data/content'
 
+const GTAG_ID = 'AW-18158017809'
+const CONVERSION_ID = 'AW-18158017809/l0DeCKjj8ascEJG6tdJD'
 const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4#t=5'
 const WA = '5564993273958'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+    dataLayer?: unknown[]
+  }
+}
+
+function fireConversion() {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', 'conversion', {
+      send_to: CONVERSION_ID,
+      value: 1.0,
+      currency: 'BRL',
+    })
+  }
+}
 
 const dores = [
   {
@@ -74,6 +94,8 @@ function Form() {
       'Cidade: ' + (form.cidade || 'Não informado') + '\n' +
       'WhatsApp: ' + form.whatsapp
     )
+    // Dispara conversão Google Ads antes de abrir WhatsApp
+    fireConversion()
     window.open('https://wa.me/' + WA + '?text=' + msg, '_blank')
     setSent(true)
   }
@@ -169,6 +191,20 @@ export default function LPSilos() {
 
   return (
     <div className="bg-[#070e1a] text-cream font-body">
+
+      {/* ── GOOGLE ADS TAG */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GTAG_ID}');
+        `}
+      </Script>
 
       {/* ── NAV */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
