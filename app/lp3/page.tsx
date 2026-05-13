@@ -78,7 +78,7 @@ const faq = [
   },
   {
     q: "Preciso preparar a base antes?",
-    a: "Não necessariamente. A equipe avalia a condição da base e orienta o que é necessário. Em muitos casos, a preparação faz parte do escopo — sem precisar contratar etapas separadas.",
+    a: "Não necessariamente. A equipe avalia a condição da base e, se necessário, executa a preparação — base, subbase ou regularização fazem parte dos serviços da GP Asfalto. Você não precisa contratar etapas separadas com outro fornecedor.",
   },
   {
     q: "Dá para fazer orçamento por foto?",
@@ -86,7 +86,7 @@ const faq = [
   },
   {
     q: "Atendem minha cidade?",
-    a: "A GP Asfalto atende Rio Verde e cidades da região do Cerrado goiano. Manda a cidade no WhatsApp — confirmamos a viabilidade rapidamente.",
+    a: "A GP Asfalto atende Rio Verde e cidades de Goiás e região. Manda a cidade no WhatsApp — confirmamos a viabilidade rapidamente.",
   },
   {
     q: "Quanto tempo leva a aplicação?",
@@ -348,7 +348,7 @@ export default function LP3Page() {
             </div>
             <div>
               <strong>40+ anos de operação</strong>
-              <span>Pavimentação e terraplenagem no Centro-Oeste</span>
+              <span>Aplicação de CBUQ em Goiás e região</span>
             </div>
             <div>
               <strong>Rio Verde e região</strong>
