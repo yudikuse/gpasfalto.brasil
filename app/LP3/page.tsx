@@ -12,7 +12,7 @@ type FormState = {
   mensagem: string;
 };
 
-const WHATSAPP_NUMBER = "5564999999999"; // TROCAR PELO NÚMERO REAL DA GP
+const WHATSAPP_NUMBER = "5564993273958"; // TROCAR PELO NÚMERO REAL DA GP
 
 const areaTypes = [
   "Pátio empresarial",
