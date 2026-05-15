@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 const WHATSAPP_NUMBER = "5564993273958";
 const HERO_VIDEO =
@@ -10,28 +10,30 @@ const SCENARIOS = [
   {
     id: "construtora",
     label: "Construtora",
-    title: "Você mantém o contrato. A GP executa a pavimentação.",
-    message: "Preciso terceirizar a pavimentação da obra",
+    title: "Executar a pavimentação sem travar seu contrato.",
+    message: "Sou construtora e preciso terceirizar a pavimentação",
   },
   {
     id: "loteamento",
     label: "Loteamento",
-    title: "Ruas e acessos prontos para entregar o empreendimento.",
-    message: "Tenho loteamento ou condomínio para entregar",
+    title: "Entregar ruas, acessos e acabamento do empreendimento.",
+    message: "Tenho loteamento ou condomínio para pavimentar",
   },
   {
     id: "usina",
     label: "Usina",
-    title: "Você fornece a massa. A GP aplica em campo.",
-    message: "Sou usina e preciso apoiar um cliente na aplicação",
+    title: "Aplicar em campo a massa que você já fornece.",
+    message: "Sou usina e preciso de apoio na aplicação",
   },
   {
-    id: "patio",
+    id: "area-operacional",
     label: "Pátio / acesso",
-    title: "Base, aplicação e compactação para áreas operacionais.",
+    title: "Preparar base, aplicar e compactar áreas de uso real.",
     message: "Preciso pavimentar pátio, acesso ou área operacional",
   },
 ] as const;
+
+type Scenario = (typeof SCENARIOS)[number];
 
 const TYPING_LINES = [
   "Tenho uma obra e preciso aplicar CBUQ...",
@@ -39,8 +41,6 @@ const TYPING_LINES = [
   "Preciso terceirizar a pavimentação...",
   "Tenho loteamento para entregar...",
 ];
-
-type Scenario = (typeof SCENARIOS)[number];
 
 function maskPhone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -70,11 +70,6 @@ export default function LP3Page() {
   const [typedText, setTypedText] = useState("");
   const [typingIndex, setTypingIndex] = useState(0);
   const [showSticky, setShowSticky] = useState(false);
-
-  const currentTypingLine = useMemo(
-    () => TYPING_LINES[typingIndex % TYPING_LINES.length],
-    [typingIndex]
-  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -107,24 +102,22 @@ export default function LP3Page() {
   }, []);
 
   useEffect(() => {
+    const current = TYPING_LINES[typingIndex % TYPING_LINES.length];
     let char = 0;
     setTypedText("");
 
-    const typing = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       char += 1;
-      setTypedText(currentTypingLine.slice(0, char));
+      setTypedText(current.slice(0, char));
 
-      if (char >= currentTypingLine.length) {
-        window.clearInterval(typing);
-
-        window.setTimeout(() => {
-          setTypingIndex((prev) => prev + 1);
-        }, 1300);
+      if (char >= current.length) {
+        window.clearInterval(interval);
+        window.setTimeout(() => setTypingIndex((prev) => prev + 1), 1300);
       }
-    }, 42);
+    }, 38);
 
-    return () => window.clearInterval(typing);
-  }, [currentTypingLine]);
+    return () => window.clearInterval(interval);
+  }, [typingIndex]);
 
   useEffect(() => {
     function onScroll() {
@@ -186,18 +179,12 @@ Vim pela LP3 da GP Asfalto.`);
     <main className="lp3">
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="GP Asfalto">
-          <img
-            src="/logo-p2.png"
-            alt="GP Asfalto"
-            onError={(event) => {
-              event.currentTarget.style.display = "none";
-            }}
-          />
-          <span>GP ASFALTO</span>
+          <strong>GP</strong>
+          <span>ASFALTO</span>
         </a>
 
         <button type="button" onClick={() => goToForm()}>
-          Iniciar avaliação
+          Avaliar obra
         </button>
       </header>
 
@@ -215,20 +202,20 @@ Vim pela LP3 da GP Asfalto.`);
         <div className="heroShade" />
 
         <div className="heroContent">
-          <p className="serviceLine">Aplicação asfáltica • base • compactação</p>
+          <p className="kicker">Aplicação asfáltica · Base · Compactação</p>
 
           <h1>
             Asfalto aplicado.
             <span>Obra andando.</span>
           </h1>
 
-          <div className="typingBox">
+          <div className="typingLine">
             <span>{typedText}</span>
             <i />
           </div>
 
-          <p className="heroText">
-            Equipe, equipamentos e execução para obras que precisam sair do papel.
+          <p className="heroSub">
+            Equipe, equipamento e execução para transformar frente de obra em pavimento pronto.
           </p>
 
           <div className="heroActions">
@@ -247,14 +234,14 @@ Vim pela LP3 da GP Asfalto.`);
         </div>
       </section>
 
-      <section className="scenario" id="cenario">
-        <div className="panel">
-          <div className="panelIntro">
-            <small>Entrada rápida</small>
-            <h2>Onde a GP entra?</h2>
-          </div>
+      <section className="scenario">
+        <div className="scenarioHead">
+          <p className="kicker">Entrada rápida</p>
+          <h2>Onde a GP entra?</h2>
+        </div>
 
-          <div className="tabs">
+        <div className="scenarioLayout">
+          <div className="scenarioRail">
             {SCENARIOS.map((item) => (
               <button
                 key={item.id}
@@ -262,39 +249,35 @@ Vim pela LP3 da GP Asfalto.`);
                 className={selected.id === item.id ? "active" : ""}
                 onClick={() => setSelected(item)}
               >
-                {item.label}
+                <span>{item.label}</span>
               </button>
             ))}
           </div>
 
-          <div className="scenarioResult">
+          <div className="scenarioText">
+            <small>{selected.label}</small>
             <h3>{selected.title}</h3>
-
             <button type="button" onClick={() => goToForm(selected)}>
-              Enviar este cenário
+              Enviar cenário
             </button>
           </div>
         </div>
       </section>
 
-      <section className="operation">
-        <div>
-          <small>Execução coordenada</small>
-          <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
-        </div>
-
+      <section className="process">
+        <p className="kicker">Sequência de campo</p>
+        <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
         <p>
-          A aplicação depende de ritmo. A GP entra para organizar campo, equipe e equipamento.
+          Aplicação asfáltica não é só espalhar massa. É preparar, aplicar,
+          compactar e liberar com ritmo de obra.
         </p>
       </section>
 
       <section className="formSection" id="avaliacao">
         <div className="formIntro">
-          <small>Avaliação inicial</small>
+          <p className="kicker">Avaliação inicial</p>
           <h2>Envie o básico da obra.</h2>
-          <p>
-            A conversa começa com cidade, cenário e volume aproximado.
-          </p>
+          <p>Cidade, cenário e volume aproximado. A conversa começa por aqui.</p>
         </div>
 
         <form className="leadForm" onSubmit={handleSubmit}>
@@ -346,7 +329,7 @@ Vim pela LP3 da GP Asfalto.`);
             Observação rápida
             <textarea
               name="note"
-              placeholder="Prazo, acesso, condição da base ou detalhe importante."
+              placeholder="Prazo, acesso, base, etapa da obra ou detalhe importante."
             />
           </label>
 
@@ -379,15 +362,17 @@ Vim pela LP3 da GP Asfalto.`);
       </div>
 
       <style jsx global>{`
+        @import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85,500;85,600;85,700;95,500;95,700;100,600;100,800&family=Inter:wght@500;600;700;800;900&display=swap");
+
         :root {
           --green: #16a10b;
-          --green-soft: rgba(22, 161, 11, 0.24);
-          --black: #050605;
-          --text: #f5f3ea;
-          --muted: rgba(245, 243, 234, 0.62);
+          --green2: #22d313;
+          --asphalt: #050606;
+          --asphalt2: #0b0c0b;
+          --text: #f4f0e6;
+          --muted: rgba(244, 240, 230, 0.62);
           --line: rgba(255, 255, 255, 0.13);
-          --glass: rgba(12, 13, 12, 0.58);
-          --card: rgba(255, 255, 255, 0.055);
+          --line2: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -400,16 +385,9 @@ Vim pela LP3 da GP Asfalto.`);
 
         body {
           margin: 0;
-          background: var(--black);
+          background: var(--asphalt);
           color: var(--text);
-          font-family:
-            Inter,
-            ui-sans-serif,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
+          font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         button,
@@ -425,11 +403,41 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .lp3 {
+          position: relative;
           min-height: 100vh;
           overflow-x: hidden;
           background:
-            radial-gradient(circle at 50% 0%, rgba(22, 161, 11, 0.1), transparent 34%),
-            var(--black);
+            radial-gradient(circle at 80% 0%, rgba(22, 161, 11, 0.08), transparent 28%),
+            linear-gradient(180deg, #070807 0%, #030403 100%);
+        }
+
+        .lp3::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -2;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.035) 0 1px, transparent 2px),
+            radial-gradient(circle at 75% 32%, rgba(255, 255, 255, 0.025) 0 1px, transparent 2px),
+            radial-gradient(circle at 48% 72%, rgba(255, 255, 255, 0.03) 0 1px, transparent 2px),
+            repeating-linear-gradient(115deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 19px),
+            linear-gradient(135deg, #050606, #090a09 42%, #030403);
+          background-size: 80px 80px, 120px 120px, 95px 95px, 100% 100%, 100% 100%;
+          opacity: 1;
+        }
+
+        .lp3::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at 50% 0%, rgba(22, 161, 11, 0.09), transparent 32%),
+            linear-gradient(90deg, rgba(0,0,0,0.45), transparent 32%, rgba(0,0,0,0.38));
+          mix-blend-mode: screen;
+          opacity: 0.55;
         }
 
         .topbar {
@@ -442,36 +450,34 @@ Vim pela LP3 da GP Asfalto.`);
           padding: 6px;
           border: 1px solid var(--line);
           border-radius: 999px;
-          background: rgba(5, 6, 5, 0.62);
+          background: rgba(5, 6, 6, 0.66);
           backdrop-filter: blur(22px);
           display: flex;
           align-items: center;
           justify-content: space-between;
-          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.22);
         }
 
         .brand {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
+          padding-left: 12px;
           color: #fff;
           text-decoration: none;
-          min-width: 0;
+          letter-spacing: -0.04em;
         }
 
-        .brand img {
-          height: 28px;
-          max-width: 150px;
-          object-fit: contain;
-          display: block;
+        .brand strong {
+          font-family: Archivo, Inter, sans-serif;
+          font-size: 18px;
+          font-weight: 800;
+          color: var(--green2);
         }
 
         .brand span {
-          padding-left: 8px;
-          font-size: 14px;
-          font-weight: 950;
-          letter-spacing: -0.04em;
-          white-space: nowrap;
+          font-family: Archivo, Inter, sans-serif;
+          font-size: 17px;
+          font-weight: 700;
         }
 
         .topbar > button {
@@ -479,7 +485,7 @@ Vim pela LP3 da GP Asfalto.`);
           border: 0;
           border-radius: 999px;
           padding: 0 15px;
-          background: #fff;
+          background: #f4f0e6;
           color: #080908;
           font-size: 12px;
           font-weight: 900;
@@ -502,7 +508,7 @@ Vim pela LP3 da GP Asfalto.`);
           height: 100%;
           object-fit: cover;
           object-position: 58% center;
-          filter: contrast(1.14) saturate(0.72) brightness(0.74);
+          filter: contrast(1.16) saturate(0.68) brightness(0.72);
           transform: scale(1.04);
           z-index: -3;
         }
@@ -512,90 +518,78 @@ Vim pela LP3 da GP Asfalto.`);
           inset: 0;
           z-index: -2;
           background:
-            radial-gradient(circle at 70% 20%, rgba(22, 161, 11, 0.17), transparent 26%),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0.26) 32%, rgba(0, 0, 0, 0.92) 100%),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.1));
-        }
-
-        .heroShade::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-          background-size: 82px 82px;
-          opacity: 0.18;
-          mask-image: linear-gradient(180deg, transparent 0%, #000 42%, #000 100%);
+            linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.35) 32%, rgba(3, 4, 3, 0.96) 100%),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.1)),
+            radial-gradient(circle at 78% 28%, rgba(22, 161, 11, 0.18), transparent 28%);
         }
 
         .heroContent {
-          width: min(100%, 760px);
+          width: min(100%, 720px);
         }
 
-        .serviceLine,
-        .panelIntro small,
-        .operation small,
-        .formIntro small {
-          display: block;
-          color: #42df35;
+        .kicker {
+          margin: 0;
+          color: var(--green2);
           text-transform: uppercase;
           font-size: 10px;
-          font-weight: 950;
+          font-weight: 900;
           letter-spacing: 0.17em;
+        }
+
+        .hero h1,
+        .scenarioHead h2,
+        .scenarioText h3,
+        .process h2,
+        .formIntro h2,
+        .closing h2 {
+          font-family: Archivo, Inter, sans-serif;
+          font-weight: 500;
+          letter-spacing: -0.078em;
+          text-wrap: balance;
         }
 
         .hero h1 {
           margin: 12px 0 0;
-          font-size: clamp(52px, 17vw, 118px);
+          font-size: clamp(54px, 16vw, 110px);
           line-height: 0.82;
-          letter-spacing: -0.095em;
-          max-width: 860px;
-          text-wrap: balance;
+          max-width: 800px;
         }
 
         .hero h1 span {
           display: block;
-          color: rgba(245, 243, 234, 0.56);
+          color: rgba(244, 240, 230, 0.52);
         }
 
-        .typingBox {
+        .typingLine {
           margin-top: 18px;
-          min-height: 42px;
+          min-height: 38px;
           display: flex;
           align-items: center;
           gap: 5px;
-          color: rgba(245, 243, 234, 0.88);
-          font-size: clamp(18px, 5vw, 28px);
-          font-weight: 760;
-          letter-spacing: -0.04em;
+          color: rgba(244, 240, 230, 0.92);
+          font-size: clamp(18px, 4.8vw, 26px);
+          font-weight: 800;
+          letter-spacing: -0.045em;
         }
 
-        .typingBox i {
+        .typingLine i {
           width: 2px;
           height: 1.05em;
-          background: #42df35;
+          background: var(--green2);
           display: inline-block;
           animation: blink 0.8s infinite;
         }
 
         @keyframes blink {
-          0%,
-          45% {
-            opacity: 1;
-          }
-
-          46%,
-          100% {
-            opacity: 0;
-          }
+          0%, 45% { opacity: 1; }
+          46%, 100% { opacity: 0; }
         }
 
-        .heroText {
+        .heroSub {
           margin: 8px 0 0;
           max-width: 520px;
           color: var(--muted);
-          font-size: 16px;
+          font-size: 15px;
           line-height: 1.42;
           letter-spacing: -0.02em;
         }
@@ -616,9 +610,9 @@ Vim pela LP3 da GP Asfalto.`);
           align-items: center;
           justify-content: center;
           text-align: center;
-          font-weight: 930;
+          font-weight: 900;
           letter-spacing: -0.025em;
-          transition: transform 0.16s ease, background 0.16s ease;
+          transition: transform 0.16s ease;
         }
 
         .primary:active,
@@ -633,14 +627,14 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .ghost {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.08);
           color: white;
           border: 1px solid rgba(255, 255, 255, 0.16);
           backdrop-filter: blur(16px);
         }
 
         .scenario,
-        .operation,
+        .process,
         .formSection,
         .closing {
           width: min(1080px, calc(100% - 36px));
@@ -648,125 +642,135 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .scenario {
-          padding: 64px 0 36px;
+          padding: 58px 0 42px;
         }
 
-        .panel {
-          padding: 16px;
-          border: 1px solid var(--line);
-          border-radius: 34px;
-          background:
-            radial-gradient(circle at 88% 16%, rgba(22, 161, 11, 0.18), transparent 34%),
-            rgba(255, 255, 255, 0.045);
-        }
-
-        .panelIntro h2,
-        .operation h2,
-        .formIntro h2,
-        .closing h2 {
+        .scenarioHead h2 {
           margin: 8px 0 0;
-          font-size: clamp(38px, 10vw, 74px);
-          line-height: 0.9;
-          letter-spacing: -0.085em;
-          text-wrap: balance;
+          font-size: clamp(44px, 11vw, 86px);
+          line-height: 0.88;
         }
 
-        .tabs {
-          margin-top: 24px;
+        .scenarioLayout {
+          margin-top: 28px;
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line2);
+        }
+
+        .scenarioRail {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 8px;
+          border-bottom: 1px solid var(--line2);
         }
 
-        .tabs button {
-          min-height: 46px;
-          border: 1px solid rgba(255, 255, 255, 0.13);
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.07);
-          color: rgba(245, 243, 234, 0.76);
-          font-size: 13px;
+        .scenarioRail button {
+          min-height: 62px;
+          border: 0;
+          border-right: 1px solid var(--line2);
+          border-bottom: 1px solid var(--line2);
+          background: transparent;
+          color: rgba(244, 240, 230, 0.62);
           font-weight: 900;
+          letter-spacing: -0.025em;
         }
 
-        .tabs button.active {
-          background: #f5f3ea;
-          color: #060706;
-          border-color: #f5f3ea;
+        .scenarioRail button:nth-child(2n) {
+          border-right: 0;
         }
 
-        .scenarioResult {
-          margin-top: 16px;
-          padding: 20px;
-          min-height: 220px;
-          border-radius: 28px;
+        .scenarioRail button.active {
+          color: #fff;
           background:
-            linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38)),
-            rgba(255, 255, 255, 0.045);
-          border: 1px solid rgba(255, 255, 255, 0.11);
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+            linear-gradient(180deg, rgba(22, 161, 11, 0.16), rgba(22, 161, 11, 0.04));
         }
 
-        .scenarioResult h3 {
+        .scenarioText {
+          padding: 28px 0;
+        }
+
+        .scenarioText small {
+          display: block;
+          color: var(--green2);
+          text-transform: uppercase;
+          font-size: 10px;
+          letter-spacing: 0.16em;
+          font-weight: 900;
+          margin-bottom: 12px;
+        }
+
+        .scenarioText h3 {
           margin: 0;
-          max-width: 720px;
-          font-size: clamp(32px, 8vw, 66px);
-          line-height: 0.94;
-          letter-spacing: -0.075em;
-          text-wrap: balance;
+          max-width: 850px;
+          font-size: clamp(40px, 10.5vw, 84px);
+          line-height: 0.9;
         }
 
-        .scenarioResult button {
-          margin-top: 28px;
-          width: fit-content;
-          min-height: 48px;
+        .scenarioText button {
+          margin-top: 22px;
+          min-height: 46px;
           border: 0;
           border-radius: 999px;
           padding: 0 18px;
-          background: rgba(66, 223, 53, 0.16);
-          color: #42df35;
-          font-weight: 930;
+          background: rgba(22, 161, 11, 0.16);
+          color: var(--green2);
+          font-weight: 900;
         }
 
-        .operation {
-          padding: 34px 0 58px;
-          display: grid;
-          gap: 18px;
+        .process {
+          padding: 42px 0 58px;
+          border-bottom: 1px solid var(--line2);
         }
 
-        .operation p,
-        .formIntro p,
-        .closing p {
-          margin: 0;
+        .process h2 {
+          margin: 10px 0 0;
+          font-size: clamp(42px, 11vw, 88px);
+          line-height: 0.86;
+          max-width: 900px;
+        }
+
+        .process p {
+          margin: 22px 0 0;
+          max-width: 560px;
           color: var(--muted);
           font-size: 17px;
-          line-height: 1.42;
+          line-height: 1.45;
           letter-spacing: -0.025em;
-          max-width: 540px;
         }
 
         .formSection {
-          padding: 36px 0 72px;
+          padding: 58px 0 72px;
           display: grid;
           gap: 24px;
+        }
+
+        .formIntro h2 {
+          margin: 8px 0 0;
+          font-size: clamp(42px, 11vw, 82px);
+          line-height: 0.88;
+        }
+
+        .formIntro p {
+          margin: 16px 0 0;
+          color: var(--muted);
+          font-size: 17px;
+          line-height: 1.42;
         }
 
         .leadForm {
           display: grid;
           gap: 11px;
           padding: 16px;
-          border-radius: 32px;
+          border-radius: 28px;
           border: 1px solid var(--line);
           background:
-            radial-gradient(circle at 100% 0%, rgba(22, 161, 11, 0.18), transparent 36%),
-            rgba(255, 255, 255, 0.055);
+            radial-gradient(circle at 100% 0%, rgba(22, 161, 11, 0.14), transparent 38%),
+            rgba(255, 255, 255, 0.045);
         }
 
         .leadForm label {
           display: grid;
           gap: 7px;
-          color: rgba(245, 243, 234, 0.62);
+          color: rgba(244, 240, 230, 0.62);
           font-size: 12px;
           font-weight: 900;
           letter-spacing: 0.02em;
@@ -777,9 +781,9 @@ Vim pela LP3 da GP Asfalto.`);
         .leadForm textarea {
           width: 100%;
           min-height: 52px;
-          border-radius: 17px;
+          border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.13);
-          background: rgba(0, 0, 0, 0.28);
+          background: rgba(0, 0, 0, 0.34);
           color: white;
           outline: none;
           padding: 0 14px;
@@ -798,8 +802,8 @@ Vim pela LP3 da GP Asfalto.`);
         .leadForm input:focus,
         .leadForm select:focus,
         .leadForm textarea:focus {
-          border-color: rgba(66, 223, 53, 0.78);
-          box-shadow: 0 0 0 4px rgba(66, 223, 53, 0.1);
+          border-color: rgba(34, 211, 19, 0.74);
+          box-shadow: 0 0 0 4px rgba(34, 211, 19, 0.1);
         }
 
         .full {
@@ -807,13 +811,25 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .closing {
-          min-height: 54svh;
-          padding: 80px 0 118px;
+          min-height: 52svh;
+          padding: 76px 0 118px;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: flex-start;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          border-top: 1px solid var(--line2);
+        }
+
+        .closing h2 {
+          margin: 0;
+          font-size: clamp(44px, 12vw, 92px);
+          line-height: 0.86;
+        }
+
+        .closing p {
+          margin: 18px 0 0;
+          color: var(--muted);
+          font-size: 17px;
         }
 
         .closing .primary {
@@ -831,7 +847,7 @@ Vim pela LP3 da GP Asfalto.`);
           display: grid;
           grid-template-columns: 0.82fr 1.18fr;
           gap: 8px;
-          background: rgba(5, 6, 5, 0.76);
+          background: rgba(5, 6, 6, 0.78);
           border: 1px solid var(--line);
           backdrop-filter: blur(22px);
           box-shadow: 0 18px 70px rgba(0, 0, 0, 0.42);
@@ -877,30 +893,29 @@ Vim pela LP3 da GP Asfalto.`);
             min-width: 220px;
           }
 
-          .tabs {
-            display: flex;
-            flex-wrap: wrap;
+          .scenarioLayout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
           }
 
-          .tabs button {
-            padding: 0 18px;
+          .scenarioRail {
+            grid-template-columns: 1fr;
+            border-bottom: 0;
+            border-right: 1px solid var(--line2);
           }
 
-          .scenarioResult {
-            min-height: 260px;
-            padding: 28px;
+          .scenarioRail button {
+            border-right: 0;
           }
 
-          .operation {
-            grid-template-columns: 1fr 0.54fr;
-            align-items: end;
-            padding-top: 60px;
+          .scenarioText {
+            padding: 34px;
           }
 
           .formSection {
             grid-template-columns: 0.82fr 1.18fr;
             align-items: start;
-            padding-top: 60px;
+            padding-top: 70px;
           }
 
           .leadForm {
@@ -913,30 +928,27 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         @media (min-width: 1100px) {
-          .hero h1 {
-            max-width: 880px;
-          }
-
-          .heroText {
-            font-size: 18px;
-          }
-
           .heroVideo {
             object-position: center center;
+          }
+
+          .heroSub {
+            font-size: 17px;
           }
         }
 
         @media (max-width: 410px) {
           .hero h1 {
-            font-size: 48px;
+            font-size: 50px;
+          }
+
+          .brand strong,
+          .brand span {
+            font-size: 14px;
           }
 
           .topbar > button {
             padding: 0 12px;
-          }
-
-          .brand span {
-            font-size: 13px;
           }
         }
       `}</style>
