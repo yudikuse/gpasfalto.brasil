@@ -248,12 +248,32 @@ Vim pela LP3 da GP Asfalto.`);
         </div>
       </section>
 
-      {/* CLIENT STRIP */}
+      {/* CLIENT STRIP — logos com fundo transparente */}
       <div className="clientStrip">
         <p className="clientLabel">Obras executadas para</p>
         <div className="clientScroll">
-          {["COMIGO","LDC","Raízen","Nutrien","Mosaic","Mercado Livre","Fetz","Grupo Cereal"].map(c => (
-            <span key={c} className="clientChip">{c}</span>
+          {[
+            { name: "COMIGO",        src: "/images/logos/comigo.png" },
+            { name: "LDC",           src: "/images/logos/ldc.png" },
+            { name: "Raízen",        src: "/images/logos/raizen.png" },
+            { name: "Nutrien",       src: "/images/logos/nutrien.png" },
+            { name: "Mosaic",        src: "/images/logos/mosaic.png" },
+            { name: "Mercado Livre", src: "/images/logos/mercado-livre.png" },
+            { name: "Fetz",          src: "/images/logos/fetz.png" },
+            { name: "Grupo Cereal",  src: "/images/logos/grupo-cereal.png" },
+          ].map(c => (
+            <div key={c.name} className="clientLogo">
+              <img
+                src={c.src}
+                alt={c.name}
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                  const fb = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fb) fb.style.display = "block";
+                }}
+              />
+              <span>{c.name}</span>
+            </div>
           ))}
         </div>
       </div>
@@ -413,8 +433,8 @@ Vim pela LP3 da GP Asfalto.`);
         :root {
           --green: #17a40b;
           --green2: #22d313;
-          --asphalt: #040504;
-          --graphite: #0d0f0d;
+          --asphalt: #0c0e0c;
+          --graphite: #161816;
           --cream: #f4efe3;
           --muted: rgba(244, 239, 227, 0.66);
           --line: rgba(255, 255, 255, 0.14);
@@ -431,7 +451,7 @@ Vim pela LP3 da GP Asfalto.`);
 
         body {
           margin: 0;
-          background: var(--asphalt);
+          background: #0c0e0c;
           color: var(--cream);
           font-family:
             "Inter Tight",
@@ -459,7 +479,7 @@ Vim pela LP3 da GP Asfalto.`);
         .lp3 {
           min-height: 100vh;
           overflow-x: hidden;
-          background: #050605;
+          background: #0c0e0c;
         }
 
         .topbar {
@@ -1093,11 +1113,11 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
 
-        /* ── CLIENT STRIP ── */
+        /* ── CLIENT STRIP — logos ── */
         .clientStrip {
           width: min(1080px, calc(100% - 36px));
           margin: 0 auto;
-          padding: 22px 0 22px;
+          padding: 22px 0 26px;
           border-bottom: 1px solid rgba(255,255,255,0.07);
         }
         .clientLabel {
@@ -1106,29 +1126,47 @@ Vim pela LP3 da GP Asfalto.`);
           letter-spacing: 0.14em;
           text-transform: uppercase;
           color: rgba(244,239,227,0.28);
-          margin-bottom: 10px;
+          margin-bottom: 14px;
         }
         .clientScroll {
           display: flex;
+          align-items: center;
           overflow-x: auto;
           scrollbar-width: none;
           -webkit-overflow-scrolling: touch;
           gap: 0;
         }
         .clientScroll::-webkit-scrollbar { display: none; }
-        .clientChip {
+        .clientLogo {
           flex: 0 0 auto;
-          font-size: 12px;
+          display: flex;
+          align-items: center;
+          padding-right: 28px;
+          margin-right: 28px;
+          border-right: 1px solid rgba(255,255,255,0.09);
+          height: 32px;
+        }
+        .clientLogo:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+        .clientLogo img {
+          height: 28px;
+          width: auto;
+          max-width: 100px;
+          object-fit: contain;
+          filter: brightness(0) invert(1);
+          opacity: 0.55;
+          display: block;
+          transition: opacity 0.2s;
+        }
+        .clientLogo img:hover { opacity: 0.85; }
+        .clientLogo span {
+          display: none;
+          font-size: 11px;
           font-weight: 800;
           letter-spacing: 0.06em;
           text-transform: uppercase;
           color: rgba(244,239,227,0.42);
-          padding-right: 18px;
-          margin-right: 18px;
-          border-right: 1px solid rgba(255,255,255,0.09);
           white-space: nowrap;
         }
-        .clientChip:last-child { border-right: none; margin-right: 0; }
 
         /* ── lineProcess mobile: horizontal scroll ── */
         @media (max-width: 759px) {
