@@ -202,16 +202,6 @@ Vim pela LP3 da GP Asfalto.`);
       </header>
 
 
-      {/* CLIENT STRIP */}
-      <div className="clientStrip">
-        <p className="clientLabel">Obras executadas para</p>
-        <div className="clientScroll">
-          {["COMIGO","LDC","Raízen","Nutrien","Mosaic","Mercado Livre","Fetz","Grupo Cereal"].map(c => (
-            <span key={c} className="clientChip">{c}</span>
-          ))}
-        </div>
-      </div>
-
       <section className="hero" id="inicio">
         <video
           ref={videoRef}
@@ -257,6 +247,16 @@ Vim pela LP3 da GP Asfalto.`);
           </div>
         </div>
       </section>
+
+      {/* CLIENT STRIP */}
+      <div className="clientStrip">
+        <p className="clientLabel">Obras executadas para</p>
+        <div className="clientScroll">
+          {["COMIGO","LDC","Raízen","Nutrien","Mosaic","Mercado Livre","Fetz","Grupo Cereal"].map(c => (
+            <span key={c} className="clientChip">{c}</span>
+          ))}
+        </div>
+      </div>
 
       <section className="entry">
         <div className="entryImage">
@@ -544,9 +544,9 @@ Vim pela LP3 da GP Asfalto.`);
           inset: 0;
           z-index: -2;
           background:
-            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.14), transparent 28%),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38) 38%, rgba(5, 6, 5, 0.98) 100%),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.08));
+            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.10), transparent 28%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.28) 38%, rgba(5, 6, 5, 0.88) 100%),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.05));
         }
 
         .heroShade::after {
@@ -697,7 +697,8 @@ Vim pela LP3 da GP Asfalto.`);
           border: 1px solid var(--line);
           background:
             linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.60)),
-            url("/images/lp3/hero-cbuq.jpg") center 65% / cover no-repeat;
+            url("/images/lp3/hero-cbuq.jpg") center 65% / cover no-repeat,
+            linear-gradient(135deg, #0f1f0f, #1a2e1a);
           box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
         }
 
@@ -852,7 +853,8 @@ Vim pela LP3 da GP Asfalto.`);
           border: 1px solid var(--line);
           background:
             linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.45)),
-            url("/images/lp3/patio-logistico.jpg") center 35% / cover no-repeat;
+            url("/images/lp3/patio-logistico.jpg") center 35% / cover no-repeat,
+            linear-gradient(135deg, #0f1a0f, #1a2a1a);
           box-shadow: 0 30px 90px rgba(0,0,0,.26);
         }
 
@@ -1095,7 +1097,7 @@ Vim pela LP3 da GP Asfalto.`);
         .clientStrip {
           width: min(1080px, calc(100% - 36px));
           margin: 0 auto;
-          padding: 18px 0 22px;
+          padding: 22px 0 22px;
           border-bottom: 1px solid rgba(255,255,255,0.07);
         }
         .clientLabel {
