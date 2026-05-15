@@ -66,7 +66,6 @@ function openWhatsapp(message: string) {
 
 export default function LP3Page() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
   const [selected, setSelected] = useState<Scenario>(SCENARIOS[0]);
   const [phone, setPhone] = useState("");
   const [typedText, setTypedText] = useState("");
@@ -183,8 +182,6 @@ Vim pela LP3 da GP Asfalto.`);
 
   return (
     <main className="lp3">
-      <div className="siteBg" aria-hidden="true" />
-
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="GP Asfalto">
           <img
@@ -203,6 +200,17 @@ Vim pela LP3 da GP Asfalto.`);
           Avaliar obra
         </button>
       </header>
+
+
+      {/* CLIENT STRIP */}
+      <div className="clientStrip">
+        <p className="clientLabel">Obras executadas para</p>
+        <div className="clientScroll">
+          {["COMIGO","LDC","Raízen","Nutrien","Mosaic","Mercado Livre","Fetz","Grupo Cereal"].map(c => (
+            <span key={c} className="clientChip">{c}</span>
+          ))}
+        </div>
+      </div>
 
       <section className="hero" id="inicio">
         <video
@@ -251,74 +259,61 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="entry">
-        <div className="entryPhoto">
-          <div className="photoVeil" />
-          <div className="entryPhotoText">
-            <p className="kicker">Obra em campo</p>
-            <h2>Aplicação, equipe e equipamento no mesmo ritmo.</h2>
+        <div className="entryImage">
+          <div className="entryCaption">
+            <span>Obra em campo</span>
+            <strong>Base, massa, aplicação e rolo trabalhando em sequência.</strong>
           </div>
         </div>
 
-        <div className="sectionLabel">
+        <div className="entryPanel">
           <p className="kicker">Entrada rápida</p>
           <h2>Onde a GP Asfalto entra?</h2>
-        </div>
 
-        <div className="scenarioPicker">
-          {SCENARIOS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={selected.id === item.id ? "active" : ""}
-              onClick={() => setSelected(item)}
-            >
-              {item.label}
+          <div className="scenarioPicker">
+            {SCENARIOS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={selected.id === item.id ? "active" : ""}
+                onClick={() => setSelected(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="scenarioText">
+            <span>{selected.label}</span>
+            <h3>{selected.title}</h3>
+
+            <button type="button" onClick={() => goToForm(selected)}>
+              Enviar cenário
             </button>
-          ))}
-        </div>
-
-        <div className="scenarioText">
-          <span>{selected.label}</span>
-          <h3>{selected.title}</h3>
-
-          <button type="button" onClick={() => goToForm(selected)}>
-            Enviar cenário
-          </button>
+          </div>
         </div>
       </section>
 
       <section className="sequence">
-        <p className="kicker">Sequência de campo</p>
+        <div className="sequenceInner">
+          <p className="kicker">Sequência de campo</p>
+          <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
 
-        <h2>
-          Base no ponto.
-          <br />
-          Massa no tempo.
-          <br />
-          Rolo na sequência.
-        </h2>
-
-        <div className="lineProcess" aria-label="Processo de aplicação">
-          <span>Base</span>
-          <span>Massa</span>
-          <span>Aplicação</span>
-          <span>Compactação</span>
+          <div className="lineProcess" aria-label="Processo de aplicação">
+            <span>Base</span>
+            <span>Massa</span>
+            <span>Aplicação</span>
+            <span>Compactação</span>
+          </div>
         </div>
       </section>
 
       <section className="proof">
-        <div className="proofImage">
-          <div className="proofImageOverlay" />
-        </div>
+        <div className="proofImage" />
 
         <div className="proofText">
           <p className="kicker">Execução</p>
-
-          <h2>
-            Não é só massa.
-            <br />É obra entregue.
-          </h2>
-
+          <h2>Não é só massa. É obra entregue.</h2>
           <p>
             A GP Asfalto entra com operação em campo para aplicação, base,
             compactação e acabamento quando a obra precisa andar.
@@ -382,14 +377,6 @@ Vim pela LP3 da GP Asfalto.`);
             <input name="volume" type="text" placeholder="Ex: 8.000 m² ou 450 t" />
           </label>
 
-          <label className="full">
-            Observação rápida
-            <textarea
-              name="note"
-              placeholder="Prazo, acesso, base, etapa da obra ou detalhe importante."
-            />
-          </label>
-
           <button className="primary full" type="submit">
             Enviar no WhatsApp
           </button>
@@ -397,9 +384,7 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="closing">
-        <div className="closingImage" />
-
-        <div className="closingText">
+        <div>
           <p className="kicker">GP Asfalto</p>
           <h2>Vamos avaliar sua obra?</h2>
           <p>Envie cidade, cenário e volume aproximado para entender onde entramos.</p>
@@ -429,10 +414,11 @@ Vim pela LP3 da GP Asfalto.`);
           --green: #17a40b;
           --green2: #22d313;
           --asphalt: #040504;
+          --graphite: #0d0f0d;
           --cream: #f4efe3;
           --muted: rgba(244, 239, 227, 0.66);
-          --line: rgba(244, 239, 227, 0.14);
-          --lineSoft: rgba(244, 239, 227, 0.08);
+          --line: rgba(255, 255, 255, 0.14);
+          --line-soft: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -440,15 +426,12 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         html {
-          min-height: 100%;
-          background: #050605 !important;
           scroll-behavior: smooth;
         }
 
         body {
-          min-height: 100%;
           margin: 0;
-          background: #050605 !important;
+          background: var(--asphalt);
           color: var(--cream);
           font-family:
             "Inter Tight",
@@ -459,12 +442,6 @@ Vim pela LP3 da GP Asfalto.`);
             BlinkMacSystemFont,
             "Segoe UI",
             sans-serif;
-          overscroll-behavior: none;
-        }
-
-        #__next,
-        main {
-          background: #050605 !important;
         }
 
         button,
@@ -480,42 +457,9 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .lp3 {
-          position: relative;
           min-height: 100vh;
           overflow-x: hidden;
-          background: #050605 !important;
-          isolation: isolate;
-        }
-
-        .siteBg {
-          position: fixed;
-          inset: 0;
-          z-index: 0;
-          pointer-events: none;
-          background:
-            radial-gradient(circle at 72% 14%, rgba(23, 164, 11, 0.1), transparent 28%),
-            radial-gradient(circle at 18% 82%, rgba(23, 164, 11, 0.055), transparent 24%),
-            linear-gradient(180deg, #070807 0%, #050605 45%, #030403 100%);
-        }
-
-        .siteBg::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.34), transparent 48%, rgba(0, 0, 0, 0.22));
-        }
-
-        .topbar,
-        .hero,
-        .entry,
-        .sequence,
-        .proof,
-        .formSection,
-        .closing,
-        .stickyCta {
-          position: relative;
-          z-index: 2;
+          background: #050605;
         }
 
         .topbar {
@@ -524,16 +468,16 @@ Vim pela LP3 da GP Asfalto.`);
           left: 14px;
           right: 14px;
           z-index: 50;
-          height: 64px;
-          padding: 8px;
+          height: 56px;
+          padding: 7px;
           border: 1px solid var(--line);
           border-radius: 999px;
-          background: rgba(5, 6, 5, 0.74);
+          background: rgba(5, 6, 5, 0.72);
           backdrop-filter: blur(22px);
           display: flex;
           align-items: center;
           justify-content: space-between;
-          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.34);
+          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.32);
         }
 
         .brand {
@@ -542,13 +486,13 @@ Vim pela LP3 da GP Asfalto.`);
           align-items: center;
           color: white;
           text-decoration: none;
-          padding-left: 16px;
+          padding-left: 12px;
         }
 
         .brand img {
-          height: 46px;
+          height: 32px;
           width: auto;
-          max-width: 260px;
+          max-width: 188px;
           object-fit: contain;
           display: block;
         }
@@ -558,29 +502,29 @@ Vim pela LP3 da GP Asfalto.`);
           color: #fff;
           font-weight: 900;
           letter-spacing: -0.04em;
-          font-size: 22px;
+          font-size: 18px;
         }
 
         .topbar > button {
-          height: 46px;
+          height: 42px;
           border: 0;
           border-radius: 999px;
-          padding: 0 18px;
+          padding: 0 16px;
           background: var(--cream);
           color: #070807;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 900;
           letter-spacing: -0.02em;
         }
 
         .hero {
+          position: relative;
           min-height: 100svh;
-          padding: 102px 20px 34px;
+          padding: 90px 20px 34px;
           display: flex;
           align-items: flex-end;
           overflow: hidden;
           isolation: isolate;
-          background: transparent;
         }
 
         .heroVideo {
@@ -590,49 +534,26 @@ Vim pela LP3 da GP Asfalto.`);
           height: 100%;
           object-fit: cover;
           object-position: 58% center;
-          filter:
-            brightness(0.9)
-            contrast(1.18)
-            saturate(1.06)
-            sepia(0.04);
+          filter: contrast(1.14) saturate(0.78) brightness(0.74);
           transform: scale(1.04);
-          z-index: -2;
-          opacity: 1;
+          z-index: -3;
         }
 
         .heroShade {
           position: absolute;
           inset: 0;
-          z-index: -1;
+          z-index: -2;
           background:
-            radial-gradient(circle at 76% 22%, rgba(23, 164, 11, 0.08), transparent 30%),
-            linear-gradient(
-              180deg,
-              rgba(0, 0, 0, 0.08) 0%,
-              rgba(0, 0, 0, 0.18) 40%,
-              rgba(5, 6, 5, 0.72) 100%
-            ),
-            linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.44) 0%,
-              rgba(0, 0, 0, 0.16) 44%,
-              rgba(0, 0, 0, 0.08) 100%
-            );
+            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.14), transparent 28%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38) 38%, rgba(5, 6, 5, 0.98) 100%),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.08));
         }
 
         .heroShade::after {
           content: "";
           position: absolute;
           inset: 0;
-          background:
-            radial-gradient(circle at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.14) 78%),
-            linear-gradient(
-              180deg,
-              rgba(244, 239, 227, 0.035) 0%,
-              transparent 34%,
-              rgba(0, 0, 0, 0.22) 100%
-            );
-          pointer-events: none;
+          background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.25) 45%, rgba(0,0,0,.9) 100%);
         }
 
         .heroContent {
@@ -651,13 +572,12 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .hero h1,
-        .sectionLabel h2,
-        .entryPhotoText h2,
+        .entryPanel h2,
         .scenarioText h3,
         .sequence h2,
         .proofText h2,
         .formIntro h2,
-        .closingText h2 {
+        .closing h2 {
           font-family:
             "Inter Tight",
             "Manrope",
@@ -678,7 +598,7 @@ Vim pela LP3 da GP Asfalto.`);
 
         .hero h1 span {
           display: block;
-          color: rgba(244, 239, 227, 0.52);
+          color: rgba(244, 239, 227, 0.5);
         }
 
         .typingLine {
@@ -702,15 +622,8 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         @keyframes blink {
-          0%,
-          45% {
-            opacity: 1;
-          }
-
-          46%,
-          100% {
-            opacity: 0;
-          }
+          0%, 45% { opacity: 1; }
+          46%, 100% { opacity: 0; }
         }
 
         .heroSub {
@@ -764,92 +677,98 @@ Vim pela LP3 da GP Asfalto.`);
         .entry,
         .sequence,
         .proof,
-        .formSection {
+        .formSection,
+        .closing {
           width: min(1080px, calc(100% - 36px));
           margin: 0 auto;
         }
 
         .entry {
-          padding: 64px 0 50px;
+          padding: 54px 0 38px;
+          display: grid;
+          gap: 22px;
         }
 
-        .entryPhoto {
+        .entryImage {
           position: relative;
-          min-height: 420px;
-          margin-bottom: 64px;
+          height: 330px;
+          border-radius: 30px;
           overflow: hidden;
-          border: 1px solid rgba(244, 239, 227, 0.1);
+          border: 1px solid var(--line);
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.12)),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.4)),
-            url("/images/lp3/patio-logistico.jpg") center / cover no-repeat;
-          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.60)),
+            url("/images/lp3/hero-cbuq.jpg") center 65% / cover no-repeat;
+          box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
         }
 
-        .photoVeil {
+        .entryImage::after {
+          content: "";
           position: absolute;
           inset: 0;
-          background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.08)),
-            radial-gradient(circle at 82% 22%, rgba(23, 164, 11, 0.1), transparent 30%);
-          mix-blend-mode: normal;
+          background: radial-gradient(circle at 82% 18%, rgba(22, 164, 11, 0.14), transparent 30%);
         }
 
-        .entryPhotoText {
+        .entryCaption {
           position: absolute;
-          left: 22px;
-          right: 22px;
-          bottom: 24px;
+          left: 18px;
+          right: 18px;
+          bottom: 18px;
           z-index: 2;
         }
 
-        .entryPhotoText h2 {
-          margin: 8px 0 0;
-          max-width: 620px;
-          font-size: clamp(36px, 9vw, 74px);
-          line-height: 0.9;
+        .entryCaption span {
+          display: block;
+          margin-bottom: 8px;
+          color: var(--green2);
+          text-transform: uppercase;
+          letter-spacing: 0.16em;
+          font-size: 10px;
+          font-weight: 950;
         }
 
-        .sectionLabel h2 {
+        .entryCaption strong {
+          display: block;
+          max-width: 480px;
+          color: white;
+          font-size: 22px;
+          line-height: 1.04;
+          letter-spacing: -0.045em;
+        }
+
+        .entryPanel h2 {
           margin: 8px 0 0;
           font-size: clamp(38px, 10vw, 78px);
           line-height: 0.9;
-          max-width: 820px;
         }
 
         .scenarioPicker {
-          margin-top: 30px;
+          margin-top: 24px;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          border-top: 1px solid rgba(244, 239, 227, 0.16);
+          border-top: 1px solid var(--line);
+          border-left: 1px solid var(--line-soft);
         }
 
         .scenarioPicker button {
-          min-height: 62px;
+          min-height: 58px;
           border: 0;
-          border-bottom: 1px solid rgba(244, 239, 227, 0.12);
-          background: transparent;
-          color: rgba(244, 239, 227, 0.66);
+          border-right: 1px solid var(--line-soft);
+          border-bottom: 1px solid var(--line-soft);
+          background: rgba(0, 0, 0, 0.22);
+          color: rgba(244, 239, 227, 0.7);
           font-weight: 900;
           letter-spacing: -0.025em;
         }
 
-        .scenarioPicker button:nth-child(odd) {
-          border-right: 1px solid rgba(244, 239, 227, 0.1);
-        }
-
         .scenarioPicker button.active {
-          color: #f4efe3;
-          background: linear-gradient(
-            90deg,
-            rgba(23, 164, 11, 0.22),
-            rgba(23, 164, 11, 0.04)
-          );
+          color: white;
+          background:
+            linear-gradient(120deg, rgba(22, 164, 11, 0.25), rgba(22, 164, 11, 0.06)),
+            rgba(255, 255, 255, 0.035);
         }
 
         .scenarioText {
-          padding-top: 28px;
-          max-width: 760px;
+          padding-top: 24px;
         }
 
         .scenarioText span {
@@ -881,75 +800,60 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .sequence {
-          padding: 56px 0;
-          border-top: 1px solid rgba(244, 239, 227, 0.08);
-          border-bottom: 1px solid rgba(244, 239, 227, 0.08);
-          background: transparent;
+          margin-top: 22px;
+          padding: 0;
+          border-radius: 32px;
+          overflow: hidden;
+          border: 1px solid var(--line);
+          background: #0b0d0b;
+        }
+
+        .sequenceInner {
+          padding: 34px 18px;
         }
 
         .sequence h2 {
           margin: 10px 0 0;
-          font-size: clamp(40px, 10.5vw, 84px);
-          line-height: 0.88;
-          max-width: 920px;
+          font-size: clamp(40px, 10.5vw, 82px);
+          line-height: 0.86;
+          max-width: 900px;
         }
 
         .lineProcess {
-          margin-top: 28px;
+          margin-top: 26px;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          border: 1px solid rgba(244, 239, 227, 0.14);
-          background: rgba(0, 0, 0, 0.12);
+          gap: 1px;
+          background: rgba(255,255,255,.12);
+          border: 1px solid rgba(255,255,255,.12);
         }
 
         .lineProcess span {
           min-height: 52px;
           display: grid;
           place-items: center;
-          border-right: 1px solid rgba(244, 239, 227, 0.1);
-          border-bottom: 1px solid rgba(244, 239, 227, 0.1);
-          background: rgba(255, 255, 255, 0.025);
-          color: rgba(244, 239, 227, 0.78);
+          background: rgba(0,0,0,.54);
+          color: rgba(244,239,227,.78);
           font-size: 13px;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
-        }
-
-        .lineProcess span:nth-child(2n) {
-          border-right: 0;
-        }
-
-        .lineProcess span:nth-last-child(-n + 2) {
-          border-bottom: 0;
+          letter-spacing: .08em;
         }
 
         .proof {
-          padding: 54px 0 40px;
+          padding: 46px 0 34px;
           display: grid;
-          gap: 46px;
+          gap: 22px;
         }
 
         .proofImage {
-          position: relative;
-          min-height: 390px;
-          overflow: hidden;
-          border: 1px solid rgba(244, 239, 227, 0.12);
+          min-height: 330px;
+          border-radius: 30px;
+          border: 1px solid var(--line);
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.54), rgba(0, 0, 0, 0.08)),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.38)),
-            url("/images/lp3/rolo-compactador.jpg") center / cover no-repeat;
-          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
-          filter: saturate(0.88) contrast(0.98) brightness(0.88);
-        }
-
-        .proofImageOverlay {
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(180deg, rgba(5, 6, 5, 0.04), rgba(5, 6, 5, 0.34)),
-            radial-gradient(circle at 80% 20%, rgba(23, 164, 11, 0.08), transparent 30%);
-          pointer-events: none;
+            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.45)),
+            url("/images/lp3/patio-logistico.jpg") center 35% / cover no-repeat;
+          box-shadow: 0 30px 90px rgba(0,0,0,.26);
         }
 
         .proofText h2 {
@@ -964,15 +868,12 @@ Vim pela LP3 da GP Asfalto.`);
           font-size: 16px;
           line-height: 1.45;
           letter-spacing: -0.025em;
-          max-width: 560px;
         }
 
         .formSection {
-          padding: 58px 0 72px;
+          padding: 54px 0 72px;
           display: grid;
           gap: 24px;
-          border-top: 1px solid rgba(244, 239, 227, 0.1);
-          background: transparent;
         }
 
         .formIntro h2 {
@@ -986,7 +887,6 @@ Vim pela LP3 da GP Asfalto.`);
           color: var(--muted);
           font-size: 16px;
           line-height: 1.42;
-          max-width: 520px;
         }
 
         .leadForm {
@@ -994,9 +894,8 @@ Vim pela LP3 da GP Asfalto.`);
           gap: 11px;
           padding: 16px;
           border-radius: 28px;
-          border: 1px solid rgba(244, 239, 227, 0.14);
-          background: rgba(4, 5, 4, 0.72);
-          backdrop-filter: blur(14px);
+          border: 1px solid var(--line);
+          background: rgba(255,255,255,0.04);
         }
 
         .leadForm label {
@@ -1015,7 +914,7 @@ Vim pela LP3 da GP Asfalto.`);
           min-height: 52px;
           border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.14);
-          background: rgba(0, 0, 0, 0.56);
+          background: rgba(0, 0, 0, 0.58);
           color: white;
           outline: none;
           padding: 0 14px;
@@ -1043,39 +942,27 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .closing {
-          width: 100%;
-          min-height: 62svh;
-          display: grid;
-          align-items: stretch;
-          padding: 0;
-          border-top: 1px solid rgba(244, 239, 227, 0.1);
-        }
-
-        .closingImage {
-          min-height: 62svh;
-          grid-area: 1 / 1;
+          min-height: 54svh;
+          padding: 76px 0 118px;
+          display: flex;
+          align-items: center;
+          border-top: 1px solid var(--line-soft);
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.1)),
-            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
-          filter: saturate(0.9) contrast(1.02) brightness(0.86);
+            linear-gradient(180deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.85) 100%),
+            url("/images/lp3/hero-cbuq.jpg") center 60% / cover no-repeat;
         }
 
-        .closingText {
-          grid-area: 1 / 1;
-          width: min(1080px, calc(100% - 36px));
-          margin: 0 auto;
-          align-self: center;
-          padding: 72px 0 118px;
+        .closing > div {
+          width: min(680px, 100%);
         }
 
-        .closingText h2 {
+        .closing h2 {
           margin: 8px 0 0;
           font-size: clamp(44px, 11.5vw, 90px);
           line-height: 0.86;
-          max-width: 680px;
         }
 
-        .closingText p:not(.kicker) {
+        .closing p:not(.kicker) {
           margin: 18px 0 0;
           max-width: 520px;
           color: var(--muted);
@@ -1083,7 +970,7 @@ Vim pela LP3 da GP Asfalto.`);
           line-height: 1.45;
         }
 
-        .closingText .primary {
+        .closing .primary {
           margin-top: 24px;
         }
 
@@ -1145,57 +1032,43 @@ Vim pela LP3 da GP Asfalto.`);
           }
 
           .entry {
-            padding-top: 82px;
-            padding-bottom: 68px;
+            grid-template-columns: 0.92fr 1.08fr;
+            align-items: center;
+            gap: 34px;
+            padding-top: 72px;
           }
 
-          .entryPhoto {
-            min-height: 520px;
+          .entryImage {
+            height: 620px;
           }
 
           .scenarioPicker {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr;
           }
 
-          .scenarioPicker button {
-            border-right: 1px solid rgba(244, 239, 227, 0.1);
-          }
-
-          .scenarioPicker button:last-child {
-            border-right: 0;
+          .sequenceInner {
+            padding: 70px 42px;
           }
 
           .lineProcess {
             grid-template-columns: repeat(4, 1fr);
           }
 
-          .lineProcess span {
-            border-bottom: 0;
-          }
-
-          .lineProcess span:nth-child(2n) {
-            border-right: 1px solid rgba(244, 239, 227, 0.1);
-          }
-
-          .lineProcess span:last-child {
-            border-right: 0;
-          }
-
           .proof {
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.05fr 0.95fr;
             align-items: center;
-            gap: 42px;
-            padding: 82px 0;
+            gap: 34px;
+            padding: 72px 0;
           }
 
           .proofImage {
-            min-height: 560px;
+            min-height: 520px;
           }
 
           .formSection {
             grid-template-columns: 0.82fr 1.18fr;
             align-items: start;
-            padding-top: 82px;
+            padding-top: 72px;
           }
 
           .leadForm {
@@ -1217,10 +1090,64 @@ Vim pela LP3 da GP Asfalto.`);
           }
         }
 
+
+        /* ── CLIENT STRIP ── */
+        .clientStrip {
+          width: min(1080px, calc(100% - 36px));
+          margin: 0 auto;
+          padding: 18px 0 22px;
+          border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .clientLabel {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(244,239,227,0.28);
+          margin-bottom: 10px;
+        }
+        .clientScroll {
+          display: flex;
+          overflow-x: auto;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          gap: 0;
+        }
+        .clientScroll::-webkit-scrollbar { display: none; }
+        .clientChip {
+          flex: 0 0 auto;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(244,239,227,0.42);
+          padding-right: 18px;
+          margin-right: 18px;
+          border-right: 1px solid rgba(255,255,255,0.09);
+          white-space: nowrap;
+        }
+        .clientChip:last-child { border-right: none; margin-right: 0; }
+
+        /* ── lineProcess mobile: horizontal scroll ── */
+        @media (max-width: 759px) {
+          .lineProcess {
+            display: flex !important;
+            grid-template-columns: unset !important;
+            overflow-x: auto;
+            scrollbar-width: none;
+          }
+          .lineProcess::-webkit-scrollbar { display: none; }
+          .lineProcess span {
+            flex: 0 0 auto;
+            min-width: 110px;
+            padding: 0 14px;
+          }
+        }
+
         @media (max-width: 430px) {
           .brand img {
-            max-width: 210px;
-            height: 38px;
+            max-width: 165px;
+            height: 28px;
           }
 
           .hero h1 {
@@ -1230,15 +1157,6 @@ Vim pela LP3 da GP Asfalto.`);
           .topbar > button {
             padding: 0 12px;
             font-size: 12px;
-          }
-
-          .entryPhoto,
-          .proofImage {
-            min-height: 360px;
-          }
-
-          .entryPhotoText h2 {
-            font-size: clamp(34px, 9vw, 54px);
           }
         }
       `}</style>
