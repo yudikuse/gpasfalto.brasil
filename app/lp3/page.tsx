@@ -1,18 +1,46 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const WHATSAPP_NUMBER = "5564993273958";
 const HERO_VIDEO =
   "https://res.cloudinary.com/dfw7h9c2j/video/upload/v1778589177/silo-bg_tjhnws.mp4";
 
-type Situacao =
-  | "Preciso terceirizar a pavimentação"
-  | "Tenho loteamento ou condomínio para entregar"
-  | "Já tenho massa e preciso aplicar"
-  | "Sou usina e preciso apoiar um cliente"
-  | "Preciso de base + aplicação completa"
-  | "";
+const SCENARIOS = [
+  {
+    id: "construtora",
+    label: "Construtora",
+    title: "Você mantém o contrato. A GP executa a pavimentação.",
+    message: "Preciso terceirizar a pavimentação da obra",
+  },
+  {
+    id: "loteamento",
+    label: "Loteamento",
+    title: "Ruas e acessos prontos para entregar o empreendimento.",
+    message: "Tenho loteamento ou condomínio para entregar",
+  },
+  {
+    id: "usina",
+    label: "Usina",
+    title: "Você fornece a massa. A GP aplica em campo.",
+    message: "Sou usina e preciso apoiar um cliente na aplicação",
+  },
+  {
+    id: "patio",
+    label: "Pátio / acesso",
+    title: "Base, aplicação e compactação para áreas operacionais.",
+    message: "Preciso pavimentar pátio, acesso ou área operacional",
+  },
+] as const;
+
+const TYPING_LINES = [
+  "Tenho uma obra e preciso aplicar CBUQ...",
+  "Já tenho massa e preciso de equipe...",
+  "Preciso terceirizar a pavimentação...",
+  "Tenho loteamento para entregar...",
+];
+
+type Scenario = (typeof SCENARIOS)[number];
 
 function maskPhone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -29,14 +57,24 @@ function maskPhone(value: string) {
 }
 
 function openWhatsapp(message: string) {
-  const encoded = encodeURIComponent(message);
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, "_blank");
+  window.open(
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
 }
 
 export default function LP3Page() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [telefone, setTelefone] = useState("");
-  const [situacao, setSituacao] = useState<Situacao>("");
+  const [phone, setPhone] = useState("");
+  const [selected, setSelected] = useState<Scenario>(SCENARIOS[0]);
+  const [typedText, setTypedText] = useState("");
+  const [typingIndex, setTypingIndex] = useState(0);
+  const [showSticky, setShowSticky] = useState(false);
+
+  const currentTypingLine = useMemo(
+    () => TYPING_LINES[typingIndex % TYPING_LINES.length],
+    [typingIndex]
+  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -45,13 +83,13 @@ export default function LP3Page() {
     const startAt = 5;
     const endAt = 18;
 
-    function handleLoaded() {
+    function startVideo() {
       if (!video) return;
       video.currentTime = startAt;
       video.play().catch(() => {});
     }
 
-    function handleTimeUpdate() {
+    function loopVideo() {
       if (!video) return;
       if (video.currentTime >= endAt) {
         video.currentTime = startAt;
@@ -59,29 +97,61 @@ export default function LP3Page() {
       }
     }
 
-    video.addEventListener("loadedmetadata", handleLoaded);
-    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("loadedmetadata", startVideo);
+    video.addEventListener("timeupdate", loopVideo);
 
     return () => {
-      video.removeEventListener("loadedmetadata", handleLoaded);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("loadedmetadata", startVideo);
+      video.removeEventListener("timeupdate", loopVideo);
     };
   }, []);
 
-  function goToForm(nextSituacao?: Situacao) {
-    if (nextSituacao) setSituacao(nextSituacao);
+  useEffect(() => {
+    let char = 0;
+    setTypedText("");
+
+    const typing = window.setInterval(() => {
+      char += 1;
+      setTypedText(currentTypingLine.slice(0, char));
+
+      if (char >= currentTypingLine.length) {
+        window.clearInterval(typing);
+
+        window.setTimeout(() => {
+          setTypingIndex((prev) => prev + 1);
+        }, 1300);
+      }
+    }, 42);
+
+    return () => window.clearInterval(typing);
+  }, [currentTypingLine]);
+
+  useEffect(() => {
+    function onScroll() {
+      setShowSticky(window.scrollY > window.innerHeight * 0.72);
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  function goToForm(nextScenario?: Scenario) {
+    if (nextScenario) setSelected(nextScenario);
 
     setTimeout(() => {
       document.getElementById("avaliacao")?.scrollIntoView({ behavior: "smooth" });
     }, 80);
   }
 
-  function quickWhatsapp(texto: string) {
-    openWhatsapp(`Olá, quero falar com a GP Asfalto sobre aplicação asfáltica.
+  function quickWhatsapp(message: string) {
+    openWhatsapp(`Olá, quero falar com a GP Asfalto.
 
-Minha situação: ${texto}
+Situação:
+${message}
 
-Tenho uma obra e gostaria de uma avaliação.`);
+Gostaria de uma avaliação para aplicação asfáltica.`);
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -89,26 +159,25 @@ Tenho uma obra e gostaria de uma avaliação.`);
 
     const form = new FormData(event.currentTarget);
 
-    const nome = String(form.get("nome") || "");
-    const cidade = String(form.get("cidade") || "");
-    const metragem = String(form.get("metragem") || "Não informado");
-    const observacao = String(form.get("observacao") || "Sem observações");
-    const situacaoObra = String(form.get("situacao") || situacao || "Não informado");
+    const name = String(form.get("name") || "");
+    const city = String(form.get("city") || "");
+    const volume = String(form.get("volume") || "Não informado");
+    const note = String(form.get("note") || "Sem observações");
 
     openWhatsapp(`Olá, quero solicitar uma avaliação para aplicação asfáltica.
 
-Nome: ${nome}
-WhatsApp: ${telefone}
-Cidade da obra: ${cidade}
+Nome: ${name}
+WhatsApp: ${phone}
+Cidade da obra: ${city}
 
-Situação da obra:
-${situacaoObra}
+Cenário:
+${selected.message}
 
-Metragem/volume aproximado:
-${metragem}
+Metragem ou volume aproximado:
+${volume}
 
 Observação:
-${observacao}
+${note}
 
 Vim pela LP3 da GP Asfalto.`);
   }
@@ -127,12 +196,8 @@ Vim pela LP3 da GP Asfalto.`);
           <span>GP ASFALTO</span>
         </a>
 
-        <button
-          className="topCta"
-          type="button"
-          onClick={() => goToForm()}
-        >
-          Avaliar obra
+        <button type="button" onClick={() => goToForm()}>
+          Iniciar avaliação
         </button>
       </header>
 
@@ -147,300 +212,182 @@ Vim pela LP3 da GP Asfalto.`);
           aria-hidden="true"
         />
 
-        <div className="heroOverlay" />
+        <div className="heroShade" />
 
         <div className="heroContent">
-          <div className="heroTag">Aplicação asfáltica • base • CBUQ • compactação</div>
+          <p className="serviceLine">Aplicação asfáltica • base • compactação</p>
 
           <h1>
-            Sua obra precisa de asfalto aplicado.
-            <span>Não de mais um fornecedor.</span>
+            Asfalto aplicado.
+            <span>Obra andando.</span>
           </h1>
 
-          <p>
-            A GP entra com equipe, equipamentos e execução completa — da base à aplicação final em CBUQ.
+          <div className="typingBox">
+            <span>{typedText}</span>
+            <i />
+          </div>
+
+          <p className="heroText">
+            Equipe, equipamentos e execução para obras que precisam sair do papel.
           </p>
 
           <div className="heroActions">
-            <button className="btn primary" type="button" onClick={() => goToForm()}>
-              Solicitar avaliação da obra
+            <button className="primary" type="button" onClick={() => goToForm()}>
+              Iniciar avaliação
             </button>
 
             <button
-              className="btn secondary"
+              className="ghost"
               type="button"
               onClick={() => quickWhatsapp("Já tenho massa e preciso aplicar")}
             >
-              Já tenho massa e preciso aplicar
+              Já tenho massa
             </button>
           </div>
-
-          <div className="heroProof">
-            <span>Construtoras</span>
-            <span>Loteadoras</span>
-            <span>Usinas</span>
-            <span>Obras privadas</span>
-          </div>
         </div>
-
-        <button className="scrollHint" type="button" onClick={() => goToForm()}>
-          Começar avaliação
-        </button>
       </section>
 
-      <section className="situation">
-        <div className="sectionIntro">
-          <span>Escolha rápida</span>
-          <h2>Qual é o seu caso?</h2>
-        </div>
+      <section className="scenario" id="cenario">
+        <div className="panel">
+          <div className="panelIntro">
+            <small>Entrada rápida</small>
+            <h2>Onde a GP entra?</h2>
+          </div>
 
-        <div className="situationList">
-          {[
-            "Preciso terceirizar a pavimentação",
-            "Tenho loteamento ou condomínio para entregar",
-            "Já tenho massa e preciso aplicar",
-            "Sou usina e preciso apoiar um cliente",
-            "Preciso de base + aplicação completa",
-          ].map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => goToForm(item as Situacao)}
-            >
-              <span>{item}</span>
-              <b>→</b>
+          <div className="tabs">
+            {SCENARIOS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={selected.id === item.id ? "active" : ""}
+                onClick={() => setSelected(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="scenarioResult">
+            <h3>{selected.title}</h3>
+
+            <button type="button" onClick={() => goToForm(selected)}>
+              Enviar este cenário
             </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="statement">
-        <div className="statementMedia">
-          <video
-            src={HERO_VIDEO}
-            muted
-            playsInline
-            autoPlay
-            loop
-            preload="metadata"
-          />
-        </div>
-
-        <div className="statementText">
-          <span>Execução coordenada</span>
-          <h2>Aplicação asfáltica é sequência.</h2>
-          <p>
-            Base no ponto, massa no tempo certo, acabadora, rolos e equipe alinhada.
-            Quando uma etapa falha, a obra inteira sente.
-          </p>
-          <button className="textButton" type="button" onClick={() => goToForm()}>
-            Quero avaliar minha obra
-          </button>
-        </div>
-      </section>
-
-      <section className="audiences">
-        <div className="sectionIntro">
-          <span>Para quem</span>
-          <h2>A GP entra onde a sua operação precisa resolver.</h2>
-        </div>
-
-        <div className="audienceRows">
-          <button
-            type="button"
-            onClick={() => goToForm("Preciso terceirizar a pavimentação")}
-          >
-            <small>Construtoras</small>
-            <strong>Você mantém o contrato. A GP executa a pavimentação.</strong>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => goToForm("Tenho loteamento ou condomínio para entregar")}
-          >
-            <small>Loteadoras e incorporadoras</small>
-            <strong>Ruas prontas para entregar o empreendimento.</strong>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => goToForm("Sou usina e preciso apoiar um cliente")}
-          >
-            <small>Usinas</small>
-            <strong>Você fornece a massa. A GP apoia na aplicação.</strong>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => goToForm("Preciso de base + aplicação completa")}
-          >
-            <small>Obras privadas e industriais</small>
-            <strong>Pátios, acessos e áreas operacionais com execução completa.</strong>
-          </button>
-        </div>
-      </section>
-
-      <section className="risk">
-        <span>O gargalo</span>
-        <h2>O atraso raramente começa no asfalto. Começa na falta de coordenação.</h2>
-
-        <div className="riskFlow">
-          <div>
-            <b>Base sem ponto</b>
-            <small>A massa chega, mas a obra não está pronta.</small>
-          </div>
-          <div>
-            <b>Massa parada</b>
-            <small>Tempo e temperatura trabalham contra.</small>
-          </div>
-          <div>
-            <b>Equipamento fora de ritmo</b>
-            <small>A aplicação perde sequência.</small>
-          </div>
-          <div>
-            <b>Compactação ruim</b>
-            <small>O acabamento sofre.</small>
-          </div>
-          <div>
-            <b>Retrabalho</b>
-            <small>O custo aparece depois.</small>
           </div>
         </div>
       </section>
 
-      <section className="visualProof">
+      <section className="operation">
         <div>
-          <span>Prova visual</span>
-          <h2>Obra real. Máquina real. Equipe real.</h2>
-          <p>
-            Para obras de alto valor, a decisão não vem de promessa. Vem de estrutura percebida,
-            clareza de execução e confiança para colocar equipe em campo.
-          </p>
+          <small>Execução coordenada</small>
+          <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
         </div>
 
-        <div className="proofVideo">
-          <video
-            src={HERO_VIDEO}
-            muted
-            playsInline
-            autoPlay
-            loop
-            preload="metadata"
-          />
-        </div>
+        <p>
+          A aplicação depende de ritmo. A GP entra para organizar campo, equipe e equipamento.
+        </p>
       </section>
 
       <section className="formSection" id="avaliacao">
-        <div className="formCopy">
-          <span>Avaliação inicial</span>
-          <h2>Envie os dados da obra.</h2>
+        <div className="formIntro">
+          <small>Avaliação inicial</small>
+          <h2>Envie o básico da obra.</h2>
           <p>
-            A equipe da GP entende o cenário e avalia se entra com aplicação,
-            base ou execução completa.
+            A conversa começa com cidade, cenário e volume aproximado.
           </p>
         </div>
 
         <form className="leadForm" onSubmit={handleSubmit}>
           <label>
             Nome
-            <input name="nome" type="text" placeholder="Seu nome" required />
+            <input name="name" type="text" placeholder="Seu nome" required />
           </label>
 
           <label>
             WhatsApp
             <input
-              name="telefone"
+              name="phone"
               type="tel"
               placeholder="(64) 99327-3958"
-              value={telefone}
-              onChange={(event) => setTelefone(maskPhone(event.target.value))}
+              value={phone}
+              onChange={(event) => setPhone(maskPhone(event.target.value))}
               required
             />
           </label>
 
           <label>
             Cidade da obra
-            <input name="cidade" type="text" placeholder="Ex: Rio Verde-GO" required />
+            <input name="city" type="text" placeholder="Ex: Rio Verde-GO" required />
           </label>
 
           <label>
-            Situação da obra
+            Cenário
             <select
-              name="situacao"
-              value={situacao}
-              onChange={(event) => setSituacao(event.target.value as Situacao)}
-              required
+              value={selected.id}
+              onChange={(event) => {
+                const next = SCENARIOS.find((item) => item.id === event.target.value);
+                if (next) setSelected(next);
+              }}
             >
-              <option value="">Selecione</option>
-              <option>Preciso terceirizar a pavimentação</option>
-              <option>Tenho loteamento ou condomínio para entregar</option>
-              <option>Já tenho massa e preciso aplicar</option>
-              <option>Sou usina e preciso apoiar um cliente</option>
-              <option>Preciso de base + aplicação completa</option>
+              {SCENARIOS.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
             </select>
           </label>
 
-          <label>
-            Metragem ou volume aproximado
-            <input name="metragem" type="text" placeholder="Ex: 8.000 m² ou 450 t" />
+          <label className="full">
+            Metragem ou volume, se souber
+            <input name="volume" type="text" placeholder="Ex: 8.000 m² ou 450 t" />
           </label>
 
           <label className="full">
             Observação rápida
             <textarea
-              name="observacao"
-              placeholder="Prazo, local, condição da base, acesso ou qualquer detalhe importante."
+              name="note"
+              placeholder="Prazo, acesso, condição da base ou detalhe importante."
             />
           </label>
 
-          <button className="btn primary full" type="submit">
-            Enviar para avaliação no WhatsApp
+          <button className="primary full" type="submit">
+            Enviar no WhatsApp
           </button>
-
-          <small className="formNote">
-            WhatsApp GP Asfalto: 64 99327-3958
-          </small>
         </form>
       </section>
 
-      <section className="finalCta">
-        <video
-          src={HERO_VIDEO}
-          muted
-          playsInline
-          autoPlay
-          loop
-          preload="metadata"
-        />
-
-        <div>
-          <h2>Vamos entender sua obra?</h2>
-          <p>Envie cidade, situação e volume aproximado. A GP avalia a melhor forma de entrar.</p>
-          <button className="btn primary" type="button" onClick={() => goToForm()}>
-            Solicitar avaliação
-          </button>
-        </div>
+      <section className="closing">
+        <h2>Vamos avaliar sua obra?</h2>
+        <p>WhatsApp GP Asfalto: 64 99327-3958</p>
+        <button className="primary" type="button" onClick={() => goToForm()}>
+          Iniciar avaliação
+        </button>
       </section>
 
-      <div className="mobileCta">
-        <button className="btn secondary" type="button" onClick={() => quickWhatsapp("Quero falar sobre aplicação asfáltica")}>
+      <div className={showSticky ? "stickyCta visible" : "stickyCta"}>
+        <button
+          className="ghost"
+          type="button"
+          onClick={() => quickWhatsapp("Quero falar sobre aplicação asfáltica")}
+        >
           WhatsApp
         </button>
-        <button className="btn primary" type="button" onClick={() => goToForm()}>
+
+        <button className="primary" type="button" onClick={() => goToForm()}>
           Avaliar obra
         </button>
       </div>
 
       <style jsx global>{`
         :root {
-          --green: #167a0a;
-          --green-light: #21a313;
-          --dark: #070807;
-          --soft: rgba(255, 255, 255, 0.08);
-          --line: rgba(255, 255, 255, 0.14);
-          --text: #f4f2ea;
-          --muted: rgba(244, 242, 234, 0.68);
-          --muted2: rgba(244, 242, 234, 0.48);
+          --green: #16a10b;
+          --green-soft: rgba(22, 161, 11, 0.24);
+          --black: #050605;
+          --text: #f5f3ea;
+          --muted: rgba(245, 243, 234, 0.62);
+          --line: rgba(255, 255, 255, 0.13);
+          --glass: rgba(12, 13, 12, 0.58);
+          --card: rgba(255, 255, 255, 0.055);
         }
 
         * {
@@ -453,9 +400,16 @@ Vim pela LP3 da GP Asfalto.`);
 
         body {
           margin: 0;
-          background: var(--dark);
+          background: var(--black);
           color: var(--text);
-          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
         }
 
         button,
@@ -466,13 +420,16 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         button {
+          cursor: pointer;
           -webkit-tap-highlight-color: transparent;
         }
 
         .lp3 {
           min-height: 100vh;
           overflow-x: hidden;
-          background: #070807;
+          background:
+            radial-gradient(circle at 50% 0%, rgba(22, 161, 11, 0.1), transparent 34%),
+            var(--black);
         }
 
         .topbar {
@@ -481,15 +438,16 @@ Vim pela LP3 da GP Asfalto.`);
           left: 14px;
           right: 14px;
           z-index: 50;
-          height: 54px;
-          padding: 7px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
+          height: 52px;
+          padding: 6px;
+          border: 1px solid var(--line);
           border-radius: 999px;
-          background: rgba(7, 8, 7, 0.58);
+          background: rgba(5, 6, 5, 0.62);
           backdrop-filter: blur(22px);
           display: flex;
           align-items: center;
           justify-content: space-between;
+          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.22);
         }
 
         .brand {
@@ -502,37 +460,38 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .brand img {
-          height: 30px;
+          height: 28px;
           max-width: 150px;
           object-fit: contain;
+          display: block;
         }
 
         .brand span {
-          font-weight: 900;
-          letter-spacing: -0.05em;
-          font-size: 15px;
+          padding-left: 8px;
+          font-size: 14px;
+          font-weight: 950;
+          letter-spacing: -0.04em;
           white-space: nowrap;
         }
 
-        .topCta {
+        .topbar > button {
           height: 40px;
           border: 0;
           border-radius: 999px;
-          padding: 0 16px;
-          background: linear-gradient(135deg, var(--green), var(--green-light));
-          color: white;
-          font-size: 13px;
-          font-weight: 850;
-          cursor: pointer;
+          padding: 0 15px;
+          background: #fff;
+          color: #080908;
+          font-size: 12px;
+          font-weight: 900;
         }
 
         .hero {
           position: relative;
           min-height: 100svh;
-          overflow: hidden;
+          padding: 86px 20px 34px;
           display: flex;
           align-items: flex-end;
-          padding: 90px 18px 92px;
+          overflow: hidden;
           isolation: isolate;
         }
 
@@ -543,379 +502,271 @@ Vim pela LP3 da GP Asfalto.`);
           height: 100%;
           object-fit: cover;
           object-position: 58% center;
+          filter: contrast(1.14) saturate(0.72) brightness(0.74);
+          transform: scale(1.04);
           z-index: -3;
-          filter: contrast(1.12) saturate(0.78) brightness(0.82);
-          transform: scale(1.02);
         }
 
-        .heroOverlay {
+        .heroShade {
           position: absolute;
           inset: 0;
           z-index: -2;
           background:
-            radial-gradient(circle at 55% 22%, rgba(22, 122, 10, 0.18), transparent 26%),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.28) 38%, rgba(0, 0, 0, 0.92) 100%),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.12));
+            radial-gradient(circle at 70% 20%, rgba(22, 161, 11, 0.17), transparent 26%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0.26) 32%, rgba(0, 0, 0, 0.92) 100%),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.1));
         }
 
-        .heroOverlay::after {
+        .heroShade::after {
           content: "";
           position: absolute;
           inset: 0;
-          background:
-            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-          background-size: 78px 78px;
-          opacity: 0.2;
-          mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 100%);
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 82px 82px;
+          opacity: 0.18;
+          mask-image: linear-gradient(180deg, transparent 0%, #000 42%, #000 100%);
         }
 
         .heroContent {
           width: min(100%, 760px);
-          position: relative;
-          z-index: 2;
         }
 
-        .heroTag,
-        .sectionIntro span,
-        .statementText span,
-        .risk > span,
-        .visualProof span,
-        .formCopy span {
+        .serviceLine,
+        .panelIntro small,
+        .operation small,
+        .formIntro small {
           display: block;
-          color: #48d936;
+          color: #42df35;
           text-transform: uppercase;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 950;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.17em;
         }
 
         .hero h1 {
-          margin: 14px 0 0;
-          font-size: clamp(48px, 13vw, 92px);
-          line-height: 0.9;
-          letter-spacing: -0.085em;
-          max-width: 780px;
+          margin: 12px 0 0;
+          font-size: clamp(52px, 17vw, 118px);
+          line-height: 0.82;
+          letter-spacing: -0.095em;
+          max-width: 860px;
           text-wrap: balance;
         }
 
         .hero h1 span {
           display: block;
-          color: rgba(244, 242, 234, 0.62);
+          color: rgba(245, 243, 234, 0.56);
         }
 
-        .hero p {
-          margin: 18px 0 0;
-          max-width: 570px;
-          color: rgba(244, 242, 234, 0.78);
-          font-size: 17px;
-          line-height: 1.45;
-          letter-spacing: -0.025em;
+        .typingBox {
+          margin-top: 18px;
+          min-height: 42px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          color: rgba(245, 243, 234, 0.88);
+          font-size: clamp(18px, 5vw, 28px);
+          font-weight: 760;
+          letter-spacing: -0.04em;
+        }
+
+        .typingBox i {
+          width: 2px;
+          height: 1.05em;
+          background: #42df35;
+          display: inline-block;
+          animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+          0%,
+          45% {
+            opacity: 1;
+          }
+
+          46%,
+          100% {
+            opacity: 0;
+          }
+        }
+
+        .heroText {
+          margin: 8px 0 0;
+          max-width: 520px;
+          color: var(--muted);
+          font-size: 16px;
+          line-height: 1.42;
+          letter-spacing: -0.02em;
         }
 
         .heroActions {
+          margin-top: 22px;
           display: grid;
           gap: 10px;
-          margin-top: 24px;
         }
 
-        .btn {
+        .primary,
+        .ghost {
           min-height: 56px;
-          border: 0;
           border-radius: 999px;
           padding: 0 22px;
+          border: 0;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           text-align: center;
-          font-weight: 900;
-          letter-spacing: -0.02em;
-          cursor: pointer;
-          transition: transform 0.18s ease, background 0.18s ease;
+          font-weight: 930;
+          letter-spacing: -0.025em;
+          transition: transform 0.16s ease, background 0.16s ease;
         }
 
-        .btn:active {
-          transform: scale(0.98);
+        .primary:active,
+        .ghost:active {
+          transform: scale(0.985);
         }
 
         .primary {
-          background: linear-gradient(135deg, var(--green), var(--green-light));
-          color: #fff;
-          box-shadow: 0 18px 48px rgba(22, 122, 10, 0.38);
+          background: linear-gradient(135deg, #119208, #20c914);
+          color: white;
+          box-shadow: 0 20px 54px rgba(22, 161, 11, 0.34);
         }
 
-        .secondary {
-          color: #fff;
-          background: rgba(255, 255, 255, 0.12);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          backdrop-filter: blur(18px);
-        }
-
-        .heroProof {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          margin-top: 18px;
-        }
-
-        .heroProof span {
-          padding: 8px 10px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.09);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          color: rgba(244, 242, 234, 0.72);
-          font-size: 12px;
-          font-weight: 800;
-          backdrop-filter: blur(12px);
-        }
-
-        .scrollHint {
-          position: absolute;
-          left: 18px;
-          right: 18px;
-          bottom: 18px;
-          z-index: 3;
-          height: 46px;
+        .ghost {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
           border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.08);
-          color: rgba(255, 255, 255, 0.7);
-          backdrop-filter: blur(18px);
-          font-weight: 850;
-          cursor: pointer;
+          backdrop-filter: blur(16px);
         }
 
-        .situation,
-        .audiences,
-        .risk,
-        .visualProof,
-        .formSection {
-          width: min(1120px, calc(100% - 36px));
+        .scenario,
+        .operation,
+        .formSection,
+        .closing {
+          width: min(1080px, calc(100% - 36px));
           margin: 0 auto;
-          padding: 74px 0;
         }
 
-        .sectionIntro {
-          margin-bottom: 24px;
+        .scenario {
+          padding: 64px 0 36px;
         }
 
-        .sectionIntro h2,
-        .statementText h2,
-        .risk h2,
-        .visualProof h2,
-        .formCopy h2,
-        .finalCta h2 {
-          margin: 10px 0 0;
-          font-size: clamp(34px, 8vw, 70px);
+        .panel {
+          padding: 16px;
+          border: 1px solid var(--line);
+          border-radius: 34px;
+          background:
+            radial-gradient(circle at 88% 16%, rgba(22, 161, 11, 0.18), transparent 34%),
+            rgba(255, 255, 255, 0.045);
+        }
+
+        .panelIntro h2,
+        .operation h2,
+        .formIntro h2,
+        .closing h2 {
+          margin: 8px 0 0;
+          font-size: clamp(38px, 10vw, 74px);
+          line-height: 0.9;
+          letter-spacing: -0.085em;
+          text-wrap: balance;
+        }
+
+        .tabs {
+          margin-top: 24px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+
+        .tabs button {
+          min-height: 46px;
+          border: 1px solid rgba(255, 255, 255, 0.13);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.07);
+          color: rgba(245, 243, 234, 0.76);
+          font-size: 13px;
+          font-weight: 900;
+        }
+
+        .tabs button.active {
+          background: #f5f3ea;
+          color: #060706;
+          border-color: #f5f3ea;
+        }
+
+        .scenarioResult {
+          margin-top: 16px;
+          padding: 20px;
+          min-height: 220px;
+          border-radius: 28px;
+          background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38)),
+            rgba(255, 255, 255, 0.045);
+          border: 1px solid rgba(255, 255, 255, 0.11);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .scenarioResult h3 {
+          margin: 0;
+          max-width: 720px;
+          font-size: clamp(32px, 8vw, 66px);
           line-height: 0.94;
           letter-spacing: -0.075em;
           text-wrap: balance;
         }
 
-        .situationList {
-          display: grid;
-          gap: 10px;
-        }
-
-        .situationList button {
-          width: 100%;
-          min-height: 66px;
+        .scenarioResult button {
+          margin-top: 28px;
+          width: fit-content;
+          min-height: 48px;
+          border: 0;
+          border-radius: 999px;
           padding: 0 18px;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.055);
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 18px;
-          text-align: left;
-          cursor: pointer;
+          background: rgba(66, 223, 53, 0.16);
+          color: #42df35;
+          font-weight: 930;
         }
 
-        .situationList span {
-          font-size: 17px;
-          font-weight: 850;
-          letter-spacing: -0.035em;
-        }
-
-        .situationList b {
-          color: #48d936;
-          font-size: 22px;
-        }
-
-        .statement {
-          width: min(1120px, calc(100% - 36px));
-          margin: 0 auto;
-          padding: 24px 0 74px;
+        .operation {
+          padding: 34px 0 58px;
           display: grid;
-          gap: 24px;
+          gap: 18px;
         }
 
-        .statementMedia {
-          position: relative;
-          min-height: 420px;
-          border-radius: 34px;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          background: #111;
-        }
-
-        .statementMedia video,
-        .proofVideo video,
-        .finalCta video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: contrast(1.1) saturate(0.78) brightness(0.76);
-        }
-
-        .statementMedia::after,
-        .proofVideo::after,
-        .finalCta::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 70% 18%, rgba(22, 122, 10, 0.16), transparent 24%),
-            linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.66));
-        }
-
-        .statementText {
-          align-self: center;
-        }
-
-        .statementText p,
-        .visualProof p,
-        .formCopy p,
-        .finalCta p {
-          margin: 18px 0 0;
+        .operation p,
+        .formIntro p,
+        .closing p {
+          margin: 0;
           color: var(--muted);
           font-size: 17px;
-          line-height: 1.48;
-          max-width: 560px;
-          letter-spacing: -0.02em;
-        }
-
-        .textButton {
-          margin-top: 22px;
-          border: 0;
-          background: transparent;
-          color: #48d936;
-          font-size: 16px;
-          font-weight: 900;
-          cursor: pointer;
-          padding: 0;
-        }
-
-        .audienceRows {
-          display: grid;
-          gap: 10px;
-        }
-
-        .audienceRows button {
-          min-height: 118px;
-          padding: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 24px;
-          background:
-            linear-gradient(120deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
-            radial-gradient(circle at 92% 20%, rgba(22, 122, 10, 0.18), transparent 32%);
-          color: #fff;
-          text-align: left;
-          cursor: pointer;
-        }
-
-        .audienceRows small {
-          display: block;
-          margin-bottom: 12px;
-          color: #48d936;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          font-weight: 950;
-          font-size: 10px;
-        }
-
-        .audienceRows strong {
-          display: block;
-          max-width: 760px;
-          font-size: clamp(24px, 6vw, 42px);
-          line-height: 0.98;
-          letter-spacing: -0.065em;
-        }
-
-        .risk {
-          text-align: center;
-        }
-
-        .risk h2 {
-          max-width: 900px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .riskFlow {
-          display: grid;
-          gap: 8px;
-          margin-top: 30px;
-        }
-
-        .riskFlow div {
-          padding: 18px;
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.055);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          text-align: left;
-        }
-
-        .riskFlow b {
-          display: block;
-          font-size: 17px;
-          letter-spacing: -0.03em;
-        }
-
-        .riskFlow small {
-          display: block;
-          margin-top: 6px;
-          color: var(--muted2);
-          line-height: 1.35;
-        }
-
-        .visualProof {
-          display: grid;
-          gap: 24px;
-        }
-
-        .proofVideo {
-          position: relative;
-          height: 420px;
-          border-radius: 34px;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.14);
+          line-height: 1.42;
+          letter-spacing: -0.025em;
+          max-width: 540px;
         }
 
         .formSection {
+          padding: 36px 0 72px;
           display: grid;
-          gap: 26px;
-          padding-bottom: 92px;
+          gap: 24px;
         }
 
         .leadForm {
           display: grid;
-          gap: 12px;
-          padding: 18px;
-          border-radius: 30px;
+          gap: 11px;
+          padding: 16px;
+          border-radius: 32px;
+          border: 1px solid var(--line);
           background:
-            radial-gradient(circle at 100% 0%, rgba(22, 122, 10, 0.18), transparent 38%),
-            rgba(255, 255, 255, 0.065);
-          border: 1px solid rgba(255, 255, 255, 0.13);
-          backdrop-filter: blur(18px);
+            radial-gradient(circle at 100% 0%, rgba(22, 161, 11, 0.18), transparent 36%),
+            rgba(255, 255, 255, 0.055);
         }
 
         .leadForm label {
           display: grid;
           gap: 7px;
-          color: rgba(244, 242, 234, 0.68);
+          color: rgba(245, 243, 234, 0.62);
           font-size: 12px;
           font-weight: 900;
           letter-spacing: 0.02em;
@@ -925,17 +776,17 @@ Vim pela LP3 da GP Asfalto.`);
         .leadForm select,
         .leadForm textarea {
           width: 100%;
-          min-height: 54px;
-          border: 1px solid rgba(255, 255, 255, 0.14);
+          min-height: 52px;
           border-radius: 17px;
+          border: 1px solid rgba(255, 255, 255, 0.13);
           background: rgba(0, 0, 0, 0.28);
-          color: #fff;
+          color: white;
           outline: none;
           padding: 0 14px;
         }
 
         .leadForm textarea {
-          min-height: 96px;
+          min-height: 92px;
           padding: 14px;
           resize: vertical;
         }
@@ -947,74 +798,59 @@ Vim pela LP3 da GP Asfalto.`);
         .leadForm input:focus,
         .leadForm select:focus,
         .leadForm textarea:focus {
-          border-color: rgba(72, 217, 54, 0.75);
-          box-shadow: 0 0 0 4px rgba(72, 217, 54, 0.12);
+          border-color: rgba(66, 223, 53, 0.78);
+          box-shadow: 0 0 0 4px rgba(66, 223, 53, 0.1);
         }
 
         .full {
           grid-column: 1 / -1;
         }
 
-        .formNote {
-          text-align: center;
-          color: var(--muted2);
-          line-height: 1.4;
-        }
-
-        .finalCta {
-          position: relative;
-          min-height: 72svh;
-          overflow: hidden;
+        .closing {
+          min-height: 54svh;
+          padding: 80px 0 118px;
           display: flex;
-          align-items: flex-end;
-          padding: 90px 18px 110px;
-          isolation: isolate;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .finalCta video {
-          position: absolute;
-          inset: 0;
-          z-index: -3;
-        }
-
-        .finalCta::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          z-index: -2;
-          background: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.9));
-        }
-
-        .finalCta div {
-          width: min(760px, 100%);
-          position: relative;
-          z-index: 2;
-        }
-
-        .finalCta .btn {
+        .closing .primary {
           margin-top: 24px;
         }
 
-        .mobileCta {
+        .stickyCta {
           position: fixed;
           left: 12px;
           right: 12px;
           bottom: 12px;
-          z-index: 70;
-          display: grid;
-          grid-template-columns: 0.8fr 1.2fr;
-          gap: 8px;
+          z-index: 60;
           padding: 8px;
           border-radius: 24px;
-          background: rgba(7, 8, 7, 0.76);
-          border: 1px solid rgba(255, 255, 255, 0.14);
+          display: grid;
+          grid-template-columns: 0.82fr 1.18fr;
+          gap: 8px;
+          background: rgba(5, 6, 5, 0.76);
+          border: 1px solid var(--line);
           backdrop-filter: blur(22px);
-          box-shadow: 0 18px 70px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 18px 70px rgba(0, 0, 0, 0.42);
+          opacity: 0;
+          transform: translateY(18px);
+          pointer-events: none;
+          transition: 0.2s ease;
         }
 
-        .mobileCta .btn {
+        .stickyCta.visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+
+        .stickyCta .primary,
+        .stickyCta .ghost {
           min-height: 52px;
-          padding: 0 14px;
+          padding: 0 12px;
           font-size: 14px;
         }
 
@@ -1022,13 +858,13 @@ Vim pela LP3 da GP Asfalto.`);
           .topbar {
             left: 50%;
             right: auto;
-            width: min(1120px, calc(100% - 48px));
+            width: min(1080px, calc(100% - 48px));
             transform: translateX(-50%);
           }
 
           .hero {
-            padding-left: max(32px, calc((100vw - 1120px) / 2));
-            padding-right: max(32px, calc((100vw - 1120px) / 2));
+            padding-left: max(30px, calc((100vw - 1080px) / 2));
+            padding-right: max(30px, calc((100vw - 1080px) / 2));
           }
 
           .heroActions {
@@ -1036,55 +872,53 @@ Vim pela LP3 da GP Asfalto.`);
             align-items: center;
           }
 
-          .situationList {
-            grid-template-columns: 1fr 1fr;
+          .heroActions .primary,
+          .heroActions .ghost {
+            min-width: 220px;
           }
 
-          .statement {
-            grid-template-columns: 1.15fr 0.85fr;
-            align-items: center;
+          .tabs {
+            display: flex;
+            flex-wrap: wrap;
+          }
+
+          .tabs button {
+            padding: 0 18px;
+          }
+
+          .scenarioResult {
+            min-height: 260px;
+            padding: 28px;
+          }
+
+          .operation {
+            grid-template-columns: 1fr 0.54fr;
+            align-items: end;
             padding-top: 60px;
-          }
-
-          .audienceRows {
-            grid-template-columns: 1fr 1fr;
-          }
-
-          .riskFlow {
-            grid-template-columns: repeat(5, 1fr);
-          }
-
-          .visualProof {
-            grid-template-columns: 0.8fr 1.2fr;
-            align-items: center;
           }
 
           .formSection {
             grid-template-columns: 0.82fr 1.18fr;
             align-items: start;
+            padding-top: 60px;
           }
 
           .leadForm {
             grid-template-columns: 1fr 1fr;
           }
 
-          .finalCta {
-            padding-left: max(32px, calc((100vw - 1120px) / 2));
-            padding-right: max(32px, calc((100vw - 1120px) / 2));
-          }
-
-          .mobileCta {
+          .stickyCta {
             display: none;
           }
         }
 
-        @media (min-width: 1120px) {
+        @media (min-width: 1100px) {
           .hero h1 {
-            max-width: 860px;
+            max-width: 880px;
           }
 
-          .hero p {
-            font-size: 19px;
+          .heroText {
+            font-size: 18px;
           }
 
           .heroVideo {
@@ -1092,22 +926,17 @@ Vim pela LP3 da GP Asfalto.`);
           }
         }
 
-        @media (max-width: 420px) {
+        @media (max-width: 410px) {
+          .hero h1 {
+            font-size: 48px;
+          }
+
+          .topbar > button {
+            padding: 0 12px;
+          }
+
           .brand span {
             font-size: 13px;
-          }
-
-          .topCta {
-            padding: 0 13px;
-            font-size: 12px;
-          }
-
-          .hero h1 {
-            font-size: 46px;
-          }
-
-          .hero p {
-            font-size: 16px;
           }
         }
       `}</style>
