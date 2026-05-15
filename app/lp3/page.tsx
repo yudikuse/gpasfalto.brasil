@@ -251,6 +251,14 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="entry">
+        <div className="entryPhoto">
+          <div className="photoVeil" />
+          <div className="entryPhotoText">
+            <p className="kicker">Obra em campo</p>
+            <h2>Aplicação, equipe e equipamento no mesmo ritmo.</h2>
+          </div>
+        </div>
+
         <div className="sectionLabel">
           <p className="kicker">Entrada rápida</p>
           <h2>Onde a GP Asfalto entra?</h2>
@@ -299,7 +307,9 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="proof">
-        <div className="proofImage" />
+        <div className="proofImage">
+          <div className="proofImageOverlay" />
+        </div>
 
         <div className="proofText">
           <p className="kicker">Execução</p>
@@ -430,12 +440,15 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         html {
+          min-height: 100%;
+          background: #050605 !important;
           scroll-behavior: smooth;
         }
 
         body {
+          min-height: 100%;
           margin: 0;
-          background: var(--asphalt);
+          background: #050605 !important;
           color: var(--cream);
           font-family:
             "Inter Tight",
@@ -446,6 +459,12 @@ Vim pela LP3 da GP Asfalto.`);
             BlinkMacSystemFont,
             "Segoe UI",
             sans-serif;
+          overscroll-behavior: none;
+        }
+
+        #__next,
+        main {
+          background: #050605 !important;
         }
 
         button,
@@ -464,7 +483,8 @@ Vim pela LP3 da GP Asfalto.`);
           position: relative;
           min-height: 100vh;
           overflow-x: hidden;
-          background: #050605;
+          background: #050605 !important;
+          isolation: isolate;
         }
 
         .siteBg {
@@ -475,11 +495,11 @@ Vim pela LP3 da GP Asfalto.`);
           background:
             linear-gradient(
               180deg,
-              rgba(0, 0, 0, 0.48) 0%,
-              rgba(0, 0, 0, 0.66) 42%,
+              rgba(0, 0, 0, 0.42) 0%,
+              rgba(0, 0, 0, 0.64) 44%,
               rgba(0, 0, 0, 0.84) 100%
             ),
-            radial-gradient(circle at 72% 18%, rgba(23, 164, 11, 0.12), transparent 30%),
+            radial-gradient(circle at 72% 18%, rgba(23, 164, 11, 0.1), transparent 30%),
             url("/images/lp3/textura-asfalto.jpg") center top / cover no-repeat;
         }
 
@@ -488,8 +508,8 @@ Vim pela LP3 da GP Asfalto.`);
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 45%, rgba(0, 0, 0, 0.28)),
-            radial-gradient(circle at 18% 82%, rgba(23, 164, 11, 0.08), transparent 26%);
+            linear-gradient(90deg, rgba(0, 0, 0, 0.36), transparent 48%, rgba(0, 0, 0, 0.24)),
+            radial-gradient(circle at 18% 82%, rgba(23, 164, 11, 0.07), transparent 26%);
         }
 
         .topbar,
@@ -510,8 +530,8 @@ Vim pela LP3 da GP Asfalto.`);
           left: 14px;
           right: 14px;
           z-index: 50;
-          height: 56px;
-          padding: 7px;
+          height: 64px;
+          padding: 8px;
           border: 1px solid var(--line);
           border-radius: 999px;
           background: rgba(5, 6, 5, 0.74);
@@ -528,13 +548,13 @@ Vim pela LP3 da GP Asfalto.`);
           align-items: center;
           color: white;
           text-decoration: none;
-          padding-left: 14px;
+          padding-left: 16px;
         }
 
         .brand img {
-          height: 34px;
+          height: 46px;
           width: auto;
-          max-width: 210px;
+          max-width: 260px;
           object-fit: contain;
           display: block;
         }
@@ -544,24 +564,24 @@ Vim pela LP3 da GP Asfalto.`);
           color: #fff;
           font-weight: 900;
           letter-spacing: -0.04em;
-          font-size: 18px;
+          font-size: 22px;
         }
 
         .topbar > button {
-          height: 42px;
+          height: 46px;
           border: 0;
           border-radius: 999px;
-          padding: 0 16px;
+          padding: 0 18px;
           background: var(--cream);
           color: #070807;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 900;
           letter-spacing: -0.02em;
         }
 
         .hero {
           min-height: 100svh;
-          padding: 90px 20px 34px;
+          padding: 102px 20px 34px;
           display: flex;
           align-items: flex-end;
           overflow: hidden;
@@ -576,10 +596,14 @@ Vim pela LP3 da GP Asfalto.`);
           height: 100%;
           object-fit: cover;
           object-position: 58% center;
-          filter: contrast(1.12) saturate(0.82) brightness(0.68);
+          filter:
+            brightness(0.9)
+            contrast(1.18)
+            saturate(1.06)
+            sepia(0.04);
           transform: scale(1.04);
           z-index: -2;
-          opacity: 0.82;
+          opacity: 1;
         }
 
         .heroShade {
@@ -587,14 +611,34 @@ Vim pela LP3 da GP Asfalto.`);
           inset: 0;
           z-index: -1;
           background:
-            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.13), transparent 28%),
+            radial-gradient(circle at 76% 22%, rgba(23, 164, 11, 0.08), transparent 30%),
             linear-gradient(
               180deg,
-              rgba(0, 0, 0, 0.16) 0%,
-              rgba(0, 0, 0, 0.38) 48%,
-              rgba(5, 6, 5, 0.88) 100%
+              rgba(0, 0, 0, 0.08) 0%,
+              rgba(0, 0, 0, 0.18) 40%,
+              rgba(5, 6, 5, 0.72) 100%
             ),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.08));
+            linear-gradient(
+              90deg,
+              rgba(0, 0, 0, 0.44) 0%,
+              rgba(0, 0, 0, 0.16) 44%,
+              rgba(0, 0, 0, 0.08) 100%
+            );
+        }
+
+        .heroShade::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.14) 78%),
+            linear-gradient(
+              180deg,
+              rgba(244, 239, 227, 0.035) 0%,
+              transparent 34%,
+              rgba(0, 0, 0, 0.22) 100%
+            );
+          pointer-events: none;
         }
 
         .heroContent {
@@ -614,6 +658,7 @@ Vim pela LP3 da GP Asfalto.`);
 
         .hero h1,
         .sectionLabel h2,
+        .entryPhotoText h2,
         .scenarioText h3,
         .sequence h2,
         .proofText h2,
@@ -725,14 +770,61 @@ Vim pela LP3 da GP Asfalto.`);
         .entry,
         .sequence,
         .proof,
-        .formSection,
-        .closing {
+        .formSection {
           width: min(1080px, calc(100% - 36px));
           margin: 0 auto;
         }
 
         .entry {
           padding: 64px 0 50px;
+        }
+
+        .entryPhoto {
+          position: relative;
+          min-height: 420px;
+          margin-bottom: 54px;
+          overflow: hidden;
+          border: 1px solid rgba(244, 239, 227, 0.12);
+          background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.52)),
+            url("/images/lp3/road-construction.jpg") center / cover no-repeat;
+          box-shadow:
+            0 28px 90px rgba(0, 0, 0, 0.34),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+        }
+
+        .photoVeil {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.18)),
+            radial-gradient(circle at 82% 22%, rgba(23, 164, 11, 0.12), transparent 30%);
+          mix-blend-mode: multiply;
+        }
+
+        .entryPhoto::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: url("/images/lp3/textura-asfalto.jpg") center / 800px auto repeat;
+          opacity: 0.08;
+          mix-blend-mode: screen;
+          pointer-events: none;
+        }
+
+        .entryPhotoText {
+          position: absolute;
+          left: 22px;
+          right: 22px;
+          bottom: 24px;
+          z-index: 2;
+        }
+
+        .entryPhotoText h2 {
+          margin: 8px 0 0;
+          max-width: 620px;
+          font-size: clamp(36px, 9vw, 74px);
+          line-height: 0.9;
         }
 
         .sectionLabel h2 {
@@ -855,11 +947,36 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .proofImage {
+          position: relative;
           min-height: 390px;
+          overflow: hidden;
+          border: 1px solid rgba(244, 239, 227, 0.12);
           background:
             linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.38)),
             url("/images/lp3/rolo-compactador.jpg") center / cover no-repeat;
-          border: 1px solid rgba(244, 239, 227, 0.12);
+          box-shadow:
+            0 28px 90px rgba(0, 0, 0, 0.32),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+          filter: saturate(0.92) contrast(1.03) brightness(0.9);
+        }
+
+        .proofImageOverlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(180deg, rgba(5, 6, 5, 0.06), rgba(5, 6, 5, 0.46)),
+            radial-gradient(circle at 80% 20%, rgba(23, 164, 11, 0.1), transparent 30%);
+          pointer-events: none;
+        }
+
+        .proofImage::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: url("/images/lp3/textura-asfalto.jpg") center / 760px auto repeat;
+          opacity: 0.07;
+          mix-blend-mode: multiply;
+          pointer-events: none;
         }
 
         .proofText h2 {
@@ -966,6 +1083,7 @@ Vim pela LP3 da GP Asfalto.`);
           background:
             linear-gradient(90deg, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.16)),
             url("/images/lp3/road-construction.jpg") center / cover no-repeat;
+          filter: saturate(0.95) contrast(1.04) brightness(0.88);
         }
 
         .closingText {
@@ -1057,6 +1175,10 @@ Vim pela LP3 da GP Asfalto.`);
             padding-bottom: 68px;
           }
 
+          .entryPhoto {
+            min-height: 520px;
+          }
+
           .scenarioPicker {
             grid-template-columns: repeat(4, 1fr);
           }
@@ -1123,8 +1245,8 @@ Vim pela LP3 da GP Asfalto.`);
 
         @media (max-width: 430px) {
           .brand img {
-            max-width: 165px;
-            height: 28px;
+            max-width: 210px;
+            height: 38px;
           }
 
           .hero h1 {
