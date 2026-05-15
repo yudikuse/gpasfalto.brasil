@@ -66,6 +66,7 @@ function openWhatsapp(message: string) {
 
 export default function LP3Page() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const [selected, setSelected] = useState<Scenario>(SCENARIOS[0]);
   const [phone, setPhone] = useState("");
   const [typedText, setTypedText] = useState("");
@@ -182,6 +183,8 @@ Vim pela LP3 da GP Asfalto.`);
 
   return (
     <main className="lp3">
+      <div className="siteBg" aria-hidden="true" />
+
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="GP Asfalto">
           <img
@@ -248,52 +251,50 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="entry">
-        <div className="entryImage">
-          <div className="entryCaption">
-            <span>Obra em campo</span>
-            <strong>Base, massa, aplicação e rolo trabalhando em sequência.</strong>
-          </div>
-        </div>
-
-        <div className="entryPanel">
+        <div className="sectionLabel">
           <p className="kicker">Entrada rápida</p>
           <h2>Onde a GP Asfalto entra?</h2>
+        </div>
 
-          <div className="scenarioPicker">
-            {SCENARIOS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={selected.id === item.id ? "active" : ""}
-                onClick={() => setSelected(item)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="scenarioText">
-            <span>{selected.label}</span>
-            <h3>{selected.title}</h3>
-
-            <button type="button" onClick={() => goToForm(selected)}>
-              Enviar cenário
+        <div className="scenarioPicker">
+          {SCENARIOS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={selected.id === item.id ? "active" : ""}
+              onClick={() => setSelected(item)}
+            >
+              {item.label}
             </button>
-          </div>
+          ))}
+        </div>
+
+        <div className="scenarioText">
+          <span>{selected.label}</span>
+          <h3>{selected.title}</h3>
+
+          <button type="button" onClick={() => goToForm(selected)}>
+            Enviar cenário
+          </button>
         </div>
       </section>
 
       <section className="sequence">
-        <div className="sequenceInner">
-          <p className="kicker">Sequência de campo</p>
-          <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
+        <p className="kicker">Sequência de campo</p>
 
-          <div className="lineProcess" aria-label="Processo de aplicação">
-            <span>Base</span>
-            <span>Massa</span>
-            <span>Aplicação</span>
-            <span>Compactação</span>
-          </div>
+        <h2>
+          Base no ponto.
+          <br />
+          Massa no tempo.
+          <br />
+          Rolo na sequência.
+        </h2>
+
+        <div className="lineProcess" aria-label="Processo de aplicação">
+          <span>Base</span>
+          <span>Massa</span>
+          <span>Aplicação</span>
+          <span>Compactação</span>
         </div>
       </section>
 
@@ -302,7 +303,12 @@ Vim pela LP3 da GP Asfalto.`);
 
         <div className="proofText">
           <p className="kicker">Execução</p>
-          <h2>Não é só massa. É obra entregue.</h2>
+
+          <h2>
+            Não é só massa.
+            <br />É obra entregue.
+          </h2>
+
           <p>
             A GP Asfalto entra com operação em campo para aplicação, base,
             compactação e acabamento quando a obra precisa andar.
@@ -381,7 +387,9 @@ Vim pela LP3 da GP Asfalto.`);
       </section>
 
       <section className="closing">
-        <div>
+        <div className="closingImage" />
+
+        <div className="closingText">
           <p className="kicker">GP Asfalto</p>
           <h2>Vamos avaliar sua obra?</h2>
           <p>Envie cidade, cenário e volume aproximado para entender onde entramos.</p>
@@ -411,11 +419,10 @@ Vim pela LP3 da GP Asfalto.`);
           --green: #17a40b;
           --green2: #22d313;
           --asphalt: #040504;
-          --graphite: #0d0f0d;
           --cream: #f4efe3;
           --muted: rgba(244, 239, 227, 0.66);
-          --line: rgba(255, 255, 255, 0.14);
-          --line-soft: rgba(255, 255, 255, 0.08);
+          --line: rgba(244, 239, 227, 0.14);
+          --lineSoft: rgba(244, 239, 227, 0.08);
         }
 
         * {
@@ -454,12 +461,47 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .lp3 {
+          position: relative;
           min-height: 100vh;
           overflow-x: hidden;
+          background: #050605;
+        }
+
+        .siteBg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
           background:
-            linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.82)),
-            url("/images/lp3/textura-asfalto.jpg") center / 920px auto repeat,
-            #050605;
+            linear-gradient(
+              180deg,
+              rgba(0, 0, 0, 0.48) 0%,
+              rgba(0, 0, 0, 0.66) 42%,
+              rgba(0, 0, 0, 0.84) 100%
+            ),
+            radial-gradient(circle at 72% 18%, rgba(23, 164, 11, 0.12), transparent 30%),
+            url("/images/lp3/textura-asfalto.jpg") center top / cover no-repeat;
+        }
+
+        .siteBg::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 45%, rgba(0, 0, 0, 0.28)),
+            radial-gradient(circle at 18% 82%, rgba(23, 164, 11, 0.08), transparent 26%);
+        }
+
+        .topbar,
+        .hero,
+        .entry,
+        .sequence,
+        .proof,
+        .formSection,
+        .closing,
+        .stickyCta {
+          position: relative;
+          z-index: 2;
         }
 
         .topbar {
@@ -472,12 +514,12 @@ Vim pela LP3 da GP Asfalto.`);
           padding: 7px;
           border: 1px solid var(--line);
           border-radius: 999px;
-          background: rgba(5, 6, 5, 0.72);
+          background: rgba(5, 6, 5, 0.74);
           backdrop-filter: blur(22px);
           display: flex;
           align-items: center;
           justify-content: space-between;
-          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.32);
+          box-shadow: 0 20px 70px rgba(0, 0, 0, 0.34);
         }
 
         .brand {
@@ -486,13 +528,13 @@ Vim pela LP3 da GP Asfalto.`);
           align-items: center;
           color: white;
           text-decoration: none;
-          padding-left: 12px;
+          padding-left: 14px;
         }
 
         .brand img {
-          height: 32px;
+          height: 34px;
           width: auto;
-          max-width: 188px;
+          max-width: 210px;
           object-fit: contain;
           display: block;
         }
@@ -518,13 +560,13 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .hero {
-          position: relative;
           min-height: 100svh;
           padding: 90px 20px 34px;
           display: flex;
           align-items: flex-end;
           overflow: hidden;
           isolation: isolate;
+          background: transparent;
         }
 
         .heroVideo {
@@ -534,30 +576,25 @@ Vim pela LP3 da GP Asfalto.`);
           height: 100%;
           object-fit: cover;
           object-position: 58% center;
-          filter: contrast(1.14) saturate(0.78) brightness(0.74);
+          filter: contrast(1.12) saturate(0.82) brightness(0.68);
           transform: scale(1.04);
-          z-index: -3;
+          z-index: -2;
+          opacity: 0.82;
         }
 
         .heroShade {
           position: absolute;
           inset: 0;
-          z-index: -2;
+          z-index: -1;
           background:
-            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.14), transparent 28%),
-            linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38) 38%, rgba(5, 6, 5, 0.98) 100%),
+            radial-gradient(circle at 76% 22%, rgba(22, 164, 11, 0.13), transparent 28%),
+            linear-gradient(
+              180deg,
+              rgba(0, 0, 0, 0.16) 0%,
+              rgba(0, 0, 0, 0.38) 48%,
+              rgba(5, 6, 5, 0.88) 100%
+            ),
             linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.08));
-        }
-
-        .heroShade::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(180deg, transparent 0%, rgba(0,0,0,.22) 45%, rgba(0,0,0,.9) 100%),
-            url("/images/lp3/textura-asfalto.jpg") center / 680px auto repeat;
-          opacity: 0.17;
-          mix-blend-mode: screen;
         }
 
         .heroContent {
@@ -576,12 +613,12 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .hero h1,
-        .entryPanel h2,
+        .sectionLabel h2,
         .scenarioText h3,
         .sequence h2,
         .proofText h2,
         .formIntro h2,
-        .closing h2 {
+        .closingText h2 {
           font-family:
             "Inter Tight",
             "Manrope",
@@ -602,7 +639,7 @@ Vim pela LP3 da GP Asfalto.`);
 
         .hero h1 span {
           display: block;
-          color: rgba(244, 239, 227, 0.5);
+          color: rgba(244, 239, 227, 0.52);
         }
 
         .typingLine {
@@ -626,8 +663,15 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         @keyframes blink {
-          0%, 45% { opacity: 1; }
-          46%, 100% { opacity: 0; }
+          0%,
+          45% {
+            opacity: 1;
+          }
+
+          46%,
+          100% {
+            opacity: 0;
+          }
         }
 
         .heroSub {
@@ -688,91 +732,49 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .entry {
-          padding: 54px 0 38px;
-          display: grid;
-          gap: 22px;
+          padding: 64px 0 50px;
         }
 
-        .entryImage {
-          position: relative;
-          height: 330px;
-          border-radius: 30px;
-          overflow: hidden;
-          border: 1px solid var(--line);
-          background:
-            linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.72)),
-            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
-          box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
-        }
-
-        .entryImage::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 82% 18%, rgba(22, 164, 11, 0.14), transparent 30%);
-        }
-
-        .entryCaption {
-          position: absolute;
-          left: 18px;
-          right: 18px;
-          bottom: 18px;
-          z-index: 2;
-        }
-
-        .entryCaption span {
-          display: block;
-          margin-bottom: 8px;
-          color: var(--green2);
-          text-transform: uppercase;
-          letter-spacing: 0.16em;
-          font-size: 10px;
-          font-weight: 950;
-        }
-
-        .entryCaption strong {
-          display: block;
-          max-width: 480px;
-          color: white;
-          font-size: 22px;
-          line-height: 1.04;
-          letter-spacing: -0.045em;
-        }
-
-        .entryPanel h2 {
+        .sectionLabel h2 {
           margin: 8px 0 0;
           font-size: clamp(38px, 10vw, 78px);
           line-height: 0.9;
+          max-width: 820px;
         }
 
         .scenarioPicker {
-          margin-top: 24px;
+          margin-top: 30px;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          border-top: 1px solid var(--line);
-          border-left: 1px solid var(--line-soft);
+          border-top: 1px solid rgba(244, 239, 227, 0.16);
         }
 
         .scenarioPicker button {
-          min-height: 58px;
+          min-height: 62px;
           border: 0;
-          border-right: 1px solid var(--line-soft);
-          border-bottom: 1px solid var(--line-soft);
-          background: rgba(0, 0, 0, 0.22);
-          color: rgba(244, 239, 227, 0.7);
+          border-bottom: 1px solid rgba(244, 239, 227, 0.12);
+          background: transparent;
+          color: rgba(244, 239, 227, 0.66);
           font-weight: 900;
           letter-spacing: -0.025em;
         }
 
+        .scenarioPicker button:nth-child(odd) {
+          border-right: 1px solid rgba(244, 239, 227, 0.1);
+        }
+
         .scenarioPicker button.active {
-          color: white;
-          background:
-            linear-gradient(120deg, rgba(22, 164, 11, 0.25), rgba(22, 164, 11, 0.06)),
-            rgba(255, 255, 255, 0.035);
+          color: #f4efe3;
+          background: linear-gradient(
+            90deg,
+            rgba(23, 164, 11, 0.22),
+            rgba(23, 164, 11, 0.04)
+          );
         }
 
         .scenarioText {
-          padding-top: 24px;
+          padding-top: 28px;
+          max-width: 760px;
         }
 
         .scenarioText span {
@@ -804,62 +806,60 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .sequence {
-          margin-top: 22px;
-          padding: 0;
-          border-radius: 32px;
-          overflow: hidden;
-          border: 1px solid var(--line);
-          background:
-            linear-gradient(90deg, rgba(0,0,0,.78), rgba(0,0,0,.3)),
-            url("/images/lp3/textura-asfalto.jpg") center / cover no-repeat;
-        }
-
-        .sequenceInner {
-          padding: 34px 18px;
+          padding: 56px 0;
+          border-top: 1px solid rgba(244, 239, 227, 0.12);
+          border-bottom: 1px solid rgba(244, 239, 227, 0.12);
+          background: transparent;
         }
 
         .sequence h2 {
           margin: 10px 0 0;
-          font-size: clamp(40px, 10.5vw, 82px);
-          line-height: 0.86;
-          max-width: 900px;
+          font-size: clamp(40px, 10.5vw, 84px);
+          line-height: 0.88;
+          max-width: 920px;
         }
 
         .lineProcess {
-          margin-top: 26px;
+          margin-top: 28px;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1px;
-          background: rgba(255,255,255,.12);
-          border: 1px solid rgba(255,255,255,.12);
+          border: 1px solid rgba(244, 239, 227, 0.14);
         }
 
         .lineProcess span {
           min-height: 52px;
           display: grid;
           place-items: center;
-          background: rgba(0,0,0,.54);
-          color: rgba(244,239,227,.78);
+          border-right: 1px solid rgba(244, 239, 227, 0.1);
+          border-bottom: 1px solid rgba(244, 239, 227, 0.1);
+          background: rgba(0, 0, 0, 0.22);
+          color: rgba(244, 239, 227, 0.78);
           font-size: 13px;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: .08em;
+          letter-spacing: 0.08em;
+        }
+
+        .lineProcess span:nth-child(2n) {
+          border-right: 0;
+        }
+
+        .lineProcess span:nth-last-child(-n + 2) {
+          border-bottom: 0;
         }
 
         .proof {
-          padding: 46px 0 34px;
+          padding: 54px 0 40px;
           display: grid;
-          gap: 22px;
+          gap: 30px;
         }
 
         .proofImage {
-          min-height: 330px;
-          border-radius: 30px;
-          border: 1px solid var(--line);
+          min-height: 390px;
           background:
-            linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.58)),
-            url("/images/lp3/patio-logistico.jpg") center / cover no-repeat;
-          box-shadow: 0 30px 90px rgba(0,0,0,.26);
+            linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.38)),
+            url("/images/lp3/rolo-compactador.jpg") center / cover no-repeat;
+          border: 1px solid rgba(244, 239, 227, 0.12);
         }
 
         .proofText h2 {
@@ -874,12 +874,14 @@ Vim pela LP3 da GP Asfalto.`);
           font-size: 16px;
           line-height: 1.45;
           letter-spacing: -0.025em;
+          max-width: 560px;
         }
 
         .formSection {
-          padding: 54px 0 72px;
+          padding: 58px 0 72px;
           display: grid;
           gap: 24px;
+          border-top: 1px solid rgba(244, 239, 227, 0.1);
         }
 
         .formIntro h2 {
@@ -893,6 +895,7 @@ Vim pela LP3 da GP Asfalto.`);
           color: var(--muted);
           font-size: 16px;
           line-height: 1.42;
+          max-width: 520px;
         }
 
         .leadForm {
@@ -900,10 +903,9 @@ Vim pela LP3 da GP Asfalto.`);
           gap: 11px;
           padding: 16px;
           border-radius: 28px;
-          border: 1px solid var(--line);
-          background:
-            linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.64)),
-            url("/images/lp3/textura-asfalto.jpg") center / 720px auto repeat;
+          border: 1px solid rgba(244, 239, 227, 0.14);
+          background: rgba(4, 5, 4, 0.72);
+          backdrop-filter: blur(14px);
         }
 
         .leadForm label {
@@ -922,7 +924,7 @@ Vim pela LP3 da GP Asfalto.`);
           min-height: 52px;
           border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.14);
-          background: rgba(0, 0, 0, 0.58);
+          background: rgba(0, 0, 0, 0.56);
           color: white;
           outline: none;
           padding: 0 14px;
@@ -950,27 +952,38 @@ Vim pela LP3 da GP Asfalto.`);
         }
 
         .closing {
-          min-height: 54svh;
-          padding: 76px 0 118px;
-          display: flex;
-          align-items: center;
-          border-top: 1px solid var(--line-soft);
+          width: 100%;
+          min-height: 62svh;
+          display: grid;
+          align-items: stretch;
+          padding: 0;
+          border-top: 1px solid rgba(244, 239, 227, 0.1);
+        }
+
+        .closingImage {
+          min-height: 62svh;
+          grid-area: 1 / 1;
           background:
-            linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.18)),
-            url("/images/lp3/hero-cbuq.jpg") center / cover no-repeat;
+            linear-gradient(90deg, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.16)),
+            url("/images/lp3/road-construction.jpg") center / cover no-repeat;
         }
 
-        .closing > div {
-          width: min(680px, 100%);
+        .closingText {
+          grid-area: 1 / 1;
+          width: min(1080px, calc(100% - 36px));
+          margin: 0 auto;
+          align-self: center;
+          padding: 72px 0 118px;
         }
 
-        .closing h2 {
+        .closingText h2 {
           margin: 8px 0 0;
           font-size: clamp(44px, 11.5vw, 90px);
           line-height: 0.86;
+          max-width: 680px;
         }
 
-        .closing p:not(.kicker) {
+        .closingText p:not(.kicker) {
           margin: 18px 0 0;
           max-width: 520px;
           color: var(--muted);
@@ -978,7 +991,7 @@ Vim pela LP3 da GP Asfalto.`);
           line-height: 1.45;
         }
 
-        .closing .primary {
+        .closingText .primary {
           margin-top: 24px;
         }
 
@@ -1040,43 +1053,53 @@ Vim pela LP3 da GP Asfalto.`);
           }
 
           .entry {
-            grid-template-columns: 0.92fr 1.08fr;
-            align-items: center;
-            gap: 34px;
-            padding-top: 72px;
-          }
-
-          .entryImage {
-            height: 620px;
+            padding-top: 82px;
+            padding-bottom: 68px;
           }
 
           .scenarioPicker {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
           }
 
-          .sequenceInner {
-            padding: 70px 42px;
+          .scenarioPicker button {
+            border-right: 1px solid rgba(244, 239, 227, 0.1);
+          }
+
+          .scenarioPicker button:last-child {
+            border-right: 0;
           }
 
           .lineProcess {
             grid-template-columns: repeat(4, 1fr);
           }
 
+          .lineProcess span {
+            border-bottom: 0;
+          }
+
+          .lineProcess span:nth-child(2n) {
+            border-right: 1px solid rgba(244, 239, 227, 0.1);
+          }
+
+          .lineProcess span:last-child {
+            border-right: 0;
+          }
+
           .proof {
-            grid-template-columns: 1.05fr 0.95fr;
+            grid-template-columns: 1.1fr 0.9fr;
             align-items: center;
-            gap: 34px;
-            padding: 72px 0;
+            gap: 42px;
+            padding: 82px 0;
           }
 
           .proofImage {
-            min-height: 520px;
+            min-height: 560px;
           }
 
           .formSection {
             grid-template-columns: 0.82fr 1.18fr;
             align-items: start;
-            padding-top: 72px;
+            padding-top: 82px;
           }
 
           .leadForm {
