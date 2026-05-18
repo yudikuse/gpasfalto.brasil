@@ -5,7 +5,7 @@ import Script from 'next/script'
 import { site } from '@/data/content'
 
 const GTAG_ID = 'AW-18158017809'
-const CONVERSION_ID = 'AW-18158017809/l0DeCKjj8ascEJG6tdJD'
+const CONVERSION_ID = 'AW-18158017809/ma-TCIXWma5cEJG6tdJD'
 const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4#t=5'
 const WA = '5564993273958'
 
