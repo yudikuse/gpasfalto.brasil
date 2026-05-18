@@ -1,13 +1,14 @@
 'use client'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Script from 'next/script'
 import { site } from '@/data/content'
 
 const GTAG_ID = 'AW-18158017809'
 const CONVERSION_ID = 'AW-18158017809/ma-TCIXWma5cEJG6tdJD'
 const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4#t=5'
-const WA = '5564993273958'
+const WA = '5564999452124'
 
 declare global {
   interface Window {
@@ -206,10 +207,10 @@ export default function LPSilos() {
       {/* ── NAV */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
         px-6 md:px-10 h-[64px] bg-[#070e1a]/96 backdrop-blur-sm border-b border-white/[.06]">
-        <span>
+        <Link href="/">
           <Image src="/images/logo-white.png" alt="GP Asfalto"
             width={200} height={56} className="h-14 md:h-16 w-auto object-contain" />
-        </span>
+        </Link>
         <a href={'https://wa.me/' + WA} target="_blank"
           className="text-[11px] font-medium tracking-[.14em] uppercase
             text-white bg-green px-5 py-2.5 hover:bg-green2 transition-colors">
@@ -312,7 +313,7 @@ export default function LPSilos() {
       </section>
 
       {/* ── DORES — fundo escuro sólido */}
-      <section className="py-20 px-6 md:px-12" style={{ background: '#070e1a' }}>
+      <section id="dores" className="py-20 px-6 md:px-12" style={{ background: '#070e1a' }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <span className="w-5 h-px bg-green block" />
@@ -355,7 +356,7 @@ export default function LPSilos() {
       </section>
 
       {/* ── COMO FUNCIONA — vídeo Cloudinary nativo */}
-      <section className="relative py-20 px-6 md:px-12 overflow-hidden">
+      <section id="como" className="relative py-20 px-6 md:px-12 overflow-hidden">
 
         {/* VIDEO BG — Cloudinary */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -428,17 +429,17 @@ export default function LPSilos() {
       <footer className="border-t border-white/[.06] px-6 md:px-12 py-5
         flex flex-col md:flex-row items-center justify-between gap-3"
         style={{ background: '#040a14' }}>
-        <span>
+        <Link href="/">
           <Image src="/images/logo-white.png" alt="GP Asfalto"
             width={120} height={34}
-            className="h-8 w-auto opacity-40" />
-        </span>
+            className="h-8 w-auto opacity-40 hover:opacity-80 transition-opacity" />
+        </Link>
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           <span className="text-[10px] text-white/16">{company.cnpj}</span>
           <a href={'https://wa.me/' + WA} target="_blank"
             className="text-[11px] font-medium tracking-[.1em] uppercase
               text-white/28 hover:text-green transition-colors">
-            (64) 99327-3958
+            (64) 99945-2124
           </a>
         </div>
         <span className="text-[10px] text-white/14">Rio Verde · GO · Brasil</span>
