@@ -42,14 +42,6 @@ const SCENARIOS = [
   },
 ] as const;
 
-const TYPING_LINES = [
-  "Tenho obra e preciso de executor de pavimentação...",
-  "Já tenho massa e preciso de equipe e equipamentos...",
-  "Preciso terceirizar a aplicação de CBUQ...",
-  "Tenho loteamento para entregar as vias...",
-  "Preciso pavimentar pátio ou acesso em Goiás...",
-];
-
 const FAQ = [
   {
     q: "A GP Asfalto emite ART de execução?",
@@ -98,8 +90,6 @@ export default function LP3Page() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [selected, setSelected] = useState<Scenario>(SCENARIOS[0]);
   const [phone, setPhone] = useState("");
-  const [typedText, setTypedText] = useState("");
-  const [typingIndex, setTypingIndex] = useState(0);
   const [showSticky, setShowSticky] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
@@ -127,21 +117,6 @@ export default function LP3Page() {
       video.removeEventListener("timeupdate", loopVideo);
     };
   }, []);
-
-  useEffect(() => {
-    const line = TYPING_LINES[typingIndex % TYPING_LINES.length];
-    let char = 0;
-    setTypedText("");
-    const interval = window.setInterval(() => {
-      char += 1;
-      setTypedText(line.slice(0, char));
-      if (char >= line.length) {
-        window.clearInterval(interval);
-        window.setTimeout(() => setTypingIndex((prev) => prev + 1), 1400);
-      }
-    }, 38);
-    return () => window.clearInterval(interval);
-  }, [typingIndex]);
 
   useEffect(() => {
     function onScroll() {
@@ -237,10 +212,7 @@ export default function LP3Page() {
               Tenho CBUQ, preciso aplicar
             </button>
           </div>
-          <div className="typingLine">
-            <span>{typedText}</span>
-            <i />
-          </div>
+
         </div>
       </section>
 
@@ -253,23 +225,6 @@ export default function LP3Page() {
             alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
             className="clientLogoStrip"
           />
-        </div>
-      </div>
-
-      {/* ── QUICK PICKER — identificação imediata logo após hero ── */}
-      <div className="quickPicker">
-        <p className="quickPickerLabel">Qual é a sua situação?</p>
-        <div className="quickPickerBtns">
-          {SCENARIOS.map((item) => (
-            <button key={item.id} type="button"
-              className={selected.id === item.id ? "qpBtn active" : "qpBtn"}
-              onClick={() => {
-                setSelected(item);
-                setTimeout(() => document.getElementById("situacao")?.scrollIntoView({ behavior: "smooth" }), 60);
-              }}>
-              {item.label}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -370,7 +325,6 @@ export default function LP3Page() {
 
       {/* ── FORMULÁRIO ── */}
       <section className="formSection" id="avaliacao">
-        <div className="formWrapper">
         <div className="formIntro">
           <p className="kicker">Avaliação técnica</p>
           <h2>Informe os dados da obra.</h2>
@@ -438,7 +392,6 @@ export default function LP3Page() {
             Abre o WhatsApp com sua solicitação pronta para envio
           </p>
         </form>
-        </div>
       </section>
 
       {/* ── FAQ ── */}
@@ -563,28 +516,6 @@ export default function LP3Page() {
           font-weight: 700; letter-spacing: 0.16em;
         }
 
-        /* ── QUICK PICKER ── */
-        .quickPicker {
-          background: #0b1828;
-          padding: 16px clamp(16px,4vw,40px);
-          border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .quickPickerLabel {
-          font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-          text-transform: uppercase; color: rgba(240,235,226,0.38);
-          margin-bottom: 10px;
-        }
-        .quickPickerBtns {
-          display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .qpBtn {
-          height: 36px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14);
-          padding: 0 16px; background: rgba(255,255,255,0.05);
-          color: rgba(240,235,226,0.55); font-weight: 600; font-size: 13px;
-          transition: all 0.15s;
-        }
-        .qpBtn.active { background: var(--green); color: white; border-color: var(--green); }
-        .qpBtn:hover:not(.active) { border-color: rgba(255,255,255,0.28); color: var(--cream); }
 
         .hero h1 {
           font-family: "Barlow Condensed", sans-serif;
@@ -595,19 +526,6 @@ export default function LP3Page() {
           text-transform: uppercase;
         }
         .hero h1 span { display: block; color: rgba(240,235,226,0.40); font-family: "Barlow Condensed", sans-serif; }
-
-        .typingLine {
-          margin-top: 20px; min-height: 34px;
-          display: flex; align-items: center; gap: 4px;
-          color: rgba(240,235,226,0.90);
-          font-size: clamp(16px, 4vw, 22px);
-          font-weight: 700; letter-spacing: -0.04em;
-        }
-        .typingLine i {
-          width: 2px; height: 1em; background: var(--green2);
-          display: inline-block; animation: blink 0.8s infinite;
-        }
-        @keyframes blink { 0%,45%{opacity:1} 46%,100%{opacity:0} }
 
         .heroSub {
           margin: 12px 0 0; max-width: 540px;
@@ -835,16 +753,16 @@ export default function LP3Page() {
         }
 
         /* ── FORM ── */
-        .formSection { padding: 54px clamp(16px,4vw,40px) 64px; display: grid; gap: 28px; background: #f5f4f0; color: #111; }
-        .formWrapper { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+        .formSection { padding: 54px 0 64px; display: grid; gap: 28px; }
+
         .formIntro h2 {
           font-family: "Barlow Condensed", sans-serif;
           margin: 8px 0 0; font-size: clamp(40px, 10vw, 76px);
           line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
-          text-transform: uppercase; color: #0C1D38;
+          text-transform: uppercase;
         }
         .formIntro > p {
-          margin: 14px 0 0; color: #555;
+          margin: 14px 0 0; color: var(--muted);
           font-size: 15px; line-height: 1.55;
         }
         .formBullets {
@@ -853,7 +771,7 @@ export default function LP3Page() {
         }
         .formBullets li {
           display: flex; align-items: center; gap: 10px;
-          font-size: 13px; color: #555; font-weight: 500;
+          font-size: 13px; color: rgba(240,235,226,0.65); font-weight: 500;
         }
         .formBullets li span {
           width: 5px; height: 5px; border-radius: 50%;
@@ -861,57 +779,54 @@ export default function LP3Page() {
         }
 
         .leadForm {
-          display: grid; gap: 12px; padding: 24px;
-          border-radius: 16px; border: 1px solid #dde0dd;
-          background: #fff; box-shadow: 0 4px 24px rgba(12,29,56,0.08);
+          display: grid; gap: 12px; padding: 20px;
+          border-radius: 20px; border: 1px solid rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.06);
         }
         .leadForm label {
           display: grid; gap: 6px;
-          color: #555;
+          color: rgba(240,235,226,0.60);
           font-size: 11px; font-weight: 700;
           text-transform: uppercase; letter-spacing: 0.08em;
         }
         .leadForm input, .leadForm select {
           width: 100%; min-height: 50px;
-          border-radius: 10px; border: 1.5px solid #dde0dd;
-          background: #f7f8f6; color: #111;
+          border-radius: 10px; border: 1px solid rgba(255,255,255,0.16);
+          background: rgba(255,255,255,0.08); color: white;
           outline: none; padding: 0 14px; font-size: 15px;
           -webkit-appearance: none;
         }
         .leadForm select option { color: #111; }
         .leadForm input:focus, .leadForm select:focus {
           border-color: var(--green);
-          box-shadow: 0 0 0 3px rgba(44,136,54,0.12);
-          background: #fff;
+          box-shadow: 0 0 0 3px rgba(44,136,54,0.15);
         }
         .leadForm .full { grid-column: 1 / -1; }
         .leadForm .primary { width: 100%; font-size: 15px; margin-top: 4px; }
         .formNote {
           text-align: center; font-size: 12px;
-          color: #aaa; margin: 0;
+          color: rgba(240,235,226,0.30); margin: 0;
         }
 
         /* ── FAQ ── */
         .faqSection {
-          padding: 48px clamp(16px,4vw,40px) 54px;
-          background: #eeecea;
-          border-top: 1px solid rgba(0,0,0,0.06);
+          padding: 48px 0 54px;
+          border-top: 1px solid var(--line-soft);
         }
-        .faqSection .kicker { color: var(--green); }
         .faqInner { max-width: 860px; margin: 0 auto; }
         .faqSection h2 {
           font-family: "Barlow Condensed", sans-serif;
           margin: 8px 0 0; font-size: clamp(36px, 9vw, 64px);
           line-height: 0.92; font-weight: 900; letter-spacing: -0.01em;
-          text-transform: uppercase; color: #0C1D38;
+          text-transform: uppercase;
         }
         .faqList { margin-top: 28px; display: flex; flex-direction: column; }
-        .faqItem { border-bottom: 1px solid rgba(0,0,0,0.08); }
+        .faqItem { border-bottom: 1px solid var(--line-soft); }
         .faqItem button {
           width: 100%; display: flex; align-items: center;
           justify-content: space-between; gap: 14px;
           padding: 16px 0; background: none; border: none;
-          text-align: left; color: #0C1D38;
+          text-align: left; color: var(--cream);
         }
         .faqItem button span { font-size: 15px; font-weight: 600; line-height: 1.35; }
         .faqItem button i {
@@ -919,7 +834,7 @@ export default function LP3Page() {
           color: var(--green2); flex: 0 0 auto;
         }
         .faqItem p {
-          font-size: 14px; color: #555; line-height: 1.65;
+          font-size: 14px; color: var(--muted); line-height: 1.65;
           padding-bottom: 16px; margin: 0; max-width: 600px;
         }
 
