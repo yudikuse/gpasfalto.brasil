@@ -1,7 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import Script from 'next/script'
 import { site } from '@/data/content'
 
@@ -81,11 +80,9 @@ function Form() {
   const [form, setForm]         = useState({ nome: '', perfil: '', whatsapp: '', cidade: '' })
   const [sent, setSent]         = useState(false)
   const [honeypot, setHoneypot] = useState('')
-  const loadTime                = useRef(Date.now())
 
   const handleSend = () => {
     if (honeypot) return
-    if (Date.now() - loadTime.current < 5000) return
     if (!form.nome || !form.whatsapp) return
     const msg = encodeURIComponent(
       'Olá! Tenho interesse em asfaltar o pátio.\n' +
@@ -209,10 +206,10 @@ export default function LPSilos() {
       {/* ── NAV */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
         px-6 md:px-10 h-[64px] bg-[#070e1a]/96 backdrop-blur-sm border-b border-white/[.06]">
-        <Link href="/">
+        <span>
           <Image src="/images/logo-white.png" alt="GP Asfalto"
             width={200} height={56} className="h-14 md:h-16 w-auto object-contain" />
-        </Link>
+        </span>
         <a href={'https://wa.me/' + WA} target="_blank"
           className="text-[11px] font-medium tracking-[.14em] uppercase
             text-white bg-green px-5 py-2.5 hover:bg-green2 transition-colors">
@@ -258,7 +255,7 @@ export default function LPSilos() {
               <span className="text-green">VENDER.</span>
             </h1>
 
-            <p className="text-[15px] font-light text-white/50 leading-[1.8] mb-6 max-w-md hidden md:block">
+            <p className="text-[15px] font-light text-white/50 leading-[1.8] mb-6 max-w-md">
               O pátio não pode tirar esse poder de você.
               Pátio sem asfalto fecha na primeira chuva da safra — na fazenda ou no armazém.
               A GP Asfalto resolve: terraplenagem, base e asfalto resistente,{' '}
@@ -266,12 +263,7 @@ export default function LPSilos() {
               pátio de silo no Cerrado.
             </p>
 
-            <p className="text-[14px] font-light text-white/50 leading-[1.8] mb-6 md:hidden">
-              Pátio sem asfalto fecha na chuva. A GP Asfalto resolve —
-              terraplenagem, base e asfalto, uma empresa só.
-            </p>
-
-            <div className="hidden md:flex flex-col gap-2">
+            <div className="flex flex-col gap-2 mt-2 mb-6">
               {[
                 '3 usinas de asfalto próprias em Rio Verde, GO',
                 'Terraplenagem + base + asfalto — sem subcontratação',
@@ -436,11 +428,11 @@ export default function LPSilos() {
       <footer className="border-t border-white/[.06] px-6 md:px-12 py-5
         flex flex-col md:flex-row items-center justify-between gap-3"
         style={{ background: '#040a14' }}>
-        <Link href="/">
+        <span>
           <Image src="/images/logo-white.png" alt="GP Asfalto"
             width={120} height={34}
-            className="h-8 w-auto opacity-40 hover:opacity-80 transition-opacity" />
-        </Link>
+            className="h-8 w-auto opacity-40" />
+        </span>
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           <span className="text-[10px] text-white/16">{company.cnpj}</span>
           <a href={'https://wa.me/' + WA} target="_blank"
