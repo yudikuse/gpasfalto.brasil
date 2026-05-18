@@ -244,29 +244,13 @@ export default function LP3Page() {
 
       {/* ── CLIENT STRIP ── */}
       <div className="clientStrip">
-        <p className="clientLabel">Obras executadas para</p>
-        <div className="clientScroll">
-          {[
-            { name: "COMIGO",        src: "/images/logos/comigo.png" },
-            { name: "LDC",           src: "/images/logos/ldc.png" },
-            { name: "Raízen",        src: "/images/logos/raizen.png" },
-            { name: "Nutrien",       src: "/images/logos/nutrien.png" },
-            { name: "Mosaic",        src: "/images/logos/mosaic.png" },
-            { name: "Mercado Livre", src: "/images/logos/mercado-livre.png" },
-            { name: "Fetz",          src: "/images/logos/fetz.png" },
-            { name: "Grupo Cereal",  src: "/images/logos/grupo-cereal.png" },
-          ].map(c => (
-            <div key={c.name} className="clientLogo">
-              <img src={c.src} alt={c.name}
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                  const fb = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (fb) fb.style.display = "block";
-                }}
-              />
-              <span>{c.name}</span>
-            </div>
-          ))}
+        <p className="clientLabel">Fazemos parte da infraestrutura dessas operações</p>
+        <div className="clientLogoWrap">
+          <img
+            src="/images/lp/logos_strip.png"
+            alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
+            className="clientLogoStrip"
+          />
         </div>
       </div>
 
@@ -393,7 +377,7 @@ export default function LP3Page() {
           </label>
           <label>
             WhatsApp
-            <input name="phone" type="tel" placeholder="(64) 99945-2124"
+            <input name="phone" type="tel" placeholder="(XX) 99999-9999"
               value={phone}
               onChange={(e) => setPhone(maskPhone(e.target.value))}
               required />
@@ -474,11 +458,13 @@ export default function LP3Page() {
       </div>
 
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
         :root {
           --green:   #2C8836;
           --green2:  #34a84a;
-          --asphalt: #0f1010;
-          --graphite:#1a1c1a;
+          --asphalt: #071228;
+          --graphite:#0b1828;
           --cream:   #F0EBE2;
           --muted:   rgba(240,235,226,0.60);
           --line:    rgba(255,255,255,0.12);
@@ -491,7 +477,7 @@ export default function LP3Page() {
           margin: 0;
           background: var(--asphalt);
           color: var(--cream);
-          font-family: "Inter Tight","Manrope","Inter",system-ui,-apple-system,sans-serif;
+          font-family: "DM Sans","Inter",system-ui,-apple-system,sans-serif;
           -webkit-font-smoothing: antialiased;
         }
         button, input, select, textarea { font: inherit; }
@@ -548,12 +534,14 @@ export default function LP3Page() {
         }
 
         .hero h1 {
+          font-family: "Barlow Condensed", sans-serif;
           margin: 14px 0 0;
-          font-size: clamp(50px, 13.5vw, 100px);
-          line-height: 0.84; font-weight: 900;
-          letter-spacing: -0.06em;
+          font-size: clamp(58px, 15vw, 110px);
+          line-height: 0.86; font-weight: 900;
+          letter-spacing: -0.02em;
+          text-transform: uppercase;
         }
-        .hero h1 span { display: block; color: rgba(240,235,226,0.45); }
+        .hero h1 span { display: block; color: rgba(240,235,226,0.40); font-family: "Barlow Condensed", sans-serif; }
 
         .typingLine {
           margin-top: 20px; min-height: 34px;
@@ -613,37 +601,20 @@ export default function LP3Page() {
 
         /* ── CLIENT STRIP ── */
         .clientStrip {
-          width: min(1080px, calc(100% - 32px));
-          margin: 0 auto; padding: 20px 0 24px;
-          border-bottom: 1px solid var(--line-soft);
+          background: #e8e3da;
+          padding: 18px clamp(16px,4vw,40px);
+          border-top: 1px solid rgba(0,0,0,0.06);
+          border-bottom: 1px solid rgba(0,0,0,0.06);
         }
         .clientLabel {
-          font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-          text-transform: uppercase; color: rgba(240,235,226,0.28);
-          margin-bottom: 14px;
+          font-size: 9px; font-weight: 600; letter-spacing: 0.20em;
+          text-transform: uppercase; color: rgba(12,29,56,0.45);
+          text-align: center; margin-bottom: 14px;
         }
-        .clientScroll {
-          display: flex; align-items: center;
-          overflow-x: auto; scrollbar-width: none;
-          -webkit-overflow-scrolling: touch; gap: 0;
-        }
-        .clientScroll::-webkit-scrollbar { display: none; }
-        .clientLogo {
-          flex: 0 0 auto; display: flex; align-items: center;
-          padding-right: 28px; margin-right: 28px;
-          border-right: 1px solid rgba(255,255,255,0.08); height: 30px;
-        }
-        .clientLogo:last-child { border-right: none; padding-right: 0; margin-right: 0; }
-        .clientLogo img {
-          height: 26px; width: auto; max-width: 100px;
-          object-fit: contain; filter: brightness(0) invert(1);
-          opacity: 0.50; transition: opacity 0.2s;
-        }
-        .clientLogo img:hover { opacity: 0.80; }
-        .clientLogo span {
-          display: none; font-size: 11px; font-weight: 700;
-          letter-spacing: 0.06em; text-transform: uppercase;
-          color: rgba(240,235,226,0.40); white-space: nowrap;
+        .clientLogoWrap { display: flex; justify-content: center; }
+        .clientLogoStrip {
+          height: 36px; width: auto;
+          mix-blend-mode: multiply;
         }
 
         /* ── SECTIONS BASE ── */
@@ -676,8 +647,10 @@ export default function LP3Page() {
         }
 
         .entryPanel h2 {
-          margin: 8px 0 0; font-size: clamp(32px, 8.5vw, 66px);
-          line-height: 0.92; font-weight: 900; letter-spacing: -0.05em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 8px 0 0; font-size: clamp(38px, 10vw, 76px);
+          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
 
         .scenarioPicker {
@@ -704,8 +677,10 @@ export default function LP3Page() {
           font-size: 10px; font-weight: 700;
         }
         .scenarioText h3 {
-          margin: 0; font-size: clamp(26px, 7vw, 52px);
-          line-height: 0.95; font-weight: 900; letter-spacing: -0.04em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 0; font-size: clamp(30px, 8vw, 60px);
+          line-height: 0.92; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
         .scenarioSub {
           margin: 12px 0 0; color: var(--muted);
@@ -720,9 +695,10 @@ export default function LP3Page() {
           padding: 4px 12px; border-radius: 999px;
         }
         .scenarioText > button {
-          margin-top: 18px; min-height: 44px; border: 0; border-radius: 999px;
-          padding: 0 18px; background: var(--green); color: white;
+          margin-top: 18px; min-height: 46px; border: 0; border-radius: 999px;
+          padding: 0 20px; background: var(--green); color: white;
           font-weight: 700; font-size: 14px;
+          box-shadow: 0 12px 28px rgba(44,136,54,0.28);
         }
 
         /* ── SEQUENCE ── */
@@ -730,12 +706,14 @@ export default function LP3Page() {
           margin-top: 20px; padding: 0;
           border-radius: 28px; overflow: hidden;
           border: 1px solid var(--line);
-          background: var(--graphite);
+          background: #0b1828;
         }
         .sequenceInner { padding: 32px 18px 36px; }
         .sequence h2 {
-          margin: 10px 0 0; font-size: clamp(36px, 9.5vw, 76px);
-          line-height: 0.88; font-weight: 900; letter-spacing: -0.05em; max-width: 900px;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 10px 0 0; font-size: clamp(42px, 11vw, 86px);
+          line-height: 0.88; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase; max-width: 900px;
         }
         .seqSub {
           margin: 16px 0 0; color: var(--muted);
@@ -772,8 +750,10 @@ export default function LP3Page() {
           box-shadow: 0 24px 64px rgba(0,0,0,0.26);
         }
         .proofText h2 {
-          margin: 8px 0 0; font-size: clamp(34px, 9vw, 72px);
-          line-height: 0.92; font-weight: 900; letter-spacing: -0.05em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 8px 0 0; font-size: clamp(40px, 10.5vw, 82px);
+          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
         .proofText > p {
           margin: 16px 0 0; color: var(--muted);
@@ -790,21 +770,24 @@ export default function LP3Page() {
           display: flex; flex-direction: column; gap: 4px; text-align: center;
         }
         .proofStat strong {
-          font-size: clamp(22px, 6vw, 36px); font-weight: 900;
-          color: var(--green2); letter-spacing: -0.03em; line-height: 1;
+          font-family: "Barlow Condensed", sans-serif;
+          font-size: clamp(28px, 8vw, 48px); font-weight: 900;
+          color: var(--green2); letter-spacing: -0.01em; line-height: 1;
         }
         .proofStat span { font-size: 11px; color: var(--muted); line-height: 1.35; }
         .proofText > button {
           margin-top: 20px; min-height: 46px; border: 0; border-radius: 999px;
-          padding: 0 18px; background: rgba(44,136,54,0.16);
-          color: var(--green2); font-weight: 700; font-size: 14px;
+          padding: 0 18px; background: var(--green);
+          color: white; font-weight: 700; font-size: 14px;
         }
 
         /* ── FORM ── */
         .formSection { padding: 54px 0 64px; display: grid; gap: 28px; }
         .formIntro h2 {
-          margin: 8px 0 0; font-size: clamp(36px, 9vw, 72px);
-          line-height: 0.90; font-weight: 900; letter-spacing: -0.05em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 8px 0 0; font-size: clamp(40px, 10vw, 76px);
+          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
         .formIntro > p {
           margin: 14px 0 0; color: var(--muted);
@@ -825,8 +808,8 @@ export default function LP3Page() {
 
         .leadForm {
           display: grid; gap: 12px; padding: 20px;
-          border-radius: 24px; border: 1px solid var(--line);
-          background: rgba(255,255,255,0.05);
+          border-radius: 20px; border: 1px solid rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.06);
         }
         .leadForm label {
           display: grid; gap: 6px;
@@ -836,8 +819,8 @@ export default function LP3Page() {
         }
         .leadForm input, .leadForm select {
           width: 100%; min-height: 50px;
-          border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
-          background: rgba(0,0,0,0.50); color: white;
+          border-radius: 10px; border: 1px solid rgba(255,255,255,0.16);
+          background: rgba(255,255,255,0.08); color: white;
           outline: none; padding: 0 14px; font-size: 15px;
           -webkit-appearance: none;
         }
@@ -860,8 +843,10 @@ export default function LP3Page() {
         }
         .faqInner { max-width: 720px; }
         .faqSection h2 {
-          margin: 8px 0 0; font-size: clamp(30px, 7.5vw, 56px);
-          line-height: 0.92; font-weight: 900; letter-spacing: -0.05em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 8px 0 0; font-size: clamp(36px, 9vw, 64px);
+          line-height: 0.92; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
         .faqList { margin-top: 28px; display: flex; flex-direction: column; }
         .faqItem { border-bottom: 1px solid var(--line-soft); }
@@ -892,8 +877,10 @@ export default function LP3Page() {
         }
         .closing > div { width: min(680px, 100%); }
         .closing h2 {
-          margin: 8px 0 0; font-size: clamp(40px, 10.5vw, 84px);
-          line-height: 0.88; font-weight: 900; letter-spacing: -0.05em;
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 8px 0 0; font-size: clamp(48px, 12vw, 96px);
+          line-height: 0.88; font-weight: 900; letter-spacing: -0.01em;
+          text-transform: uppercase;
         }
         .closing p:not(.kicker) {
           margin: 16px 0 0; max-width: 500px;
