@@ -520,7 +520,7 @@ export default function LP3Page() {
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
           background:
-            linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28) 40%, rgba(7,18,40,0.95) 100%),
+            linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28) 40%, rgba(30,24,16,0.97) 100%),
             linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.05));
         }
         .heroContent { width: min(100%, 760px); position: relative; z-index: 2; }
@@ -587,21 +587,20 @@ export default function LP3Page() {
 
         /* ── CLIENT STRIP ── */
         .clientStrip {
-          background: #0b1828;
+          background: #e8e3da;
           padding: 20px clamp(16px,4vw,40px);
-          border-top: 1px solid rgba(255,255,255,0.06);
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-top: 1px solid rgba(0,0,0,0.06);
+          border-bottom: 1px solid rgba(0,0,0,0.06);
         }
         .clientLabel {
           font-size: 9px; font-weight: 600; letter-spacing: 0.20em;
-          text-transform: uppercase; color: rgba(240,235,226,0.30);
+          text-transform: uppercase; color: rgba(12,29,56,0.40);
           text-align: center; margin-bottom: 14px;
         }
         .clientLogoWrap { display: flex; justify-content: center; }
         .clientLogoStrip {
           height: 34px; width: auto;
-          filter: brightness(0) invert(1);
-          opacity: 0.55;
+          mix-blend-mode: multiply;
         }
 
         /* ── SECTIONS BASE ── */
