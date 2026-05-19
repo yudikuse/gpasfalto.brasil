@@ -1,28 +1,34 @@
 import type { Metadata } from 'next'
-import { Barlow_Condensed, DM_Sans } from 'next/font/google'
+import { Big_Shoulders_Display, Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import { site } from '@/data/content'
 
-const barlowCondensed = Barlow_Condensed({
+const bigShoulders = Big_Shoulders_Display({
   subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  style: ['normal', 'italic'],
-  variable: '--font-barlow-condensed',
+  weight: ['500', '700', '800', '900'],
+  variable: '--font-display',
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
+const interTight = Inter_Tight({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  variable: '--font-dm-sans',
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const jetBrains = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title:       site.seo.title,
-  description: site.seo.description,
-  keywords:    site.seo.keywords,
+  title:        site.seo.title,
+  description:  site.seo.description,
+  keywords:     site.seo.keywords,
   metadataBase: new URL(site.seo.url),
   openGraph: {
     title:       site.seo.title,
@@ -37,7 +43,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${bigShoulders.variable} ${interTight.variable} ${jetBrains.variable}`}
+    >
       <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-18158017809"
@@ -52,7 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
       </head>
-      <body className="font-body bg-navy text-cream">{children}</body>
+      <body className="font-body bg-midnight text-bone antialiased">
+        {children}
+      </body>
     </html>
   )
 }
