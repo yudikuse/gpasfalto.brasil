@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Instagram, Youtube, ArrowUpRight } from 'lucide-react'
+import { Instagram, Youtube, Facebook, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
 
 export function Footer() {
@@ -13,9 +13,9 @@ export function Footer() {
             <Image
               src="/images/logo-white.png"
               alt="GP Asfalto"
-              width={180}
-              height={56}
-              className="h-14 w-auto"
+              width={280}
+              height={84}
+              className="h-16 w-auto"
             />
             <p className="mt-6 max-w-sm text-sm text-gp-steel">
               Infraestrutura, pavimentação CBUQ e usinas próprias. Atendendo o
@@ -59,7 +59,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
+                
                   href={`https://wa.me/${site.company.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -82,8 +82,8 @@ export function Footer() {
           {/* Redes */}
           <div>
             <div className="eyebrow mb-6">Siga</div>
-            <div className="flex gap-3">
-              <a
+            <div className="flex flex-wrap gap-3">
+              
                 href={site.company.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -92,7 +92,7 @@ export function Footer() {
               >
                 <Instagram size={18} />
               </a>
-              <a
+              
                 href={site.company.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -108,7 +108,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="flex flex-col items-start justify-between gap-4 border-t border-gp-steel/10 py-8 md:flex-row md:items-center">
           <div className="font-mono text-xs uppercase tracking-widest text-gp-steel">
-            © {new Date().getFullYear()} {site.company.razao} — Todos os direitos reservados
+            © {new Date().getFullYear()} GP Asfalto — Todos os direitos reservados
           </div>
           <div className="font-mono text-xs uppercase tracking-widest text-gp-steel">
             CNPJ {site.company.cnpj}
