@@ -42,10 +42,10 @@ export function Header() {
             <Image
               src="/images/logo-white.png"
               alt="GP Asfalto"
-              width={160}
-              height={48}
+              width={280}
+              height={84}
               priority
-              className="h-10 w-auto"
+              className="h-12 w-auto md:h-14"
             />
           </Link>
 
@@ -64,7 +64,7 @@ export function Header() {
 
           {/* CTA + Menu hamburger */}
           <div className="flex items-center gap-3">
-            <a
+            
               href={`https://wa.me/${site.company.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -92,9 +92,13 @@ export function Header() {
         )}
       >
         <div className="container-gp flex h-[var(--header-h)] items-center justify-between">
-          <span className="font-display text-sm uppercase tracking-wider text-gp-bone">
-            Menu
-          </span>
+          <Image
+            src="/images/logo-white.png"
+            alt="GP Asfalto"
+            width={220}
+            height={66}
+            className="h-12 w-auto"
+          />
           <button
             onClick={() => setMenuOpen(false)}
             className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone"
@@ -114,7 +118,7 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <a
+          
             href={`https://wa.me/${site.company.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
