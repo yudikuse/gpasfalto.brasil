@@ -41,10 +41,10 @@ export function Header() {
             <Image
               src="/images/logo-white.png"
               alt="GP Asfalto"
-              width={280}
-              height={84}
+              width={320}
+              height={96}
               priority
-              className="h-12 w-auto md:h-14"
+              className="h-14 w-auto md:h-16"
             />
           </Link>
 
@@ -61,7 +61,7 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a
+            
               href={`https://wa.me/${site.company.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -91,9 +91,9 @@ export function Header() {
           <Image
             src="/images/logo-white.png"
             alt="GP Asfalto"
-            width={220}
-            height={66}
-            className="h-12 w-auto"
+            width={260}
+            height={78}
+            className="h-14 w-auto"
           />
           <button
             onClick={() => setMenuOpen(false)}
@@ -110,21 +110,3 @@ export function Header() {
               href={item.href}
               onClick={() => setMenuOpen(false)}
               className="font-display text-4xl uppercase text-gp-bone transition-colors hover:text-gp-green-bright"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <a
-            href={`https://wa.me/${site.company.whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary mt-8 w-fit"
-          >
-            Solicitar Orçamento
-            <ArrowUpRight size={16} />
-          </a>
-        </nav>
-      </div>
-    </>
-  )
-}
