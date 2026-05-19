@@ -3,6 +3,7 @@ import { Big_Shoulders_Display, Inter_Tight, JetBrains_Mono } from 'next/font/go
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { Header } from '@/components/Header'
 import { SideTagline } from '@/components/SideTagline'
+import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { site } from '@/data/content'
 import './globals.css'
 
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <SideTagline />
           <main>{children}</main>
+          <WhatsAppFloat />
         </SmoothScroll>
       </body>
     </html>
