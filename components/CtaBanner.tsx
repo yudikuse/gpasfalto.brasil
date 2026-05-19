@@ -42,10 +42,10 @@ export function CtaBanner() {
               <span className="h-px w-12 bg-gp-green-bright" />
               <span className="eyebrow">Próximo passo</span>
             </div>
-            <h2 className="font-display text-hero uppercase leading-none text-gp-bone">
-              Construa
+            <h2 className="font-display text-display-xl uppercase leading-[0.95] text-gp-bone">
+              Construa com a
               <br />
-              <span className="text-gp-green-bright">com a GP.</span>
+              <span className="text-gp-green-bright">GP Asfalto.</span>
             </h2>
             <p className="mt-8 max-w-lg text-lg text-gp-bone/70">
               Conte sua obra. Nossa equipe técnica retorna em até 48 horas com
