@@ -148,6 +148,7 @@ export default function LP3Page() {
     const city = String(form.get("city") || "");
     const volume = String(form.get("volume") || "Não informado");
     const contratacao = String(form.get("contratacao") || "Não informado");
+    const prazo = String(form.get("prazo") || "Não informado");
 
     openWhatsapp(
       `Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.\n\n` +
@@ -157,7 +158,9 @@ export default function LP3Page() {
       `Cidade da obra: ${city}\n\n` +
       `Situação:\n${selected.message}\n\n` +
       `Tipo de contratação:\n${contratacao}\n\n` +
-      `Área ou volume aproximado:\n${volume}`
+      `Prazo desejado:\n${prazo}\n\n` +
+      `Área ou volume aproximado:\n${volume}\n\n` +
+      `Origem: LP CBUQ / Google Ads`
     );
   }
 
@@ -187,13 +190,13 @@ export default function LP3Page() {
         <div className="heroContent">
           <p className="kicker">Pavimentação asfáltica em Goiás</p>
           <h1>
-            CBUQ, terraplenagem<br />
-            <span>e aplicação com<br />equipe própria.</span>
+            Pavimentação<br />
+            <span>para obras que<br />precisam andar.</span>
           </h1>
           <p className="heroSub">
-            A GP Asfalto executa pavimentação para construtoras, loteamentos,
-            pátios industriais e acessos rurais em Goiás — com ART,
-            máquinas em campo e 3 usinas próprias.
+            CBUQ, terraplenagem e aplicação com equipe, maquinário e
+            ART de execução. A GP Asfalto opera há mais de 40 anos
+            com 3 usinas próprias em Goiás.
           </p>
           <div className="heroCreds">
             {["3 usinas próprias em Goiás", "40+ anos de pavimentação", "ART de execução inclusa", "Equipe e maquinário próprios"].map(t => (
@@ -273,9 +276,10 @@ export default function LP3Page() {
           <p className="kicker">Cadeia de execução própria</p>
           <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
           <p className="seqSub">
-            A maioria das empresas compra CBUQ de usina alheia. A GP Asfalto produz
-            nas próprias 3 usinas em Goiás — e controla temperatura, volume e logística
-            do início ao fim da aplicação. Sem terceirizar nenhuma etapa crítica.
+            Com usinas próprias, equipe e maquinário em campo, a GP Asfalto
+            controla as etapas críticas da pavimentação: produção do CBUQ,
+            logística com temperatura controlada, aplicação e compactação.
+            Um contrato. Um responsável técnico.
           </p>
           <div className="lineProcess" aria-label="Processo de execução">
             {[
@@ -375,6 +379,16 @@ export default function LP3Page() {
           <label className="full">
             Área ou volume aproximado
             <input name="volume" type="text" placeholder="Ex.: 5.000 m², 300 t de CBUQ, 1 km de via" />
+          </label>
+          <label className="full">
+            Prazo desejado
+            <select name="prazo">
+              <option value="">Selecione</option>
+              <option value="Urgente">Urgente — preciso resolver logo</option>
+              <option value="7 a 15 dias">7 a 15 dias</option>
+              <option value="30 dias">Cerca de 30 dias</option>
+              <option value="Ainda planejando">Ainda planejando</option>
+            </select>
           </label>
           <label className="full">
             Tipo de contratação
@@ -481,8 +495,9 @@ export default function LP3Page() {
           display: inline-flex; align-items: center;
           color: white; text-decoration: none; padding-left: 12px;
         }
-        .brand img { height: 30px; width: auto; max-width: 180px; object-fit: contain; }
+        .brand img { height: 38px; width: auto; max-width: 200px; object-fit: contain; }
         .brand > span { display: none; color: #fff; font-weight: 900; font-size: 18px; }
+        @media (min-width: 760px) { .brand img { height: 44px; max-width: 220px; } }
         .topbar > button {
           height: 42px; border: 0; border-radius: 999px; padding: 0 18px;
           background: var(--cream); color: #070807;
@@ -505,8 +520,8 @@ export default function LP3Page() {
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
           background:
-            linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.30) 40%, rgba(10,12,10,0.92) 100%),
-            linear-gradient(90deg, rgba(0,0,0,0.50), rgba(0,0,0,0.05));
+            linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28) 40%, rgba(7,18,40,0.95) 100%),
+            linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.05));
         }
         .heroContent { width: min(100%, 760px); position: relative; z-index: 2; }
 
@@ -572,20 +587,21 @@ export default function LP3Page() {
 
         /* ── CLIENT STRIP ── */
         .clientStrip {
-          background: #e8e3da;
-          padding: 18px clamp(16px,4vw,40px);
-          border-top: 1px solid rgba(0,0,0,0.06);
-          border-bottom: 1px solid rgba(0,0,0,0.06);
+          background: #0b1828;
+          padding: 20px clamp(16px,4vw,40px);
+          border-top: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
         }
         .clientLabel {
           font-size: 9px; font-weight: 600; letter-spacing: 0.20em;
-          text-transform: uppercase; color: rgba(12,29,56,0.45);
+          text-transform: uppercase; color: rgba(240,235,226,0.30);
           text-align: center; margin-bottom: 14px;
         }
         .clientLogoWrap { display: flex; justify-content: center; }
         .clientLogoStrip {
-          height: 36px; width: auto;
-          mix-blend-mode: multiply;
+          height: 34px; width: auto;
+          filter: brightness(0) invert(1);
+          opacity: 0.55;
         }
 
         /* ── SECTIONS BASE ── */
@@ -932,7 +948,7 @@ export default function LP3Page() {
         }
 
         @media (max-width: 430px) {
-          .brand img { max-width: 155px; height: 26px; }
+          .brand img { max-width: 160px; height: 32px; }
           .hero h1 { font-size: 48px; }
           .topbar > button { padding: 0 12px; font-size: 12px; }
         }
