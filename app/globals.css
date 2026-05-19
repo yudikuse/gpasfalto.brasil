@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gp-green:        #1F770F;
+    --gp-green-bright: #34C759;
+    --gp-navy:         #171C5E;
+    --gp-navy-deep:    #0D1142;
+    --gp-steel:        #A7A8AC;
+    --gp-steel-soft:   #5F6065;
+    --gp-bone:         #F0EBE2;
+
+    --font-display: 'Big Shoulders Display', system-ui, sans-serif;
+    --font-body:    'Inter Tight', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --header-h:       96px;
+    --side-tagline-w: 40px;
+    --gutter:         clamp(1.5rem, 4vw, 3rem);
+
+    --z-base:    1;
+    --z-header:  50;
+    --z-side:    40;
+    --z-menu:    90;
+    --z-modal:   100;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    background: var(--gp-navy);
+    color: var(--gp-bone);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  html, body {
+    scroll-snap-type: none !important;
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  ::selection {
+    background: var(--gp-green-bright);
+    color: var(--gp-navy-deep);
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    font-weight: 800;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-gp {
+    @apply mx-auto w-full max-w-8xl px-[var(--gutter)];
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center gap-3
+           px-7 py-4 font-medium tracking-wide uppercase text-sm
+           bg-gp-green-bright text-gp-navy-deep border border-gp-green-bright
+           transition-all duration-400 ease-out-expo;
+  }
+  .btn-primary:hover {
+    @apply bg-gp-bone border-gp-bone;
+  }
+
+  .btn-ghost {
+    @apply relative inline-flex items-center gap-3
+           px-7 py-4 font-medium tracking-wide uppercase text-sm
+           border border-gp-steel/40 text-gp-bone
+           transition-all duration-400 ease-out-expo;
+  }
+  .btn-ghost:hover {
+    @apply border-gp-bone bg-gp-bone/5;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-gp-green-bright;
+  }
+
+  .side-tagline {
+    @apply fixed left-0 top-1/2 z-[var(--z-side)]
+           -rotate-90 origin-left
+           font-mono text-xs uppercase tracking-[0.3em] text-gp-steel;
+    transform-origin: left top;
+    translate: 0.75rem -1px;
+  }
+
+  .line-shimmer {
+    @apply relative h-px w-full overflow-hidden bg-gp-steel/10;
+  }
+  .line-shimmer::after {
+    content: '';
+    @apply absolute inset-y-0 left-0 w-1/3;
+    background: linear-gradient(90deg, transparent, var(--gp-green-bright), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .project-card {
+    @apply relative block overflow-hidden bg-gp-navy-deep cursor-pointer;
+  }
+  .project-card .project-image {
+    @apply transition-transform duration-1200 ease-out-expo;
+  }
+  .project-card:hover .project-image {
+    transform: scale(1.06);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(2rem);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 800ms cubic-bezier(.16,1,.3,1),
+                transform 800ms cubic-bezier(.16,1,.3,1);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .text-stroke-bone {
+    -webkit-text-stroke: 1px var(--gp-bone);
+    color: transparent;
+  }
+}
