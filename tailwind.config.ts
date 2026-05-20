@@ -53,6 +53,21 @@ const config: Config = {
           100: '#F0EBE2',
           200: '#E1D7C3',
         },
+        // ====== CTA — laranja de conversão (complementar do verde GP) ======
+        'gp-orange': {
+          DEFAULT: '#FF6B00',
+          50:  '#FFF1E5',
+          100: '#FFD9B8',
+          200: '#FFBE8A',
+          300: '#FFA35C',
+          400: '#FF882E',
+          500: '#FF6B00',
+          600: '#E55A00',
+          700: '#CC4F00',
+          800: '#993B00',
+          900: '#662700',
+          dark: '#E55A00',
+        },
       },
       fontFamily: {
         display: ['var(--font-display)', 'Big Shoulders Display', 'Impact', 'sans-serif'],
@@ -88,6 +103,7 @@ const config: Config = {
       animation: {
         'fade-up':  'fadeUp 0.8s cubic-bezier(.16,1,.3,1) forwards',
         'shimmer':  'shimmer 3s linear infinite',
+        'pulse-cta': 'pulseCta 2.5s cubic-bezier(.4,0,.6,1) infinite',
       },
       keyframes: {
         fadeUp: {
@@ -97,6 +113,10 @@ const config: Config = {
         shimmer: {
           '0%':   { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
+        },
+        pulseCta: {
+          '0%, 100%': { boxShadow: '0 8px 24px -8px rgba(255,107,0,.5)' },
+          '50%':      { boxShadow: '0 12px 32px -8px rgba(255,107,0,.85)' },
         },
       },
     },
