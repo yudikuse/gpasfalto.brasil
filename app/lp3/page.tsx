@@ -110,6 +110,28 @@ export default function LP3Page() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Bloqueia vazamento de background do layout pai (azul) enquanto /lp3 está montada.
+  // Salva o estado anterior e restaura no unmount — não afeta outras rotas (silos etc).
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prev = {
+      htmlBg: html.style.background,
+      bodyBg: body.style.background,
+      bodyColor: body.style.color,
+    };
+    html.style.background = "#0E1013";
+    body.style.background = "#0E1013";
+    body.style.color = "#F0EBE2";
+    body.classList.add("lp3-active");
+    return () => {
+      html.style.background = prev.htmlBg;
+      body.style.background = prev.bodyBg;
+      body.style.color = prev.bodyColor;
+      body.classList.remove("lp3-active");
+    };
+  }, []);
+
   function goToForm(nextScenario?: Scenario) {
     if (nextScenario) setSelected(nextScenario);
     setTimeout(() => {
@@ -162,6 +184,9 @@ export default function LP3Page() {
 
   return (
     <main className="lp3">
+
+      {/* ── ESCUDO ── cobre vazamento do layout pai (header global, fundo azul) atrás da topbar fixa */}
+      <div className="topShield" aria-hidden="true" />
 
       {/* ── TOPBAR ── */}
       <header className="topbar">
@@ -574,38 +599,74 @@ export default function LP3Page() {
           position: relative;
         }
 
+        /* Escudo: cobre tudo que o layout pai pinta atrás da topbar fixa (azul, header, etc) */
+        .topShield {
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          height: 84px;
+          z-index: 49;          /* abaixo da topbar (50), acima do conteúdo */
+          background: var(--graphite);
+          pointer-events: none;
+        }
+        .topShield::after {
+          content: "";
+          position: absolute;
+          left: 0; right: 0; bottom: -24px;
+          height: 24px;
+          background: linear-gradient(180deg, var(--graphite), transparent);
+          pointer-events: none;
+        }
+        /* Reforço extra: enquanto /lp3 estiver ativa, body fica grafite */
+        body.lp3-active { background: #0E1013 !important; color: #F0EBE2; }
+        body.lp3-active::before {
+          content: ""; position: fixed; inset: 0; z-index: -10;
+          background: #0E1013; pointer-events: none;
+        }
+
         /* ── TOPBAR ── */
         .topbar {
           position: fixed; top: 14px; left: 14px; right: 14px; z-index: 50;
-          height: 60px; padding: 7px 7px 7px 16px;
+          height: 60px; padding: 7px 8px 7px 18px;
           border: 1px solid var(--line); border-radius: 999px;
-          background: rgba(14,16,19,0.82); backdrop-filter: blur(22px);
+          background: rgba(14,16,19,0.88);
+          backdrop-filter: blur(22px);
+          -webkit-backdrop-filter: blur(22px);
           display: flex; align-items: center; justify-content: space-between;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.40);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+          gap: 12px;
         }
         .brand {
           display: inline-flex; align-items: center;
           color: white; text-decoration: none;
+          min-width: 0; flex: 0 0 auto;
         }
-        .brand img { height: 38px; width: auto; max-width: 180px; object-fit: contain; }
+        .brand img { height: 36px; width: auto; max-width: 140px; object-fit: contain; }
         .brand > span { display: none; color: #fff; font-weight: 900; font-size: 18px; }
-        .topbarRight { display: flex; align-items: center; gap: 8px; }
+        .topbarRight {
+          display: flex; align-items: center; gap: 10px;
+          min-width: 0; flex: 1 1 auto; justify-content: flex-end;
+        }
         .topPhone {
           display: none; align-items: center; gap: 8px;
           color: var(--cream-2); text-decoration: none;
-          font-size: 13px; font-weight: 600; padding: 0 12px 0 8px;
+          font-size: 13px; font-weight: 600;
+          padding: 0 6px;
           letter-spacing: -0.01em;
+          white-space: nowrap;
         }
         .topPhone svg { color: var(--green2); }
         .topPhone:hover { color: var(--cream); }
         .topbar > .topbarRight > button {
-          height: 44px; border: 0; border-radius: 999px; padding: 0 18px;
+          height: 44px; border: 0; border-radius: 999px;
+          padding: 0 18px;
           background: var(--yellow); color: #1a1300;
           font-size: 13px; font-weight: 800; letter-spacing: -0.01em;
           display: inline-flex; align-items: center; gap: 6px;
-          transition: background 0.15s ease;
+          white-space: nowrap;
+          transition: background 0.15s ease, transform 0.15s ease;
         }
         .topbar > .topbarRight > button:hover { background: var(--yellow-d); }
+        .topbar > .topbarRight > button:active { transform: scale(0.97); }
 
         /* ── HERO ── */
         .hero {
