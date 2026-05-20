@@ -132,6 +132,78 @@ export default function LP3Page() {
     };
   }, []);
 
+  // Reforço JS: esconde Header, SideTagline e WhatsAppFloat do layout pai
+  // enquanto /lp3 estiver montada. Restaura tudo no unmount (silos não é afetado).
+  useEffect(() => {
+    const hidden: Array<{ el: HTMLElement; prevDisplay: string }> = [];
+
+    function hide(el: HTMLElement) {
+      hidden.push({ el, prevDisplay: el.style.display });
+      el.style.setProperty("display", "none", "important");
+    }
+
+    // Seletores conhecidos do layout pai (Header, SideTagline, WhatsAppFloat)
+    const selectors = [
+      // Header global
+      'body > header',
+      'header:not(.topbar):not(.lp3 header)',
+      '[class*="Header_"]:not(.topbar)',
+      // SideTagline
+      '[class*="SideTagline"]',
+      '[class*="side-tagline"]',
+      'aside[class*="tagline"]',
+      // WhatsAppFloat
+      '[class*="WhatsAppFloat"]',
+      '[class*="whatsapp-float"]',
+      '[class*="WhatsApp_"]',
+    ];
+
+    selectors.forEach((sel) => {
+      document.querySelectorAll<HTMLElement>(sel).forEach((el) => {
+        // Não esconde nada que esteja DENTRO da nossa LP
+        if (el.closest(".lp3")) return;
+        hide(el);
+      });
+    });
+
+    // Fallback estrutural: percorre os filhos diretos do body e esconde tudo
+    // que não seja a nossa <main className="lp3"> nem infra do Next.js
+    Array.from(document.body.children).forEach((child) => {
+      const el = child as HTMLElement;
+      if (el.classList.contains("lp3")) return;
+      if (el.querySelector?.(".lp3")) return; // wrapper que CONTÉM a LP — não esconder
+      const tag = el.tagName.toLowerCase();
+      if (["script", "noscript", "style", "link"].includes(tag)) return;
+      if (el.id?.includes("next")) return;
+      // Se for filho direto do body e não contém a LP, pode esconder
+      // (Header, SideTagline, WhatsAppFloat irmãos da main)
+      if (!el.contains(document.querySelector(".lp3"))) {
+        hide(el);
+      }
+    });
+
+    // Caso o layout pai use um wrapper (SmoothScroll), percorre seus filhos diretos
+    document
+      .querySelectorAll<HTMLElement>('[class*="SmoothScroll"], [class*="smoothScroll"], [data-smooth-scroll]')
+      .forEach((wrapper) => {
+        Array.from(wrapper.children).forEach((child) => {
+          const el = child as HTMLElement;
+          if (el.classList.contains("lp3")) return;
+          if (el.querySelector?.(".lp3")) return;
+          const tag = el.tagName.toLowerCase();
+          if (tag === "main") return; // se for o <main>, deixa
+          hide(el);
+        });
+      });
+
+    return () => {
+      hidden.forEach(({ el, prevDisplay }) => {
+        if (prevDisplay) el.style.display = prevDisplay;
+        else el.style.removeProperty("display");
+      });
+    };
+  }, []);
+
   function goToForm(nextScenario?: Scenario) {
     if (nextScenario) setSelected(nextScenario);
     setTimeout(() => {
@@ -622,6 +694,58 @@ export default function LP3Page() {
           content: ""; position: fixed; inset: 0; z-index: -10;
           background: #0E1013; pointer-events: none;
         }
+
+        /* ─────────────────────────────────────────────────────────────────
+           ISOLAMENTO DA LP — esconde componentes do layout pai (não-mexível)
+           Header global, SideTagline lateral, WhatsAppFloat flutuante.
+           Tudo isso só quando /lp3 está ativa. Outras rotas (silos, home)
+           continuam vendo esses componentes normalmente.
+           ───────────────────────────────────────────────────────────────── */
+
+        /* 1) Header global do site (componente <Header />) */
+        body.lp3-active header:not(.topbar),
+        body.lp3-active > header,
+        body.lp3-active nav[class*="header"],
+        body.lp3-active [class*="Header_"]:not(.lp3 *),
+        body.lp3-active [data-header],
+        body.lp3-active [data-site-header] {
+          display: none !important;
+        }
+
+        /* 2) SideTagline (faixa lateral "RIO VERDE · GO · BRASIL · EST. 1998") */
+        body.lp3-active [class*="SideTagline"],
+        body.lp3-active [class*="side-tagline"],
+        body.lp3-active [class*="sideTagline"],
+        body.lp3-active aside[class*="tagline"],
+        body.lp3-active [data-side-tagline] {
+          display: none !important;
+        }
+
+        /* 3) WhatsAppFloat global (botão verde flutuante do site principal) */
+        body.lp3-active [class*="WhatsAppFloat"],
+        body.lp3-active [class*="whatsapp-float"],
+        body.lp3-active [class*="whatsappFloat"],
+        body.lp3-active [class*="WhatsApp_"],
+        body.lp3-active a[href*="wa.me"]:not(.lp3 a):not(.lp3 *):not(.ghost):not(.primary),
+        body.lp3-active [data-whatsapp-float] {
+          display: none !important;
+        }
+
+        /* 4) Fallback estrutural — esconde qualquer filho direto do body
+              que NÃO seja o nosso <main className="lp3"> ou estruturas do React/Next.
+              Cobre Header, SideTagline e WhatsAppFloat caso usem seletores não-padrão. */
+        body.lp3-active > *:not(main):not(script):not(noscript):not(style):not(link):not(div#__next):not(div[data-nextjs-scroll-focus-boundary]):not(div[id*="nextjs"]) {
+          display: none !important;
+        }
+        /* Caso esses componentes estejam dentro de um wrapper (SmoothScroll),
+           o seletor abaixo cobre a partir dos descendentes diretos do wrapper.
+           Mantém apenas o nosso <main> visível. */
+        body.lp3-active div[class*="SmoothScroll"] > *:not(main),
+        body.lp3-active div[class*="smoothScroll"] > *:not(main),
+        body.lp3-active [data-smooth-scroll] > *:not(main) {
+          display: none !important;
+        }
+        /* ───────────────────────────────────────────────────────────────── */
 
         /* ── TOPBAR ── */
         .topbar {
