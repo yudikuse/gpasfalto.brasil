@@ -326,15 +326,18 @@ export default function LP3Page() {
         </div>
       </section>
 
-      {/* ── CLIENT STRIP (escuro agora) ── */}
+      {/* ── CLIENT STRIP (texto editorial até logos oficiais serem fornecidas) ── */}
       <div className="clientStrip">
         <p className="clientLabel">Fazemos parte da infraestrutura dessas operações</p>
-        <div className="clientLogoWrap">
-          <img
-            src="/images/lp/logos_strip.png"
-            alt="LDC, COMIGO, Raízen, Nutrien, Mosaic, Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre"
-            className="clientLogoStrip"
-          />
+        <div className="clientMarquee" aria-label="Parceiros e clientes">
+          <div className="clientMarqueeTrack">
+            {["LDC", "Comigo", "Fetz", "Raízen", "Cereal Ouro", "Grupo Cereal", "Nutrien", "Mercado Livre"].map((n, i, arr) => (
+              <span key={n} className="clientName">
+                {n}
+                {i < arr.length - 1 && <span className="clientDivider" aria-hidden="true">·</span>}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -717,7 +720,19 @@ export default function LP3Page() {
           color: white; text-decoration: none;
           min-width: 0; flex: 0 0 auto;
         }
-        .brand img { height: 56px; width: auto; max-width: 200px; object-fit: contain; }
+        .brand img {
+          height: auto;
+          width: 180px;
+          max-height: 64px;
+          object-fit: contain;
+          display: block;
+        }
+        @media (min-width: 760px) {
+          .brand img { width: 220px; max-height: 70px; }
+        }
+        @media (max-width: 430px) {
+          .brand img { width: 150px; max-height: 56px; }
+        }
         .brand > span { display: none; color: #fff; font-weight: 900; font-size: 18px; }
         .topbarRight {
           display: flex; align-items: center; gap: 10px;
@@ -937,10 +952,10 @@ export default function LP3Page() {
         .ghostWa:hover { background: #20bf5b; color: #052f1a; }
         .ghostWa svg { color: #052f1a; }
 
-        /* ── CLIENT STRIP (dark) ── */
+        /* ── CLIENT STRIP (texto editorial) ── */
         .clientStrip {
           background: var(--graphite-2);
-          padding: 32px clamp(16px,4vw,40px);
+          padding: 36px clamp(16px,4vw,40px);
           border-top: 1px solid var(--line-soft);
           border-bottom: 1px solid var(--line-soft);
         }
@@ -949,26 +964,48 @@ export default function LP3Page() {
           text-transform: uppercase; color: var(--muted-2);
           text-align: center; margin: 0 0 22px;
         }
-        .clientLogoWrap {
-          display: flex; justify-content: center;
-          padding: 4px 0;
+        .clientMarquee {
+          width: 100%;
+          overflow: hidden;
+          mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
+        }
+        .clientMarqueeTrack {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 0;
+          max-width: 1100px;
           margin: 0 auto;
-          max-width: 980px;
         }
-        .clientLogoStrip {
-          height: 32px; width: auto;
-          max-width: 100%;
-          /* Glow branco sutil "ilumina" partes escuras das logos sem alterar
-             cores — partes pretas viram cinza-claro, partes coloridas mantêm cor.
-             É a técnica usada por Vercel/Linear/Stripe quando exibem logos
-             multicoloridas em fundos escuros. */
-          filter:
-            drop-shadow(0 0 0.5px rgba(255,255,255,0.8))
-            drop-shadow(0 0 0.5px rgba(255,255,255,0.8))
-            brightness(1.08);
-          opacity: 0.90;
+        .clientName {
+          font-family: "Barlow Condensed", sans-serif;
+          font-size: clamp(18px, 3vw, 24px);
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          color: var(--cream-2);
+          text-transform: uppercase;
+          padding: 4px 0;
+          white-space: nowrap;
+          transition: color 0.2s;
+          display: inline-flex;
+          align-items: center;
         }
-        .clientLogoStrip:hover { opacity: 1; }
+        .clientName:hover { color: var(--cream); }
+        .clientDivider {
+          display: inline-block;
+          margin: 0 18px;
+          color: var(--green2);
+          opacity: 0.50;
+          font-size: 0.85em;
+          transform: translateY(-2px);
+        }
+        @media (max-width: 759px) {
+          .clientMarqueeTrack { gap: 0; }
+          .clientName { font-size: 16px; }
+          .clientDivider { margin: 0 12px; }
+        }
 
         /* ── SECTIONS BASE ── */
         .proof, .entry, .formSection, .faqSection, .closing {
@@ -1537,7 +1574,6 @@ export default function LP3Page() {
         }
 
         @media (max-width: 430px) {
-          .brand img { max-width: 150px; height: 32px; }
           .hero { padding: 100px 18px 50px; }
           .hero h1 { font-size: 46px; }
           .topbar > .topbarRight > button { padding: 0 14px; font-size: 12px; }
