@@ -5,16 +5,6 @@ import { FormEvent, useEffect, useState } from "react";
 const WHATSAPP_NUMBER = "5564999452124";
 const PHONE_DISPLAY = "(64) 99945-2124";
 
-/**
- * HERO IMAGE
- * Troque pela foto real da GP quando estiver no Cloudinary.
- * Sugestão de pasta: gp-asfalto/lp3/hero-pavimentacao
- */
-const HERO_IMAGE =
-  "https://res.cloudinary.com/dfw7h9c2j/image/upload/f_auto,q_auto,w_1920/v1/gp-asfalto/lp3/hero-pavimentacao";
-const HERO_IMAGE_FALLBACK =
-  "https://images.unsplash.com/photo-1604357209793-fca5dca89f97?auto=format&fit=crop&w=1920&q=70";
-
 const SCENARIOS = [
   {
     id: "construtora",
@@ -134,71 +124,45 @@ export default function LP3Page() {
 
   // Reforço JS: esconde Header, SideTagline e WhatsAppFloat do layout pai
   // enquanto /lp3 estiver montada. Restaura tudo no unmount (silos não é afetado).
+  // IMPORTANTE: roda 1 única vez, sem MutationObserver, sem loops, sem polling.
   useEffect(() => {
-    const hidden: Array<{ el: HTMLElement; prevDisplay: string }> = [];
+    const hidden: Array<{ el: HTMLElement; prev: string }> = [];
 
-    function hide(el: HTMLElement) {
-      hidden.push({ el, prevDisplay: el.style.display });
+    function tryHide(el: Element | null) {
+      if (!el || !(el instanceof HTMLElement)) return;
+      if (el.closest(".lp3")) return; // nunca esconder algo da própria LP
+      if (el.contains(document.querySelector(".lp3"))) return; // nunca esconder wrappers que contêm a LP
+      hidden.push({ el, prev: el.style.display });
       el.style.setProperty("display", "none", "important");
     }
 
-    // Seletores conhecidos do layout pai (Header, SideTagline, WhatsAppFloat)
-    const selectors = [
-      // Header global
-      'body > header',
-      'header:not(.topbar):not(.lp3 header)',
-      '[class*="Header_"]:not(.topbar)',
-      // SideTagline
-      '[class*="SideTagline"]',
-      '[class*="side-tagline"]',
-      'aside[class*="tagline"]',
-      // WhatsAppFloat
-      '[class*="WhatsAppFloat"]',
-      '[class*="whatsapp-float"]',
-      '[class*="WhatsApp_"]',
+    // Lista finita e segura de seletores específicos (sem regex/scan amplo)
+    const targetSelectors = [
+      // Header global (componente <Header />)
+      "body > header",
+      "header[class*='Header']",
+      "header[class*='header']",
+      "nav[class*='Header']",
+      // SideTagline (faixa lateral)
+      "[class*='SideTagline']",
+      "[class*='side-tagline']",
+      "aside[class*='tagline']",
+      // WhatsAppFloat (botão verde do site principal)
+      "[class*='WhatsAppFloat']",
+      "[class*='whatsapp-float']",
     ];
 
-    selectors.forEach((sel) => {
-      document.querySelectorAll<HTMLElement>(sel).forEach((el) => {
-        // Não esconde nada que esteja DENTRO da nossa LP
-        if (el.closest(".lp3")) return;
-        hide(el);
-      });
-    });
-
-    // Fallback estrutural: percorre os filhos diretos do body e esconde tudo
-    // que não seja a nossa <main className="lp3"> nem infra do Next.js
-    Array.from(document.body.children).forEach((child) => {
-      const el = child as HTMLElement;
-      if (el.classList.contains("lp3")) return;
-      if (el.querySelector?.(".lp3")) return; // wrapper que CONTÉM a LP — não esconder
-      const tag = el.tagName.toLowerCase();
-      if (["script", "noscript", "style", "link"].includes(tag)) return;
-      if (el.id?.includes("next")) return;
-      // Se for filho direto do body e não contém a LP, pode esconder
-      // (Header, SideTagline, WhatsAppFloat irmãos da main)
-      if (!el.contains(document.querySelector(".lp3"))) {
-        hide(el);
+    targetSelectors.forEach((sel) => {
+      try {
+        document.querySelectorAll(sel).forEach(tryHide);
+      } catch {
+        // seletor inválido — ignora silenciosamente
       }
     });
 
-    // Caso o layout pai use um wrapper (SmoothScroll), percorre seus filhos diretos
-    document
-      .querySelectorAll<HTMLElement>('[class*="SmoothScroll"], [class*="smoothScroll"], [data-smooth-scroll]')
-      .forEach((wrapper) => {
-        Array.from(wrapper.children).forEach((child) => {
-          const el = child as HTMLElement;
-          if (el.classList.contains("lp3")) return;
-          if (el.querySelector?.(".lp3")) return;
-          const tag = el.tagName.toLowerCase();
-          if (tag === "main") return; // se for o <main>, deixa
-          hide(el);
-        });
-      });
-
     return () => {
-      hidden.forEach(({ el, prevDisplay }) => {
-        if (prevDisplay) el.style.display = prevDisplay;
+      hidden.forEach(({ el, prev }) => {
+        if (prev) el.style.display = prev;
         else el.style.removeProperty("display");
       });
     };
@@ -499,10 +463,15 @@ export default function LP3Page() {
             <li><span />ART de execução inclusa</li>
           </ul>
           <a className="formCallNote" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
-            </svg>
-            Prefere chamar no WhatsApp? <strong>{PHONE_DISPLAY}</strong>
+            <span className="formCallIcon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
+              </svg>
+            </span>
+            <span className="formCallText">
+              <strong>{PHONE_DISPLAY}</strong>
+              <small>Chamar direto no WhatsApp</small>
+            </span>
           </a>
         </div>
 
@@ -726,23 +695,7 @@ export default function LP3Page() {
         body.lp3-active [class*="whatsapp-float"],
         body.lp3-active [class*="whatsappFloat"],
         body.lp3-active [class*="WhatsApp_"],
-        body.lp3-active a[href*="wa.me"]:not(.lp3 a):not(.lp3 *):not(.ghost):not(.primary),
         body.lp3-active [data-whatsapp-float] {
-          display: none !important;
-        }
-
-        /* 4) Fallback estrutural — esconde qualquer filho direto do body
-              que NÃO seja o nosso <main className="lp3"> ou estruturas do React/Next.
-              Cobre Header, SideTagline e WhatsAppFloat caso usem seletores não-padrão. */
-        body.lp3-active > *:not(main):not(script):not(noscript):not(style):not(link):not(div#__next):not(div[data-nextjs-scroll-focus-boundary]):not(div[id*="nextjs"]) {
-          display: none !important;
-        }
-        /* Caso esses componentes estejam dentro de um wrapper (SmoothScroll),
-           o seletor abaixo cobre a partir dos descendentes diretos do wrapper.
-           Mantém apenas o nosso <main> visível. */
-        body.lp3-active div[class*="SmoothScroll"] > *:not(main),
-        body.lp3-active div[class*="smoothScroll"] > *:not(main),
-        body.lp3-active [data-smooth-scroll] > *:not(main) {
           display: none !important;
         }
         /* ───────────────────────────────────────────────────────────────── */
@@ -804,11 +757,16 @@ export default function LP3Page() {
         .heroBg {
           position: absolute; inset: 0; z-index: -3;
           background:
-            url("${HERO_IMAGE}") center 45% / cover no-repeat,
-            url("${HERO_IMAGE_FALLBACK}") center 45% / cover no-repeat,
-            var(--graphite);
-          filter: contrast(1.05) saturate(0.78) brightness(0.55);
-          transform: scale(1.04);
+            radial-gradient(70% 50% at 70% 30%, rgba(245,184,0,0.10), transparent 60%),
+            radial-gradient(60% 60% at 15% 80%, rgba(44,136,54,0.16), transparent 65%),
+            linear-gradient(135deg, #1a1d23 0%, #0c0e11 45%, #15181d 100%);
+        }
+        .heroBg::after {
+          content: "";
+          position: absolute; inset: 0; pointer-events: none;
+          background-image:
+            repeating-linear-gradient(0deg, transparent 0 47px, rgba(255,255,255,0.018) 47px 48px),
+            repeating-linear-gradient(90deg, transparent 0 47px, rgba(255,255,255,0.018) 47px 48px);
         }
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
@@ -993,22 +951,19 @@ export default function LP3Page() {
         }
         .clientLogoWrap {
           display: flex; justify-content: center;
-          background: var(--cream);
-          padding: 14px 22px;
-          border-radius: 14px;
+          padding: 4px 0;
           margin: 0 auto;
           max-width: 980px;
-          border: 1px solid rgba(255,255,255,0.06);
         }
         .clientLogoStrip {
           height: 36px; width: auto;
           max-width: 100%;
+          filter: brightness(0) invert(1) opacity(0.55);
           /*
-           * Quando você gerar a versão do PNG sem fundo (transparente),
-           * troque o background do .clientLogoWrap para transparent e
-           * adicione: filter: brightness(0) invert(1) opacity(0.55);
-           * aqui no .clientLogoStrip. Vai ficar logos monocromáticas
-           * brancas elegantes em fundo grafite.
+           * Esse filter monocromático funciona bem com o PNG transparente
+           * (logos_strip_transparent.png). Se a logo aparecer "rasurada",
+           * é porque ainda está sendo carregado o PNG com fundo branco —
+           * substitua o arquivo em /public/images/lp/logos_strip.png.
            */
         }
 
@@ -1061,10 +1016,25 @@ export default function LP3Page() {
           border: 1px solid var(--line);
           overflow: hidden;
           background:
-            linear-gradient(180deg, rgba(14,16,19,0.20), rgba(14,16,19,0.70)),
-            url("https://images.unsplash.com/photo-1581094488379-6b1d8f76b1a1?auto=format&fit=crop&w=1400&q=70") center 50% / cover no-repeat,
-            linear-gradient(135deg, #1f1d18, #14120d);
+            radial-gradient(120% 80% at 50% 100%, rgba(245,184,0,0.10), transparent 60%),
+            radial-gradient(80% 60% at 20% 30%, rgba(44,136,54,0.18), transparent 60%),
+            linear-gradient(135deg, #1c1f25 0%, #0e1013 60%, #15181d 100%);
           box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+        }
+        .proofImage::before {
+          content: "";
+          position: absolute; inset: 0;
+          background-image:
+            repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,0.018) 39px 40px),
+            repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,0.018) 39px 40px);
+          pointer-events: none;
+        }
+        .proofImage::after {
+          content: "";
+          position: absolute; inset: 0;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+          opacity: 0.15; mix-blend-mode: overlay;
+          pointer-events: none;
         }
         .proofImageTag {
           position: absolute; left: 18px; bottom: 18px;
@@ -1162,10 +1132,25 @@ export default function LP3Page() {
           height: 360px; border-radius: 24px;
           overflow: hidden; border: 1px solid var(--line);
           background:
-            linear-gradient(180deg, rgba(14,16,19,0.10), rgba(14,16,19,0.78)),
-            url("https://images.unsplash.com/photo-1581093458791-9d09a5c1a4e8?auto=format&fit=crop&w=1400&q=70") center 60% / cover no-repeat,
-            linear-gradient(135deg, #1f1d18, #14120d);
+            radial-gradient(100% 70% at 50% 100%, rgba(44,136,54,0.18), transparent 65%),
+            radial-gradient(70% 50% at 80% 20%, rgba(245,184,0,0.10), transparent 60%),
+            linear-gradient(135deg, #1c1f25 0%, #0e1013 50%, #1a1d23 100%);
           box-shadow: 0 30px 80px rgba(0,0,0,0.40);
+        }
+        .entryImage::before {
+          content: "";
+          position: absolute; inset: 0;
+          background-image:
+            repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,0.020) 39px 40px),
+            repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,0.020) 39px 40px);
+          pointer-events: none;
+        }
+        .entryImage::after {
+          content: "";
+          position: absolute; inset: 0;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+          opacity: 0.15; mix-blend-mode: overlay;
+          pointer-events: none;
         }
         .entryCaption {
           position: absolute; left: 22px; right: 22px; bottom: 22px; z-index: 2;
@@ -1273,18 +1258,41 @@ export default function LP3Page() {
           box-shadow: 0 0 0 4px rgba(61,168,74,0.18);
         }
         .formCallNote {
-          display: inline-flex; align-items: center; gap: 10px;
-          margin-top: 22px; padding: 12px 16px;
-          border-radius: 12px;
-          background: rgba(245,184,0,0.06);
-          border: 1px solid var(--line-hot);
-          color: var(--cream-2); font-size: 14px;
+          display: flex; align-items: center; gap: 14px;
+          margin-top: 22px; padding: 14px 18px;
+          border-radius: 14px;
+          background: rgba(37,211,102,0.08);
+          border: 1px solid rgba(37,211,102,0.30);
+          color: var(--cream); font-size: 14px;
           text-decoration: none;
-          transition: background 0.15s;
+          transition: background 0.15s, border-color 0.15s, transform 0.15s;
         }
-        .formCallNote:hover { background: rgba(245,184,0,0.10); }
-        .formCallNote svg { color: var(--yellow); }
-        .formCallNote strong { color: var(--cream); font-weight: 700; }
+        .formCallNote:hover {
+          background: rgba(37,211,102,0.12);
+          border-color: rgba(37,211,102,0.50);
+        }
+        .formCallNote:active { transform: scale(0.99); }
+        .formCallIcon {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 38px; height: 38px; border-radius: 50%;
+          background: #25D366; color: #052f1a;
+          flex: 0 0 auto;
+        }
+        .formCallText {
+          display: flex; flex-direction: column;
+          line-height: 1.2; min-width: 0;
+        }
+        .formCallText strong {
+          color: var(--cream);
+          font-size: 16px; font-weight: 800;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        .formCallText small {
+          color: var(--muted);
+          font-size: 12px; margin-top: 2px;
+          font-weight: 500;
+        }
 
         .leadForm {
           display: grid; gap: 14px; padding: 26px;
@@ -1369,13 +1377,23 @@ export default function LP3Page() {
           min-height: 56svh;
           display: flex; align-items: center;
           border-top: 1px solid var(--line-soft);
+          position: relative;
           background:
-            linear-gradient(180deg, rgba(14,16,19,0.65), rgba(14,16,19,0.96)),
-            url("https://images.unsplash.com/photo-1517036840303-eb1cce635395?auto=format&fit=crop&w=1920&q=70") center 50% / cover no-repeat,
-            var(--graphite);
+            radial-gradient(80% 60% at 50% 100%, rgba(245,184,0,0.10), transparent 60%),
+            radial-gradient(60% 50% at 15% 30%, rgba(44,136,54,0.12), transparent 60%),
+            linear-gradient(180deg, var(--graphite) 0%, #0a0c0f 100%);
+          overflow: hidden;
+        }
+        .closing::before {
+          content: "";
+          position: absolute; inset: 0; pointer-events: none;
+          background-image:
+            repeating-linear-gradient(0deg, transparent 0 47px, rgba(255,255,255,0.015) 47px 48px),
+            repeating-linear-gradient(90deg, transparent 0 47px, rgba(255,255,255,0.015) 47px 48px);
         }
         .closing > div {
           width: min(1180px, 100%); margin: 0 auto;
+          position: relative; z-index: 2;
         }
         .closing h2 {
           font-family: "Barlow Condensed", sans-serif;
@@ -1480,12 +1498,39 @@ export default function LP3Page() {
           .lineProcess {
             display: flex !important;
             grid-template-columns: unset !important;
-            overflow-x: auto; scrollbar-width: none;
-            border-radius: 12px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+            scroll-padding: 0 18px;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 14px;
+            position: relative;
           }
           .lineProcess::-webkit-scrollbar { display: none; }
-          .processStep { flex: 0 0 200px; }
+          .processStep {
+            flex: 0 0 220px;
+            scroll-snap-align: start;
+          }
+          /* Affordance: gradient à direita indica "deslize pra ver mais" */
+          .sequence {
+            position: relative;
+          }
+          .sequence::after {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 36px;
+            background: linear-gradient(90deg, transparent, var(--graphite-2));
+            pointer-events: none;
+            border-top-right-radius: 28px;
+            border-bottom-right-radius: 28px;
+            z-index: 2;
+          }
           .proofStats { grid-template-columns: repeat(3,1fr); }
+
+          /* Reserva espaço para o sticky CTA não sobrepor conteúdo final */
+          .footer { padding-bottom: 110px; }
         }
 
         @media (max-width: 430px) {
