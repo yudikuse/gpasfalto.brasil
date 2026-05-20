@@ -127,44 +127,43 @@ export default function LP3Page() {
   // IMPORTANTE: roda 1 única vez, sem MutationObserver, sem loops, sem polling.
   useEffect(() => {
     const hidden: Array<{ el: HTMLElement; prev: string }> = [];
+    try {
+      // Cache uma única vez do elemento da LP — não busca de novo no loop
+      const lpRoot = document.querySelector(".lp3");
 
-    function tryHide(el: Element | null) {
-      if (!el || !(el instanceof HTMLElement)) return;
-      if (el.closest(".lp3")) return; // nunca esconder algo da própria LP
-      if (el.contains(document.querySelector(".lp3"))) return; // nunca esconder wrappers que contêm a LP
-      hidden.push({ el, prev: el.style.display });
-      el.style.setProperty("display", "none", "important");
+      function tryHide(el: Element | null) {
+        if (!el || !(el instanceof HTMLElement)) return;
+        if (lpRoot && el.contains(lpRoot)) return; // não esconde wrappers que contêm a LP
+        if (el.closest(".lp3")) return;            // não esconde algo dentro da LP
+        hidden.push({ el, prev: el.style.display });
+        el.style.setProperty("display", "none", "important");
+      }
+
+      const targetSelectors = [
+        "body > header",
+        "header[class*='Header']",
+        "[class*='SideTagline']",
+        "[class*='side-tagline']",
+        "[class*='WhatsAppFloat']",
+        "[class*='whatsapp-float']",
+      ];
+
+      targetSelectors.forEach((sel) => {
+        try {
+          document.querySelectorAll(sel).forEach(tryHide);
+        } catch {}
+      });
+    } catch {
+      // Se algo falhar aqui, NÃO derruba a página
     }
 
-    // Lista finita e segura de seletores específicos (sem regex/scan amplo)
-    const targetSelectors = [
-      // Header global (componente <Header />)
-      "body > header",
-      "header[class*='Header']",
-      "header[class*='header']",
-      "nav[class*='Header']",
-      // SideTagline (faixa lateral)
-      "[class*='SideTagline']",
-      "[class*='side-tagline']",
-      "aside[class*='tagline']",
-      // WhatsAppFloat (botão verde do site principal)
-      "[class*='WhatsAppFloat']",
-      "[class*='whatsapp-float']",
-    ];
-
-    targetSelectors.forEach((sel) => {
-      try {
-        document.querySelectorAll(sel).forEach(tryHide);
-      } catch {
-        // seletor inválido — ignora silenciosamente
-      }
-    });
-
     return () => {
-      hidden.forEach(({ el, prev }) => {
-        if (prev) el.style.display = prev;
-        else el.style.removeProperty("display");
-      });
+      try {
+        hidden.forEach(({ el, prev }) => {
+          if (prev) el.style.display = prev;
+          else el.style.removeProperty("display");
+        });
+      } catch {}
     };
   }, []);
 
@@ -781,40 +780,28 @@ export default function LP3Page() {
         }
         .heroBg {
           position: absolute; inset: 0; z-index: -3;
-          background:
-            /* foto da equipe pavimentando em Goiás */
-            url("/images/lp3/hero.jpg") center 55% / cover no-repeat,
-            /* fallback gradient se a imagem falhar */
-            radial-gradient(70% 50% at 70% 30%, rgba(245,184,0,0.10), transparent 60%),
-            linear-gradient(135deg, #1a1d23 0%, #0c0e11 45%, #15181d 100%);
+          background-color: var(--graphite);
+          background-image: url("/images/lp3/hero.jpg");
+          background-size: cover;
+          background-position: center 55%;
+          background-repeat: no-repeat;
         }
         .heroBg::after {
           content: "";
           position: absolute; inset: 0; pointer-events: none;
-          /* Camada 1: escurecimento direcional — esquerda mais escura (onde fica o H1) */
           background:
-            linear-gradient(90deg,
-              rgba(14,16,19,0.92) 0%,
-              rgba(14,16,19,0.78) 30%,
-              rgba(14,16,19,0.55) 60%,
-              rgba(14,16,19,0.40) 100%),
-            linear-gradient(180deg,
-              rgba(14,16,19,0.30) 0%,
-              rgba(14,16,19,0.20) 50%,
-              rgba(14,16,19,0.85) 100%);
+            linear-gradient(100deg,
+              rgba(14,16,19,0.94) 0%,
+              rgba(14,16,19,0.82) 35%,
+              rgba(14,16,19,0.70) 65%,
+              rgba(14,16,19,0.55) 100%);
         }
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
-          /* Apenas vinheta sutil + transição para o conteúdo abaixo do hero */
-          background:
-            radial-gradient(120% 80% at 50% 50%, transparent 30%, rgba(14,16,19,0.45) 90%),
-            linear-gradient(180deg, transparent 60%, var(--graphite) 100%);
+          background: linear-gradient(180deg, transparent 70%, var(--graphite) 100%);
+          pointer-events: none;
         }
-        .heroGrain {
-          position: absolute; inset: 0; z-index: -1; pointer-events: none;
-          opacity: 0.06; mix-blend-mode: overlay;
-          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-        }
+        .heroGrain { display: none; }
         .heroGrid {
           width: min(1180px, 100%); margin: 0 auto;
           display: grid; gap: 32px; align-items: center;
@@ -996,8 +983,22 @@ export default function LP3Page() {
         }
         .clientLogoStrip:hover { opacity: 1; }
         @media (max-width: 759px) {
-          .clientLogoStrip { height: 36px; }
-          .clientStrip { padding: 28px 8px; }
+          .clientLogoWrap {
+            justify-content: flex-start;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 0;
+          }
+          .clientLogoWrap::-webkit-scrollbar { display: none; }
+          .clientLogoStrip {
+            height: 44px;
+            max-width: none;
+            flex: 0 0 auto;
+          }
+          .clientStrip { padding: 28px 0; }
+          .clientLabel { padding: 0 16px; }
         }
 
         /* ── SECTIONS BASE ── */
@@ -1526,14 +1527,15 @@ export default function LP3Page() {
         }
 
         @media (max-width: 759px) {
-          .heroBg { background-position: center 50%; }
+          .heroBg {
+            background-image: url("/images/lp3/hero-mobile.jpg");
+            background-position: center 40%;
+          }
           .heroBg::after {
-            background:
-              linear-gradient(180deg,
-                rgba(14,16,19,0.90) 0%,
-                rgba(14,16,19,0.65) 35%,
-                rgba(14,16,19,0.50) 55%,
-                rgba(14,16,19,0.92) 100%);
+            background: linear-gradient(180deg,
+              rgba(14,16,19,0.88) 0%,
+              rgba(14,16,19,0.72) 40%,
+              rgba(14,16,19,0.86) 100%);
           }
           .hero h1 { font-size: clamp(48px, 13vw, 72px); }
           .lineProcess {
