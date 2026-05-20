@@ -1,11 +1,19 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const WHATSAPP_NUMBER = "5564999452124";
+const PHONE_DISPLAY = "(64) 99945-2124";
 
-const HERO_VIDEO =
-  "https://res.cloudinary.com/dfw7h9c2j/video/upload/v1778589177/silo-bg_tjhnws.mp4";
+/**
+ * HERO IMAGE
+ * Troque pela foto real da GP quando estiver no Cloudinary.
+ * Sugestão de pasta: gp-asfalto/lp3/hero-pavimentacao
+ */
+const HERO_IMAGE =
+  "https://res.cloudinary.com/dfw7h9c2j/image/upload/f_auto,q_auto,w_1920/v1/gp-asfalto/lp3/hero-pavimentacao";
+const HERO_IMAGE_FALLBACK =
+  "https://images.unsplash.com/photo-1604357209793-fca5dca89f97?auto=format&fit=crop&w=1920&q=70";
 
 const SCENARIOS = [
   {
@@ -87,36 +95,11 @@ function openWhatsapp(message: string) {
 }
 
 export default function LP3Page() {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [selected, setSelected] = useState<Scenario>(SCENARIOS[0]);
   const [phone, setPhone] = useState("");
+  const [heroPhone, setHeroPhone] = useState("");
   const [showSticky, setShowSticky] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const startAt = 5;
-    const endAt = 18;
-    function startVideo() {
-      if (!video) return;
-      video.currentTime = startAt;
-      video.play().catch(() => {});
-    }
-    function loopVideo() {
-      if (!video) return;
-      if (video.currentTime >= endAt) {
-        video.currentTime = startAt;
-        video.play().catch(() => {});
-      }
-    }
-    video.addEventListener("loadedmetadata", startVideo);
-    video.addEventListener("timeupdate", loopVideo);
-    return () => {
-      video.removeEventListener("loadedmetadata", startVideo);
-      video.removeEventListener("timeupdate", loopVideo);
-    };
-  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -140,6 +123,21 @@ export default function LP3Page() {
     );
   }
 
+  function handleHeroSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("hname") || "");
+    const city = String(form.get("hcity") || "");
+    openWhatsapp(
+      `Olá, vim pela página da GP Asfalto.\n\n` +
+      `Nome: ${name}\n` +
+      `WhatsApp: ${heroPhone}\n` +
+      `Cidade da obra: ${city}\n\n` +
+      `Quero uma avaliação técnica de pavimentação.\n\n` +
+      `Origem: LP CBUQ · Hero · Google Ads`
+    );
+  }
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -147,7 +145,6 @@ export default function LP3Page() {
     const empresa = String(form.get("empresa") || "Não informado");
     const city = String(form.get("city") || "");
     const volume = String(form.get("volume") || "Não informado");
-    const contratacao = String(form.get("contratacao") || "Não informado");
     const prazo = String(form.get("prazo") || "Não informado");
 
     openWhatsapp(
@@ -157,10 +154,9 @@ export default function LP3Page() {
       `WhatsApp: ${phone}\n` +
       `Cidade da obra: ${city}\n\n` +
       `Situação:\n${selected.message}\n\n` +
-      `Tipo de contratação:\n${contratacao}\n\n` +
       `Prazo desejado:\n${prazo}\n\n` +
       `Área ou volume aproximado:\n${volume}\n\n` +
-      `Origem: LP CBUQ / Google Ads`
+      `Origem: LP CBUQ · Form · Google Ads`
     );
   }
 
@@ -179,47 +175,97 @@ export default function LP3Page() {
           />
           <span>GP Asfalto</span>
         </span>
-        <button type="button" onClick={() => goToForm()}>Avaliar obra</button>
+        <div className="topbarRight">
+          <a className="topPhone" href={`tel:+${WHATSAPP_NUMBER}`} aria-label="Ligar agora">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>{PHONE_DISPLAY}</span>
+          </a>
+          <button type="button" onClick={() => goToForm()}>Avaliar obra</button>
+        </div>
       </header>
 
       {/* ── HERO ── */}
       <section className="hero" id="inicio">
-        <video ref={videoRef} className="heroVideo" src={HERO_VIDEO}
-          muted playsInline preload="metadata" aria-hidden="true" />
+        <div className="heroBg" />
         <div className="heroShade" />
-        <div className="heroContent">
-          <p className="kicker">Pavimentação asfáltica em Goiás</p>
-          <h1>
-            Pavimentação<br />
-            <span>para obras que<br />precisam andar.</span>
-          </h1>
-          <p className="heroSub">
-            CBUQ, terraplenagem e aplicação com equipe, maquinário e
-            ART de execução. A GP Asfalto opera há mais de 40 anos
-            com 3 usinas próprias em Goiás.
-          </p>
-          <div className="heroCreds">
-            {["3 usinas próprias em Goiás", "40+ anos de pavimentação", "ART de execução inclusa", "Equipe e maquinário próprios"].map(t => (
-              <div key={t} className="heroCred">
-                <span className="credDot" />
-                {t}
-              </div>
-            ))}
-          </div>
-          <div className="heroActions">
-            <button className="primary" type="button" onClick={() => goToForm()}>
-              Solicitar avaliação técnica
-            </button>
-            <button className="ghost" type="button"
-              onClick={() => quickWhatsapp("Já tenho CBUQ e preciso de equipe e equipamentos para aplicação")}>
-              Tenho CBUQ, preciso aplicar
-            </button>
+        <div className="heroGrain" aria-hidden="true" />
+
+        <div className="heroGrid">
+          <div className="heroContent">
+            <p className="kicker"><span className="kickerDot"/>Pavimentação asfáltica em Goiás · 1998</p>
+            <h1>
+              CBUQ, base e<br/>
+              <em>aplicação</em> de<br/>
+              asfalto em Goiás.
+            </h1>
+            <p className="heroSub">
+              3 usinas próprias, equipe técnica e maquinário em campo.
+              Da terraplenagem ao revestimento CBUQ com ART de execução —
+              em qualquer município do estado.
+            </p>
+            <div className="heroCreds">
+              {[
+                "3 usinas próprias em Goiás",
+                "40+ anos de pavimentação",
+                "ART de execução inclusa",
+                "Equipe e maquinário próprios",
+              ].map(t => (
+                <div key={t} className="heroCred">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  {t}
+                </div>
+              ))}
+            </div>
           </div>
 
+          {/* ── MINI FORM LATERAL ── */}
+          <aside className="heroForm" aria-label="Solicitar avaliação técnica">
+            <div className="heroFormHead">
+              <span className="heroFormPill">Resposta em até 4h úteis</span>
+              <h2>Avaliação técnica gratuita</h2>
+              <p>Informe os dados — retornamos pelo WhatsApp.</p>
+            </div>
+
+            <form onSubmit={handleHeroSubmit} className="heroFormBody">
+              <label>
+                <span>Nome</span>
+                <input name="hname" type="text" placeholder="Seu nome" required />
+              </label>
+              <label>
+                <span>WhatsApp</span>
+                <input
+                  name="hphone"
+                  type="tel"
+                  inputMode="tel"
+                  placeholder="(XX) 99999-9999"
+                  value={heroPhone}
+                  onChange={(e) => setHeroPhone(maskPhone(e.target.value))}
+                  required
+                />
+              </label>
+              <label>
+                <span>Cidade da obra</span>
+                <input name="hcity" type="text" placeholder="Ex.: Rio Verde / GO" required />
+              </label>
+              <button className="primary" type="submit">
+                Solicitar avaliação técnica
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+              <p className="heroFormNote">
+                Sem compromisso · Abre o WhatsApp com sua solicitação pronta
+              </p>
+            </form>
+          </aside>
         </div>
       </section>
 
-      {/* ── CLIENT STRIP ── */}
+      {/* ── CLIENT STRIP (escuro agora) ── */}
       <div className="clientStrip">
         <p className="clientLabel">Fazemos parte da infraestrutura dessas operações</p>
         <div className="clientLogoWrap">
@@ -231,78 +277,11 @@ export default function LP3Page() {
         </div>
       </div>
 
-      {/* ── ENTRADA RÁPIDA — qual é a sua situação ── */}
-      <section className="entry" id="situacao">
-        <div className="entryImage">
-          <div className="entryCaption">
-            <span>Obra em campo · Goiás</span>
-            <strong>Base, massa, aplicação e rolo trabalhando em sequência.</strong>
-          </div>
-        </div>
-
-        <div className="entryPanel">
-          <p className="kicker">Qual é a sua situação?</p>
-          <h2>A GP Asfalto entra onde a obra precisa avançar.</h2>
-
-          <div className="scenarioPicker">
-            {SCENARIOS.map((item) => (
-              <button key={item.id} type="button"
-                className={selected.id === item.id ? "active" : ""}
-                onClick={() => setSelected(item)}>
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="scenarioText" key={selected.id}>
-            <span>{selected.label}</span>
-            <h3>{selected.title}</h3>
-            <p className="scenarioSub">{selected.sub}</p>
-            <div className="scenarioChips">
-              {selected.chips.map(c => (
-                <span key={c} className="chip">{c}</span>
-              ))}
-            </div>
-            <button type="button" onClick={() => goToForm(selected)}>
-              Solicitar avaliação técnica →
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEQUÊNCIA DE EXECUÇÃO ── */}
-      <section className="sequence">
-        <div className="sequenceInner">
-          <p className="kicker">Cadeia de execução própria</p>
-          <h2>Base no ponto. Massa no tempo. Rolo na sequência.</h2>
-          <p className="seqSub">
-            Com usinas próprias, equipe e maquinário em campo, a GP Asfalto
-            controla as etapas críticas da pavimentação: produção do CBUQ,
-            logística com temperatura controlada, aplicação e compactação.
-            Um contrato. Um responsável técnico.
-          </p>
-          <div className="lineProcess" aria-label="Processo de execução">
-            {[
-              ["Terraplenagem", "Corte, aterro e regularização do subleito"],
-              ["Base e subbase", "BGS, brita graduada, estabilização"],
-              ["Revestimento CBUQ", "Massa de usina própria, temperatura controlada"],
-              ["Compactação", "Rolo compactador e controle tecnológico"],
-            ].map(([t, d]) => (
-              <div key={t} className="processStep">
-                <strong>{t}</strong>
-                <span>{d}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROVA ── */}
+      {/* ── PROVA / AUTORIDADE ── */}
       <section className="proof">
-        <div className="proofImage" />
         <div className="proofText">
-          <p className="kicker">Por que a GP Asfalto</p>
-          <h2>Não é só massa.<br />É obra entregue.</h2>
+          <p className="kicker"><span className="kickerDot"/>Por que a GP Asfalto</p>
+          <h2>Não é só massa.<br/>É <em>obra entregue</em>.</h2>
           <p>
             A GP Asfalto opera há mais de 40 anos no Cerrado goiano com equipe própria,
             maquinário e 3 usinas de CBUQ em operação. Executamos pavimentação para
@@ -321,17 +300,97 @@ export default function LP3Page() {
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => goToForm()}>
-            Solicitar avaliação técnica →
+          <button className="primary" type="button" onClick={() => goToForm()}>
+            Solicitar avaliação técnica
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
           </button>
+        </div>
+        <div className="proofImage" aria-hidden="true">
+          <div className="proofImageTag">
+            <span className="proofImageDot" />
+            Pátio operacional · Goiás
+          </div>
         </div>
       </section>
 
-      {/* ── FORMULÁRIO ── */}
+      {/* ── CENÁRIOS ── */}
+      <section className="entry" id="situacao">
+        <div className="entryPanel">
+          <p className="kicker"><span className="kickerDot"/>Qual é a sua situação?</p>
+          <h2>A GP entra onde a obra <em>precisa avançar</em>.</h2>
+
+          <div className="scenarioPicker" role="tablist">
+            {SCENARIOS.map((item) => (
+              <button key={item.id} type="button" role="tab"
+                aria-selected={selected.id === item.id}
+                className={selected.id === item.id ? "active" : ""}
+                onClick={() => setSelected(item)}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="scenarioText" key={selected.id}>
+            <span className="scenarioTag">{selected.label}</span>
+            <h3>{selected.title}</h3>
+            <p className="scenarioSub">{selected.sub}</p>
+            <div className="scenarioChips">
+              {selected.chips.map(c => (
+                <span key={c} className="chip">{c}</span>
+              ))}
+            </div>
+            <button className="primary primaryS" type="button" onClick={() => goToForm(selected)}>
+              Solicitar avaliação técnica
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="entryImage" aria-hidden="true">
+          <div className="entryCaption">
+            <span><span className="kickerDot"/>Obra em campo · Goiás</span>
+            <strong>Base, massa, aplicação e rolo trabalhando em sequência.</strong>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEQUÊNCIA DE EXECUÇÃO ── */}
+      <section className="sequence">
+        <div className="sequenceInner">
+          <p className="kicker"><span className="kickerDot"/>Cadeia de execução própria</p>
+          <h2>Base no ponto.<br/>Massa no tempo.<br/><em>Rolo na sequência.</em></h2>
+          <p className="seqSub">
+            Com usinas próprias, equipe e maquinário em campo, a GP Asfalto
+            controla as etapas críticas da pavimentação: produção do CBUQ,
+            logística com temperatura controlada, aplicação e compactação.
+            Um contrato. Um responsável técnico.
+          </p>
+          <div className="lineProcess" aria-label="Processo de execução">
+            {[
+              ["01", "Terraplenagem", "Corte, aterro e regularização do subleito"],
+              ["02", "Base e subbase", "BGS, brita graduada, estabilização"],
+              ["03", "Revestimento CBUQ", "Massa de usina própria, temperatura controlada"],
+              ["04", "Compactação", "Rolo compactador e controle tecnológico"],
+            ].map(([n, t, d]) => (
+              <div key={t} className="processStep">
+                <span className="processNum">{n}</span>
+                <strong>{t}</strong>
+                <span className="processDesc">{d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FORMULÁRIO COMPLETO ── */}
       <section className="formSection" id="avaliacao">
         <div className="formIntro">
-          <p className="kicker">Avaliação técnica</p>
-          <h2>Informe os dados da obra.</h2>
+          <p className="kicker"><span className="kickerDot"/>Avaliação técnica</p>
+          <h2>Informe os dados <em>da obra</em>.</h2>
           <p>
             Nossa equipe analisa cidade, situação e escopo e retorna
             com uma avaliação técnica via WhatsApp.
@@ -342,30 +401,36 @@ export default function LP3Page() {
             <li><span />Atendemos todo o estado de Goiás</li>
             <li><span />ART de execução inclusa</li>
           </ul>
+          <a className="formCallNote" href={`tel:+${WHATSAPP_NUMBER}`}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Prefere falar agora? <strong>{PHONE_DISPLAY}</strong>
+          </a>
         </div>
 
         <form className="leadForm" onSubmit={handleSubmit}>
           <label>
-            Nome
+            <span>Nome</span>
             <input name="name" type="text" placeholder="Seu nome" required />
           </label>
           <label>
-            Empresa / Obra
+            <span>Empresa / Obra</span>
             <input name="empresa" type="text" placeholder="Nome da empresa ou obra" />
           </label>
           <label>
-            WhatsApp
-            <input name="phone" type="tel" placeholder="(XX) 99999-9999"
+            <span>WhatsApp</span>
+            <input name="phone" type="tel" inputMode="tel" placeholder="(XX) 99999-9999"
               value={phone}
               onChange={(e) => setPhone(maskPhone(e.target.value))}
               required />
           </label>
           <label>
-            Cidade da obra
+            <span>Cidade da obra</span>
             <input name="city" type="text" placeholder="Ex.: Goiânia / GO" required />
           </label>
           <label>
-            Situação
+            <span>Situação</span>
             <select value={selected.id}
               onChange={(e) => {
                 const next = SCENARIOS.find((s) => s.id === e.target.value);
@@ -376,31 +441,25 @@ export default function LP3Page() {
               ))}
             </select>
           </label>
-          <label className="full">
-            Área ou volume aproximado
-            <input name="volume" type="text" placeholder="Ex.: 5.000 m², 300 t de CBUQ, 1 km de via" />
-          </label>
-          <label className="full">
-            Prazo desejado
-            <select name="prazo">
+          <label>
+            <span>Prazo desejado</span>
+            <select name="prazo" defaultValue="">
               <option value="">Selecione</option>
-              <option value="Urgente">Urgente — preciso resolver logo</option>
+              <option value="Urgente">Urgente</option>
               <option value="7 a 15 dias">7 a 15 dias</option>
               <option value="30 dias">Cerca de 30 dias</option>
               <option value="Ainda planejando">Ainda planejando</option>
             </select>
           </label>
           <label className="full">
-            Tipo de contratação
-            <select name="contratacao">
-              <option value="">Selecione</option>
-              <option value="Execução completa — terraplenagem, base e CBUQ">Execução completa — terraplenagem, base e CBUQ</option>
-              <option value="Só aplicação de CBUQ — já tenho a massa">Só aplicação de CBUQ — já tenho a massa</option>
-              <option value="Ainda não sei — quero avaliação técnica primeiro">Ainda não sei — quero avaliação técnica primeiro</option>
-            </select>
+            <span>Área ou volume aproximado</span>
+            <input name="volume" type="text" placeholder="Ex.: 5.000 m², 300 t de CBUQ, 1 km de via" />
           </label>
           <button className="primary full" type="submit">
-            Solicitar avaliação técnica →
+            Solicitar avaliação técnica
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
           </button>
           <p className="formNote full">
             Abre o WhatsApp com sua solicitação pronta para envio
@@ -411,14 +470,14 @@ export default function LP3Page() {
       {/* ── FAQ ── */}
       <section className="faqSection">
         <div className="faqInner">
-          <p className="kicker">Dúvidas frequentes</p>
-          <h2>Antes de solicitar a avaliação.</h2>
+          <p className="kicker"><span className="kickerDot"/>Dúvidas frequentes</p>
+          <h2>Antes de solicitar <em>a avaliação</em>.</h2>
           <div className="faqList">
             {FAQ.map(({ q, a }, i) => (
               <div key={q} className={`faqItem${faqOpen === i ? " open" : ""}`}>
                 <button type="button" onClick={() => setFaqOpen(faqOpen === i ? null : i)}>
                   <span>{q}</span>
-                  <i>{faqOpen === i ? "−" : "+"}</i>
+                  <i aria-hidden="true">{faqOpen === i ? "−" : "+"}</i>
                 </button>
                 {faqOpen === i && <p>{a}</p>}
               </div>
@@ -430,511 +489,785 @@ export default function LP3Page() {
       {/* ── CLOSING ── */}
       <section className="closing">
         <div>
-          <p className="kicker">GP Asfalto · Goiás</p>
-          <h2>40 anos de pavimentação.<br />Da terra ao asfalto.</h2>
+          <p className="kicker"><span className="kickerDot"/>GP Asfalto · Goiás · Desde 1998</p>
+          <h2>40 anos de pavimentação.<br/><em>Da terra ao asfalto.</em></h2>
           <p>
             3 usinas próprias, equipe técnica e maquinário em campo.
             Informe a cidade e o escopo da obra — retornamos com
             avaliação técnica em até 4 horas úteis.
           </p>
-          <button className="primary" type="button" onClick={() => goToForm()}>
-            Solicitar avaliação técnica
-          </button>
+          <div className="closingCtas">
+            <button className="primary" type="button" onClick={() => goToForm()}>
+              Solicitar avaliação técnica
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+            <a className="ghost" href={`tel:+${WHATSAPP_NUMBER}`}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              {PHONE_DISPLAY}
+            </a>
+          </div>
         </div>
       </section>
 
+      <footer className="footer">
+        <div className="footerInner">
+          <span>© GP Asfalto · CNPJ disponível mediante solicitação · Goiás · Brasil</span>
+          <span>Pavimentação asfáltica · CBUQ · Terraplenagem · ART de execução</span>
+        </div>
+      </footer>
+
       {/* ── STICKY CTA ── */}
       <div className={showSticky ? "stickyCta visible" : "stickyCta"}>
-        <button className="ghost" type="button"
-          onClick={() => quickWhatsapp("Quero falar com a equipe técnica da GP Asfalto sobre aplicação de CBUQ")}>
+        <a className="ghost" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
+          </svg>
           WhatsApp
-        </button>
+        </a>
         <button className="primary" type="button" onClick={() => goToForm()}>
           Avaliar obra
         </button>
       </div>
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
         :root {
-          --green:   #2C8836;
-          --green2:  #34a84a;
-          --asphalt: #071228;
-          --graphite:#0b1828;
-          --cream:   #F0EBE2;
-          --muted:   rgba(240,235,226,0.60);
-          --line:    rgba(255,255,255,0.12);
-          --line-soft: rgba(255,255,255,0.07);
+          --green:    #2C8836;   /* GP brand */
+          --green2:   #3DA84A;   /* GP brand light */
+          --yellow:   #F5B800;   /* CTA construction */
+          --yellow-d: #E0A800;   /* CTA hover */
+          --graphite: #0E1013;   /* asphalt base */
+          --graphite-2:#15181D;  /* surface 1 */
+          --graphite-3:#1B1F25;  /* surface 2 */
+          --terra:    rgba(58, 36, 24, 0.35); /* Goiás earth accent */
+          --cream:    #F0EBE2;
+          --cream-2:  rgba(240,235,226,0.72);
+          --muted:    rgba(240,235,226,0.58);
+          --muted-2:  rgba(240,235,226,0.40);
+          --line:     rgba(255,255,255,0.10);
+          --line-soft:rgba(255,255,255,0.06);
+          --line-hot: rgba(245,184,0,0.30);
         }
 
         *, *::before, *::after { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; background: var(--graphite); }
         body {
           margin: 0;
-          background: var(--asphalt);
+          background: var(--graphite);
           color: var(--cream);
           font-family: "DM Sans","Inter",system-ui,-apple-system,sans-serif;
           -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
         }
         button, input, select, textarea { font: inherit; }
         button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
-        .lp3 { min-height: 100vh; overflow-x: hidden; background: var(--asphalt); }
+        .lp3 {
+          min-height: 100vh;
+          overflow-x: hidden;
+          background: var(--graphite);
+          position: relative;
+        }
 
         /* ── TOPBAR ── */
         .topbar {
           position: fixed; top: 14px; left: 14px; right: 14px; z-index: 50;
-          height: 56px; padding: 7px;
+          height: 60px; padding: 7px 7px 7px 16px;
           border: 1px solid var(--line); border-radius: 999px;
-          background: rgba(10,12,10,0.80); backdrop-filter: blur(22px);
+          background: rgba(14,16,19,0.82); backdrop-filter: blur(22px);
           display: flex; align-items: center; justify-content: space-between;
-          box-shadow: 0 20px 70px rgba(0,0,0,0.32);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.40);
         }
         .brand {
           display: inline-flex; align-items: center;
-          color: white; text-decoration: none; padding-left: 12px;
+          color: white; text-decoration: none;
         }
-        .brand img { height: 38px; width: auto; max-width: 200px; object-fit: contain; }
+        .brand img { height: 38px; width: auto; max-width: 180px; object-fit: contain; }
         .brand > span { display: none; color: #fff; font-weight: 900; font-size: 18px; }
-        @media (min-width: 760px) { .brand img { height: 44px; max-width: 220px; } }
-        .topbar > button {
-          height: 42px; border: 0; border-radius: 999px; padding: 0 18px;
-          background: var(--cream); color: #070807;
-          font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
+        .topbarRight { display: flex; align-items: center; gap: 8px; }
+        .topPhone {
+          display: none; align-items: center; gap: 8px;
+          color: var(--cream-2); text-decoration: none;
+          font-size: 13px; font-weight: 600; padding: 0 12px 0 8px;
+          letter-spacing: -0.01em;
         }
+        .topPhone svg { color: var(--green2); }
+        .topPhone:hover { color: var(--cream); }
+        .topbar > .topbarRight > button {
+          height: 44px; border: 0; border-radius: 999px; padding: 0 18px;
+          background: var(--yellow); color: #1a1300;
+          font-size: 13px; font-weight: 800; letter-spacing: -0.01em;
+          display: inline-flex; align-items: center; gap: 6px;
+          transition: background 0.15s ease;
+        }
+        .topbar > .topbarRight > button:hover { background: var(--yellow-d); }
 
         /* ── HERO ── */
         .hero {
-          position: relative; min-height: 100svh;
-          padding: 90px 20px 40px;
-          display: flex; align-items: flex-end;
+          position: relative;
+          min-height: 100svh;
+          padding: 110px 20px 56px;
+          display: flex; align-items: center;
           overflow: hidden; isolation: isolate;
+          background: var(--graphite);
         }
-        .heroVideo {
-          position: absolute; inset: 0; width: 100%; height: 100%;
-          object-fit: cover; object-position: 58% center;
-          filter: contrast(1.10) saturate(0.72) brightness(0.68);
-          transform: scale(1.04); z-index: -3;
+        .heroBg {
+          position: absolute; inset: 0; z-index: -3;
+          background:
+            url("${HERO_IMAGE}") center 45% / cover no-repeat,
+            url("${HERO_IMAGE_FALLBACK}") center 45% / cover no-repeat,
+            var(--graphite);
+          filter: contrast(1.05) saturate(0.78) brightness(0.55);
+          transform: scale(1.04);
         }
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
           background:
-            linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28) 40%, rgba(30,24,16,0.97) 100%),
-            linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.05));
+            linear-gradient(180deg,
+              rgba(14,16,19,0.30) 0%,
+              rgba(14,16,19,0.55) 45%,
+              rgba(14,16,19,0.95) 100%),
+            linear-gradient(90deg,
+              rgba(14,16,19,0.78) 0%,
+              rgba(14,16,19,0.30) 55%,
+              rgba(14,16,19,0.10) 100%);
         }
-        .heroContent { width: min(100%, 760px); position: relative; z-index: 2; }
+        .heroGrain {
+          position: absolute; inset: 0; z-index: -1; pointer-events: none;
+          opacity: 0.06; mix-blend-mode: overlay;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        }
+        .heroGrid {
+          width: min(1180px, 100%); margin: 0 auto;
+          display: grid; gap: 32px; align-items: center;
+        }
+        .heroContent { width: 100%; }
 
+        /* kicker — usado em várias seções */
         .kicker {
-          margin: 0; color: var(--green2);
-          text-transform: uppercase; font-size: 10px;
-          font-weight: 700; letter-spacing: 0.16em;
+          margin: 0;
+          display: inline-flex; align-items: center; gap: 10px;
+          color: var(--green2);
+          text-transform: uppercase; font-size: 11px;
+          font-weight: 800; letter-spacing: 0.18em;
         }
-
+        .kickerDot {
+          width: 6px; height: 6px; border-radius: 50%;
+          background: var(--green2);
+          box-shadow: 0 0 0 4px rgba(61,168,74,0.18);
+        }
 
         .hero h1 {
           font-family: "Barlow Condensed", sans-serif;
-          margin: 14px 0 0;
-          font-size: clamp(58px, 15vw, 110px);
-          line-height: 0.86; font-weight: 900;
-          letter-spacing: -0.02em;
+          margin: 18px 0 0;
+          font-size: clamp(54px, 12vw, 108px);
+          line-height: 0.85; font-weight: 900;
+          letter-spacing: -0.025em;
           text-transform: uppercase;
+          color: var(--cream);
+          text-shadow: 0 2px 24px rgba(0,0,0,0.40);
         }
-        .hero h1 span { display: block; color: rgba(240,235,226,0.40); font-family: "Barlow Condensed", sans-serif; }
-
+        .hero h1 em {
+          font-style: italic;
+          font-weight: 900;
+          color: var(--yellow);
+          font-family: "Barlow Condensed", sans-serif;
+        }
         .heroSub {
-          margin: 12px 0 0; max-width: 540px;
-          color: var(--muted); font-size: 15px;
-          line-height: 1.55; letter-spacing: -0.02em;
+          margin: 18px 0 0; max-width: 540px;
+          color: var(--cream-2); font-size: 16px;
+          line-height: 1.55; letter-spacing: -0.005em;
         }
-
         .heroCreds {
-          margin-top: 18px; display: flex;
-          flex-direction: column; gap: 7px;
+          margin-top: 24px; display: flex;
+          flex-direction: column; gap: 8px;
         }
         .heroCred {
-          display: flex; align-items: center; gap: 10px;
-          font-size: 13px; color: rgba(240,235,226,0.55);
+          display: inline-flex; align-items: center; gap: 10px;
+          font-size: 13.5px; color: var(--cream-2);
           font-weight: 500;
         }
-        .credDot {
-          width: 5px; height: 5px; border-radius: 50%;
-          background: var(--green); flex: 0 0 auto;
-        }
+        .heroCred svg { color: var(--green2); flex: 0 0 auto; }
 
-        .heroActions { margin-top: 24px; display: grid; gap: 10px; }
+        /* ── MINI FORM HERO ── */
+        .heroForm {
+          width: 100%;
+          background: rgba(21,24,29,0.78);
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--line);
+          border-radius: 22px;
+          padding: 24px;
+          box-shadow:
+            0 30px 80px rgba(0,0,0,0.55),
+            inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .heroFormHead { padding-bottom: 18px; border-bottom: 1px solid var(--line-soft); }
+        .heroFormPill {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: 10.5px; font-weight: 800; letter-spacing: 0.10em;
+          text-transform: uppercase;
+          color: var(--yellow);
+          background: rgba(245,184,0,0.10);
+          border: 1px solid var(--line-hot);
+          padding: 5px 10px; border-radius: 999px;
+        }
+        .heroForm h2 {
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 12px 0 0; font-size: 30px;
+          line-height: 0.98; font-weight: 900;
+          letter-spacing: -0.015em; text-transform: uppercase;
+          color: var(--cream);
+        }
+        .heroForm h2 + p {
+          margin: 8px 0 0; color: var(--muted); font-size: 13.5px;
+        }
+        .heroFormBody {
+          padding-top: 16px;
+          display: grid; gap: 12px;
+        }
+        .heroFormBody label {
+          display: grid; gap: 6px;
+        }
+        .heroFormBody label > span {
+          color: var(--muted-2);
+          font-size: 10.5px; font-weight: 800;
+          text-transform: uppercase; letter-spacing: 0.12em;
+        }
+        .heroFormBody input {
+          width: 100%; min-height: 50px;
+          border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.04);
+          color: var(--cream);
+          outline: none; padding: 0 14px; font-size: 15px;
+          transition: border-color 0.15s, background 0.15s;
+        }
+        .heroFormBody input:focus {
+          border-color: var(--yellow);
+          background: rgba(255,255,255,0.06);
+          box-shadow: 0 0 0 3px rgba(245,184,0,0.12);
+        }
+        .heroFormBody .primary { margin-top: 6px; width: 100%; }
+        .heroFormNote {
+          margin: 6px 0 0; text-align: center;
+          font-size: 11.5px; color: var(--muted-2);
+        }
 
         /* ── BUTTONS ── */
         .primary, .ghost {
-          min-height: 54px; border-radius: 999px;
-          padding: 0 22px; border: 0;
+          min-height: 56px; border-radius: 999px;
+          padding: 0 24px; border: 0;
           display: inline-flex; align-items: center; justify-content: center;
-          font-weight: 700; letter-spacing: -0.02em;
-          transition: transform 0.16s ease, opacity 0.16s;
+          gap: 8px;
+          font-weight: 800; letter-spacing: -0.01em;
+          font-size: 15px;
+          transition: transform 0.16s ease, background 0.16s, box-shadow 0.16s;
+          text-decoration: none;
         }
         .primary:active, .ghost:active { transform: scale(0.985); }
         .primary {
-          background: var(--green); color: white;
-          box-shadow: 0 16px 40px rgba(44,136,54,0.30);
+          background: var(--yellow); color: #1a1300;
+          box-shadow:
+            0 16px 40px rgba(245,184,0,0.28),
+            inset 0 1px 0 rgba(255,255,255,0.30);
         }
-        .primary:hover { background: #249330; }
+        .primary:hover { background: var(--yellow-d); }
+        .primaryS { min-height: 50px; font-size: 14px; }
         .ghost {
-          background: rgba(255,255,255,0.08); color: white;
-          border: 1px solid rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.06); color: var(--cream);
+          border: 1px solid rgba(255,255,255,0.12);
           backdrop-filter: blur(16px);
         }
-        .ghost:hover { background: rgba(255,255,255,0.12); }
+        .ghost:hover { background: rgba(255,255,255,0.10); }
 
-        /* ── CLIENT STRIP ── */
+        /* ── CLIENT STRIP (dark) ── */
         .clientStrip {
-          background: #e8e3da;
-          padding: 20px clamp(16px,4vw,40px);
-          border-top: 1px solid rgba(0,0,0,0.06);
-          border-bottom: 1px solid rgba(0,0,0,0.06);
+          background: var(--graphite-2);
+          padding: 28px clamp(16px,4vw,40px);
+          border-top: 1px solid var(--line-soft);
+          border-bottom: 1px solid var(--line-soft);
         }
         .clientLabel {
-          font-size: 9px; font-weight: 600; letter-spacing: 0.20em;
-          text-transform: uppercase; color: rgba(12,29,56,0.40);
-          text-align: center; margin-bottom: 14px;
+          font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+          text-transform: uppercase; color: var(--muted-2);
+          text-align: center; margin: 0 0 16px;
         }
         .clientLogoWrap { display: flex; justify-content: center; }
         .clientLogoStrip {
-          height: 34px; width: auto;
-          mix-blend-mode: multiply;
+          height: 32px; width: auto;
+          filter: brightness(0) invert(1) opacity(0.55);
         }
 
         /* ── SECTIONS BASE ── */
-        .entry, .sequence, .proof, .formSection, .faqSection, .closing {
-          width: min(1080px, calc(100% - 32px)); margin: 0 auto;
+        .proof, .entry, .formSection, .faqSection, .closing {
+          width: min(1180px, calc(100% - 40px)); margin: 0 auto;
         }
-
-        /* ── ENTRY ── */
-        .entry { padding: 54px 0 38px; display: grid; gap: 24px; }
-        .entryImage {
-          position: relative; height: 300px; border-radius: 24px;
-          overflow: hidden; border: 1px solid var(--line);
-          background:
-            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.65)),
-            url("/images/lp3/hero-cbuq.jpg") center 65% / cover no-repeat,
-            linear-gradient(135deg, #0f1f0f, #1a2e1a);
-          box-shadow: 0 24px 72px rgba(0,0,0,0.28);
-        }
-        .entryCaption {
-          position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 2;
-        }
-        .entryCaption span {
-          display: block; margin-bottom: 7px;
-          color: var(--green2); text-transform: uppercase;
-          letter-spacing: 0.14em; font-size: 10px; font-weight: 700;
-        }
-        .entryCaption strong {
-          display: block; max-width: 480px; color: white;
-          font-size: 20px; line-height: 1.08; letter-spacing: -0.04em; font-weight: 800;
-        }
-
-        .entryPanel h2 {
-          font-family: "Barlow Condensed", sans-serif;
-          margin: 8px 0 0; font-size: clamp(38px, 10vw, 76px);
-          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
-          text-transform: uppercase;
-        }
-
-        .scenarioPicker {
-          margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .scenarioPicker button {
-          height: 40px; border-radius: 999px; border: 1px solid var(--line);
-          padding: 0 16px; background: rgba(255,255,255,0.05);
-          color: rgba(240,235,226,0.60); font-weight: 600;
-          font-size: 13px; letter-spacing: -0.01em;
-          transition: all 0.15s;
-        }
-        .scenarioPicker button.active {
-          background: var(--green); color: white; border-color: var(--green);
-        }
-        .scenarioPicker button:hover:not(.active) {
-          border-color: rgba(255,255,255,0.25); color: var(--cream);
-        }
-
-        .scenarioText { padding-top: 20px; }
-        .scenarioText > span {
-          display: block; margin-bottom: 8px; color: var(--green2);
-          text-transform: uppercase; letter-spacing: 0.14em;
-          font-size: 10px; font-weight: 700;
-        }
-        .scenarioText h3 {
-          font-family: "Barlow Condensed", sans-serif;
-          margin: 0; font-size: clamp(30px, 8vw, 60px);
-          line-height: 0.92; font-weight: 900; letter-spacing: -0.01em;
-          text-transform: uppercase;
-        }
-        .scenarioSub {
-          margin: 12px 0 0; color: var(--muted);
-          font-size: 14px; line-height: 1.55; max-width: 520px;
-        }
-        .scenarioChips {
-          display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
-        }
-        .chip {
-          font-size: 11px; font-weight: 600; color: var(--green2);
-          background: rgba(44,136,54,0.12); border: 1px solid rgba(44,136,54,0.25);
-          padding: 4px 12px; border-radius: 999px;
-        }
-        .scenarioText > button {
-          margin-top: 18px; min-height: 46px; border: 0; border-radius: 999px;
-          padding: 0 20px; background: var(--green); color: white;
-          font-weight: 700; font-size: 14px;
-          box-shadow: 0 12px 28px rgba(44,136,54,0.28);
-        }
-
-        /* ── SEQUENCE ── */
         .sequence {
-          margin-top: 20px; padding: 0;
-          border-radius: 28px; overflow: hidden;
-          border: 1px solid var(--line);
-          background: #0b1828;
-        }
-        .sequenceInner { padding: 32px 18px 36px; }
-        .sequence h2 {
-          font-family: "Barlow Condensed", sans-serif;
-          margin: 10px 0 0; font-size: clamp(42px, 11vw, 86px);
-          line-height: 0.88; font-weight: 900; letter-spacing: -0.01em;
-          text-transform: uppercase; max-width: 900px;
-        }
-        .seqSub {
-          margin: 16px 0 0; color: var(--muted);
-          font-size: 14px; line-height: 1.60; max-width: 600px;
-        }
-        .lineProcess {
-          margin-top: 28px; display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1px; background: var(--line);
-          border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
-        }
-        .processStep {
-          padding: 18px 16px;
-          background: rgba(0,0,0,0.45);
-          display: flex; flex-direction: column; gap: 4px;
-        }
-        .processStep strong {
-          font-size: 13px; font-weight: 700;
-          color: var(--cream); letter-spacing: -0.01em;
-        }
-        .processStep span {
-          font-size: 11px; color: var(--muted); line-height: 1.4;
+          width: min(1180px, calc(100% - 40px)); margin: 28px auto 0;
         }
 
         /* ── PROOF ── */
-        .proof { padding: 48px 0 36px; display: grid; gap: 24px; }
-        .proofImage {
-          min-height: 300px; border-radius: 24px;
-          border: 1px solid var(--line);
-          background:
-            linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.50)),
-            url("/images/lp3/patio-logistico.jpg") center 40% / cover no-repeat,
-            linear-gradient(135deg, #0f1a0f, #1a2a1a);
-          box-shadow: 0 24px 64px rgba(0,0,0,0.26);
-        }
-        .proofText h2 {
+        .proof { padding: 72px 0 60px; display: grid; gap: 32px; }
+        .proof h2 {
           font-family: "Barlow Condensed", sans-serif;
-          margin: 8px 0 0; font-size: clamp(40px, 10.5vw, 82px);
-          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
+          margin: 16px 0 0; font-size: clamp(44px, 10vw, 84px);
+          line-height: 0.90; font-weight: 900; letter-spacing: -0.02em;
           text-transform: uppercase;
         }
+        .proof h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--green2);
+          font-family: "Barlow Condensed", sans-serif;
+        }
         .proofText > p {
-          margin: 16px 0 0; color: var(--muted);
-          font-size: 15px; line-height: 1.58; max-width: 520px;
+          margin: 18px 0 0; color: var(--cream-2);
+          font-size: 16px; line-height: 1.60; max-width: 540px;
         }
         .proofStats {
-          margin-top: 24px; display: grid;
+          margin-top: 28px; display: grid;
           grid-template-columns: repeat(3,1fr);
           gap: 1px; background: var(--line);
           border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
         }
         .proofStat {
-          padding: 16px 12px; background: rgba(0,0,0,0.40);
+          padding: 20px 14px; background: var(--graphite-2);
           display: flex; flex-direction: column; gap: 4px; text-align: center;
         }
         .proofStat strong {
           font-family: "Barlow Condensed", sans-serif;
-          font-size: clamp(28px, 8vw, 48px); font-weight: 900;
-          color: var(--green2); letter-spacing: -0.01em; line-height: 1;
+          font-size: clamp(34px, 8vw, 54px); font-weight: 900;
+          color: var(--yellow); letter-spacing: -0.02em; line-height: 1;
         }
-        .proofStat span { font-size: 11px; color: var(--muted); line-height: 1.35; }
-        .proofText > button {
-          margin-top: 20px; min-height: 46px; border: 0; border-radius: 999px;
-          padding: 0 18px; background: var(--green);
-          color: white; font-weight: 700; font-size: 14px;
+        .proofStat span { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+        .proofText > button { margin-top: 26px; }
+
+        .proofImage {
+          position: relative;
+          min-height: 360px; border-radius: 24px;
+          border: 1px solid var(--line);
+          overflow: hidden;
+          background:
+            linear-gradient(180deg, rgba(14,16,19,0.20), rgba(14,16,19,0.70)),
+            url("https://images.unsplash.com/photo-1581094488379-6b1d8f76b1a1?auto=format&fit=crop&w=1400&q=70") center 50% / cover no-repeat,
+            linear-gradient(135deg, #1f1d18, #14120d);
+          box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+        }
+        .proofImageTag {
+          position: absolute; left: 18px; bottom: 18px;
+          display: inline-flex; align-items: center; gap: 8px;
+          background: rgba(14,16,19,0.78);
+          backdrop-filter: blur(14px);
+          border: 1px solid var(--line);
+          padding: 8px 14px; border-radius: 999px;
+          font-size: 11.5px; font-weight: 700; color: var(--cream-2);
+          letter-spacing: 0.08em; text-transform: uppercase;
+        }
+        .proofImageDot {
+          width: 6px; height: 6px; border-radius: 50%;
+          background: var(--green2);
+          box-shadow: 0 0 0 4px rgba(61,168,74,0.18);
+        }
+
+        /* ── ENTRY (cenários) ── */
+        .entry {
+          padding: 60px 0;
+          display: grid; gap: 32px;
+        }
+        .entryPanel h2 {
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 16px 0 0; font-size: clamp(40px, 10vw, 76px);
+          line-height: 0.92; font-weight: 900; letter-spacing: -0.02em;
+          text-transform: uppercase;
+        }
+        .entryPanel h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--yellow);
+          font-family: "Barlow Condensed", sans-serif;
+        }
+        .scenarioPicker {
+          margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .scenarioPicker button {
+          height: 42px; border-radius: 999px;
+          border: 1px solid var(--line);
+          padding: 0 18px; background: rgba(255,255,255,0.03);
+          color: var(--cream-2); font-weight: 600;
+          font-size: 13.5px; letter-spacing: -0.01em;
+          transition: all 0.15s;
+        }
+        .scenarioPicker button.active {
+          background: var(--green); color: white; border-color: var(--green);
+          box-shadow: 0 8px 22px rgba(44,136,54,0.30);
+        }
+        .scenarioPicker button:hover:not(.active) {
+          border-color: rgba(255,255,255,0.25); color: var(--cream);
+          background: rgba(255,255,255,0.05);
+        }
+
+        .scenarioText {
+          padding-top: 26px;
+          animation: fadeUp 0.32s ease;
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .scenarioTag {
+          display: inline-block; margin-bottom: 10px; color: var(--green2);
+          text-transform: uppercase; letter-spacing: 0.16em;
+          font-size: 10.5px; font-weight: 800;
+          padding: 4px 10px; border-radius: 999px;
+          background: rgba(61,168,74,0.10);
+          border: 1px solid rgba(61,168,74,0.25);
+        }
+        .scenarioText h3 {
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 0; font-size: clamp(28px, 7vw, 52px);
+          line-height: 0.95; font-weight: 900; letter-spacing: -0.02em;
+          text-transform: uppercase; color: var(--cream);
+          max-width: 720px;
+        }
+        .scenarioSub {
+          margin: 14px 0 0; color: var(--cream-2);
+          font-size: 15px; line-height: 1.58; max-width: 580px;
+        }
+        .scenarioChips {
+          display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px;
+        }
+        .chip {
+          font-size: 11.5px; font-weight: 700; color: var(--green2);
+          background: rgba(61,168,74,0.10);
+          border: 1px solid rgba(61,168,74,0.28);
+          padding: 5px 12px; border-radius: 999px;
+          text-transform: uppercase; letter-spacing: 0.06em;
+        }
+        .scenarioText > button { margin-top: 22px; }
+
+        .entryImage {
+          position: relative;
+          height: 360px; border-radius: 24px;
+          overflow: hidden; border: 1px solid var(--line);
+          background:
+            linear-gradient(180deg, rgba(14,16,19,0.10), rgba(14,16,19,0.78)),
+            url("https://images.unsplash.com/photo-1581093458791-9d09a5c1a4e8?auto=format&fit=crop&w=1400&q=70") center 60% / cover no-repeat,
+            linear-gradient(135deg, #1f1d18, #14120d);
+          box-shadow: 0 30px 80px rgba(0,0,0,0.40);
+        }
+        .entryCaption {
+          position: absolute; left: 22px; right: 22px; bottom: 22px; z-index: 2;
+        }
+        .entryCaption span {
+          display: inline-flex; align-items: center; gap: 8px;
+          margin-bottom: 10px;
+          color: var(--green2); text-transform: uppercase;
+          letter-spacing: 0.14em; font-size: 11px; font-weight: 800;
+        }
+        .entryCaption strong {
+          display: block; max-width: 520px; color: white;
+          font-size: 22px; line-height: 1.12;
+          letter-spacing: -0.02em; font-weight: 800;
+        }
+
+        /* ── SEQUENCE ── */
+        .sequence {
+          padding: 0;
+          border-radius: 28px; overflow: hidden;
+          border: 1px solid var(--line);
+          background:
+            linear-gradient(180deg, var(--graphite-2), var(--graphite-3));
+          position: relative;
+        }
+        .sequence::before {
+          content: "";
+          position: absolute; top: 0; left: 0; right: 0; height: 2px;
+          background: linear-gradient(90deg, transparent, var(--yellow) 50%, transparent);
+          opacity: 0.40;
+        }
+        .sequenceInner { padding: 44px 24px 48px; }
+        .sequence h2 {
+          font-family: "Barlow Condensed", sans-serif;
+          margin: 14px 0 0; font-size: clamp(40px, 10vw, 78px);
+          line-height: 0.90; font-weight: 900; letter-spacing: -0.02em;
+          text-transform: uppercase; max-width: 900px;
+        }
+        .sequence h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--green2);
+          font-family: "Barlow Condensed", sans-serif;
+        }
+        .seqSub {
+          margin: 18px 0 0; color: var(--cream-2);
+          font-size: 15px; line-height: 1.62; max-width: 620px;
+        }
+        .lineProcess {
+          margin-top: 36px; display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1px; background: var(--line);
+          border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+        }
+        .processStep {
+          padding: 22px 18px;
+          background: rgba(14,16,19,0.55);
+          display: flex; flex-direction: column; gap: 6px;
+          transition: background 0.18s;
+        }
+        .processStep:hover { background: rgba(14,16,19,0.30); }
+        .processNum {
+          font-family: "Barlow Condensed", sans-serif;
+          font-size: 22px; font-weight: 900; color: var(--yellow);
+          letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px;
+        }
+        .processStep strong {
+          font-size: 15px; font-weight: 800;
+          color: var(--cream); letter-spacing: -0.01em;
+        }
+        .processDesc {
+          font-size: 12.5px; color: var(--muted); line-height: 1.45;
         }
 
         /* ── FORM ── */
-        .formSection { padding: 54px 0 64px; display: grid; gap: 28px; }
-
+        .formSection {
+          padding: 72px 0 60px;
+          display: grid; gap: 36px;
+        }
         .formIntro h2 {
           font-family: "Barlow Condensed", sans-serif;
-          margin: 8px 0 0; font-size: clamp(40px, 10vw, 76px);
-          line-height: 0.90; font-weight: 900; letter-spacing: -0.01em;
+          margin: 16px 0 0; font-size: clamp(40px, 10vw, 76px);
+          line-height: 0.92; font-weight: 900; letter-spacing: -0.02em;
           text-transform: uppercase;
         }
+        .formIntro h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--yellow);
+          font-family: "Barlow Condensed", sans-serif;
+        }
         .formIntro > p {
-          margin: 14px 0 0; color: var(--muted);
-          font-size: 15px; line-height: 1.55;
+          margin: 16px 0 0; color: var(--cream-2);
+          font-size: 16px; line-height: 1.58;
         }
         .formBullets {
-          list-style: none; padding: 0; margin: 18px 0 0;
-          display: flex; flex-direction: column; gap: 8px;
+          list-style: none; padding: 0; margin: 22px 0 0;
+          display: flex; flex-direction: column; gap: 10px;
         }
         .formBullets li {
-          display: flex; align-items: center; gap: 10px;
-          font-size: 13px; color: rgba(240,235,226,0.65); font-weight: 500;
+          display: flex; align-items: center; gap: 12px;
+          font-size: 14px; color: var(--cream-2); font-weight: 500;
         }
         .formBullets li span {
-          width: 5px; height: 5px; border-radius: 50%;
-          background: var(--green); flex: 0 0 auto;
+          width: 6px; height: 6px; border-radius: 50%;
+          background: var(--green2); flex: 0 0 auto;
+          box-shadow: 0 0 0 4px rgba(61,168,74,0.18);
         }
+        .formCallNote {
+          display: inline-flex; align-items: center; gap: 10px;
+          margin-top: 22px; padding: 12px 16px;
+          border-radius: 12px;
+          background: rgba(245,184,0,0.06);
+          border: 1px solid var(--line-hot);
+          color: var(--cream-2); font-size: 14px;
+          text-decoration: none;
+          transition: background 0.15s;
+        }
+        .formCallNote:hover { background: rgba(245,184,0,0.10); }
+        .formCallNote svg { color: var(--yellow); }
+        .formCallNote strong { color: var(--cream); font-weight: 700; }
 
         .leadForm {
-          display: grid; gap: 12px; padding: 20px;
-          border-radius: 20px; border: 1px solid rgba(255,255,255,0.10);
-          background: rgba(255,255,255,0.06);
+          display: grid; gap: 14px; padding: 26px;
+          border-radius: 22px; border: 1px solid var(--line);
+          background: var(--graphite-2);
+          box-shadow:
+            0 30px 70px rgba(0,0,0,0.40),
+            inset 0 1px 0 rgba(255,255,255,0.04);
         }
-        .leadForm label {
-          display: grid; gap: 6px;
-          color: rgba(240,235,226,0.60);
-          font-size: 11px; font-weight: 700;
-          text-transform: uppercase; letter-spacing: 0.08em;
+        .leadForm label { display: grid; gap: 6px; }
+        .leadForm label > span {
+          color: var(--muted-2);
+          font-size: 10.5px; font-weight: 800;
+          text-transform: uppercase; letter-spacing: 0.12em;
         }
         .leadForm input, .leadForm select {
-          width: 100%; min-height: 50px;
-          border-radius: 10px; border: 1px solid rgba(255,255,255,0.16);
-          background: rgba(255,255,255,0.08); color: white;
+          width: 100%; min-height: 52px;
+          border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.03);
+          color: var(--cream);
           outline: none; padding: 0 14px; font-size: 15px;
           -webkit-appearance: none;
+          transition: border-color 0.15s, background 0.15s;
         }
         .leadForm select option { color: #111; }
         .leadForm input:focus, .leadForm select:focus {
-          border-color: var(--green);
-          box-shadow: 0 0 0 3px rgba(44,136,54,0.15);
+          border-color: var(--yellow);
+          background: rgba(255,255,255,0.05);
+          box-shadow: 0 0 0 3px rgba(245,184,0,0.12);
         }
         .leadForm .full { grid-column: 1 / -1; }
-        .leadForm .primary { width: 100%; font-size: 15px; margin-top: 4px; }
+        .leadForm .primary { width: 100%; font-size: 15px; margin-top: 6px; }
         .formNote {
           text-align: center; font-size: 12px;
-          color: rgba(240,235,226,0.30); margin: 0;
+          color: var(--muted-2); margin: 0;
         }
 
         /* ── FAQ ── */
         .faqSection {
-          padding: 48px 0 54px;
+          padding: 56px 0 60px;
           border-top: 1px solid var(--line-soft);
         }
-        .faqInner { max-width: 860px; margin: 0 auto; }
+        .faqInner { max-width: 900px; margin: 0 auto; }
         .faqSection h2 {
           font-family: "Barlow Condensed", sans-serif;
-          margin: 8px 0 0; font-size: clamp(36px, 9vw, 64px);
-          line-height: 0.92; font-weight: 900; letter-spacing: -0.01em;
+          margin: 16px 0 0; font-size: clamp(36px, 9vw, 64px);
+          line-height: 0.92; font-weight: 900; letter-spacing: -0.02em;
           text-transform: uppercase;
         }
-        .faqList { margin-top: 28px; display: flex; flex-direction: column; }
+        .faqSection h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--green2);
+          font-family: "Barlow Condensed", sans-serif;
+        }
+        .faqList { margin-top: 32px; display: flex; flex-direction: column; }
         .faqItem { border-bottom: 1px solid var(--line-soft); }
         .faqItem button {
           width: 100%; display: flex; align-items: center;
-          justify-content: space-between; gap: 14px;
-          padding: 16px 0; background: none; border: none;
+          justify-content: space-between; gap: 16px;
+          padding: 18px 0; background: none; border: none;
           text-align: left; color: var(--cream);
+          transition: color 0.15s;
         }
-        .faqItem button span { font-size: 15px; font-weight: 600; line-height: 1.35; }
+        .faqItem button:hover { color: var(--yellow); }
+        .faqItem button span { font-size: 15.5px; font-weight: 600; line-height: 1.35; }
         .faqItem button i {
-          font-style: normal; font-size: 20px; font-weight: 300;
-          color: var(--green2); flex: 0 0 auto;
+          font-style: normal; font-size: 22px; font-weight: 300;
+          color: var(--yellow); flex: 0 0 auto;
         }
+        .faqItem.open button { color: var(--cream); }
         .faqItem p {
-          font-size: 14px; color: var(--muted); line-height: 1.65;
-          padding-bottom: 16px; margin: 0; max-width: 600px;
+          font-size: 14.5px; color: var(--cream-2); line-height: 1.65;
+          padding-bottom: 18px; margin: 0; max-width: 700px;
+          animation: fadeUp 0.22s ease;
         }
 
         /* ── CLOSING ── */
         .closing {
-          min-height: 52svh; padding: 72px 0 110px;
+          margin-top: 0; padding: 80px 20px 120px;
+          width: 100%;
+          min-height: 56svh;
           display: flex; align-items: center;
           border-top: 1px solid var(--line-soft);
           background:
-            linear-gradient(180deg, rgba(0,0,0,0.76), rgba(0,0,0,0.88)),
-            url("/images/lp3/hero-cbuq.jpg") center 60% / cover no-repeat;
+            linear-gradient(180deg, rgba(14,16,19,0.65), rgba(14,16,19,0.96)),
+            url("https://images.unsplash.com/photo-1517036840303-eb1cce635395?auto=format&fit=crop&w=1920&q=70") center 50% / cover no-repeat,
+            var(--graphite);
         }
-        .closing > div { width: min(680px, 100%); }
+        .closing > div {
+          width: min(1180px, 100%); margin: 0 auto;
+        }
         .closing h2 {
           font-family: "Barlow Condensed", sans-serif;
-          margin: 8px 0 0; font-size: clamp(48px, 12vw, 96px);
-          line-height: 0.88; font-weight: 900; letter-spacing: -0.01em;
+          margin: 16px 0 0; font-size: clamp(52px, 12vw, 104px);
+          line-height: 0.88; font-weight: 900; letter-spacing: -0.025em;
           text-transform: uppercase;
         }
-        .closing p:not(.kicker) {
-          margin: 16px 0 0; max-width: 500px;
-          color: var(--muted); font-size: 15px; line-height: 1.55;
+        .closing h2 em {
+          font-style: italic; font-weight: 900;
+          color: var(--yellow);
+          font-family: "Barlow Condensed", sans-serif;
         }
-        .closing .primary { margin-top: 24px; }
+        .closing p:not(.kicker) {
+          margin: 18px 0 0; max-width: 540px;
+          color: var(--cream-2); font-size: 16px; line-height: 1.58;
+        }
+        .closingCtas {
+          margin-top: 30px;
+          display: flex; flex-wrap: wrap; gap: 12px;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+          padding: 28px 20px 90px;
+          border-top: 1px solid var(--line-soft);
+          background: var(--graphite);
+        }
+        .footerInner {
+          width: min(1180px, 100%); margin: 0 auto;
+          display: flex; flex-direction: column; gap: 8px;
+          font-size: 12px; color: var(--muted-2);
+          line-height: 1.5;
+        }
 
         /* ── STICKY CTA ── */
         .stickyCta {
           position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 60;
           padding: 8px; border-radius: 22px;
           display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 8px;
-          background: rgba(10,12,10,0.82); border: 1px solid var(--line);
-          backdrop-filter: blur(22px); box-shadow: 0 18px 60px rgba(0,0,0,0.40);
+          background: rgba(14,16,19,0.92);
+          border: 1px solid var(--line);
+          backdrop-filter: blur(22px);
+          box-shadow: 0 18px 60px rgba(0,0,0,0.55);
           opacity: 0; transform: translateY(18px); pointer-events: none;
-          transition: 0.22s ease;
+          transition: 0.24s ease;
         }
         .stickyCta.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .stickyCta .primary, .stickyCta .ghost {
-          min-height: 50px; padding: 0 12px; font-size: 14px;
+          min-height: 52px; padding: 0 14px; font-size: 14px;
         }
 
         /* ── RESPONSIVE ── */
         @media (min-width: 760px) {
           .topbar {
             left: 50%; right: auto;
-            width: min(1080px, calc(100% - 48px));
+            width: min(1180px, calc(100% - 48px));
             transform: translateX(-50%);
           }
-          .hero {
-            padding-left: max(30px, calc((100vw - 1080px) / 2));
-            padding-right: max(30px, calc((100vw - 1080px) / 2));
-          }
-          .heroActions { display: flex; align-items: center; }
-          .heroActions .primary, .heroActions .ghost { min-width: 220px; }
-          .heroCreds { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+          .topPhone { display: inline-flex; }
 
-          .entry {
-            grid-template-columns: 0.95fr 1.05fr;
-            align-items: center; gap: 36px; padding-top: 72px;
+          .hero { padding: 130px 32px 80px; }
+          .heroGrid {
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 56px;
           }
-          .entryImage { height: 580px; }
-          .scenarioPicker { flex-wrap: nowrap; }
-
-          .sequenceInner { padding: 56px 40px; }
-          .lineProcess { grid-template-columns: repeat(4,1fr); }
+          .heroForm { max-width: 440px; justify-self: end; }
 
           .proof {
-            grid-template-columns: 1.05fr 0.95fr;
-            align-items: center; gap: 36px; padding: 72px 0;
+            grid-template-columns: 1fr 1fr;
+            align-items: center; gap: 48px;
           }
-          .proofImage { min-height: 480px; }
+          .proofImage { min-height: 460px; }
+
+          .entry {
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center; gap: 48px;
+          }
+          .entryImage { height: 540px; }
+          .scenarioPicker { flex-wrap: nowrap; }
+
+          .sequenceInner { padding: 60px 44px 64px; }
+          .lineProcess { grid-template-columns: repeat(4,1fr); }
 
           .formSection {
             grid-template-columns: 0.80fr 1.20fr;
-            align-items: start; padding-top: 72px;
+            align-items: start;
           }
           .leadForm { grid-template-columns: 1fr 1fr; }
+
+          .footerInner { flex-direction: row; justify-content: space-between; }
 
           .stickyCta { display: none; }
         }
 
         @media (min-width: 1100px) {
-          .heroSub { font-size: 16px; }
+          .heroSub { font-size: 17px; }
         }
 
         @media (max-width: 759px) {
+          .heroBg { background-position: center 35%; }
+          .hero h1 { font-size: clamp(48px, 13vw, 72px); }
           .lineProcess {
             display: flex !important;
             grid-template-columns: unset !important;
@@ -942,14 +1275,16 @@ export default function LP3Page() {
             border-radius: 12px;
           }
           .lineProcess::-webkit-scrollbar { display: none; }
-          .processStep { flex: 0 0 160px; }
+          .processStep { flex: 0 0 200px; }
           .proofStats { grid-template-columns: repeat(3,1fr); }
         }
 
         @media (max-width: 430px) {
-          .brand img { max-width: 160px; height: 32px; }
-          .hero h1 { font-size: 48px; }
-          .topbar > button { padding: 0 12px; font-size: 12px; }
+          .brand img { max-width: 150px; height: 32px; }
+          .hero { padding: 100px 18px 50px; }
+          .hero h1 { font-size: 46px; }
+          .topbar > .topbarRight > button { padding: 0 14px; font-size: 12px; }
+          .heroForm { padding: 20px; }
         }
       `}</style>
     </main>
