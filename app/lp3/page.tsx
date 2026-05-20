@@ -782,28 +782,33 @@ export default function LP3Page() {
         .heroBg {
           position: absolute; inset: 0; z-index: -3;
           background:
+            /* foto da equipe pavimentando em Goiás */
+            url("/images/lp3/hero.jpg") center 55% / cover no-repeat,
+            /* fallback gradient se a imagem falhar */
             radial-gradient(70% 50% at 70% 30%, rgba(245,184,0,0.10), transparent 60%),
-            radial-gradient(60% 60% at 15% 80%, rgba(44,136,54,0.16), transparent 65%),
             linear-gradient(135deg, #1a1d23 0%, #0c0e11 45%, #15181d 100%);
         }
         .heroBg::after {
           content: "";
           position: absolute; inset: 0; pointer-events: none;
-          background-image:
-            repeating-linear-gradient(0deg, transparent 0 47px, rgba(255,255,255,0.018) 47px 48px),
-            repeating-linear-gradient(90deg, transparent 0 47px, rgba(255,255,255,0.018) 47px 48px);
+          /* Camada 1: escurecimento direcional — esquerda mais escura (onde fica o H1) */
+          background:
+            linear-gradient(90deg,
+              rgba(14,16,19,0.92) 0%,
+              rgba(14,16,19,0.78) 30%,
+              rgba(14,16,19,0.55) 60%,
+              rgba(14,16,19,0.40) 100%),
+            linear-gradient(180deg,
+              rgba(14,16,19,0.30) 0%,
+              rgba(14,16,19,0.20) 50%,
+              rgba(14,16,19,0.85) 100%);
         }
         .heroShade {
           position: absolute; inset: 0; z-index: -2;
+          /* Apenas vinheta sutil + transição para o conteúdo abaixo do hero */
           background:
-            linear-gradient(180deg,
-              rgba(14,16,19,0.30) 0%,
-              rgba(14,16,19,0.55) 45%,
-              rgba(14,16,19,0.95) 100%),
-            linear-gradient(90deg,
-              rgba(14,16,19,0.78) 0%,
-              rgba(14,16,19,0.30) 55%,
-              rgba(14,16,19,0.10) 100%);
+            radial-gradient(120% 80% at 50% 50%, transparent 30%, rgba(14,16,19,0.45) 90%),
+            linear-gradient(180deg, transparent 60%, var(--graphite) 100%);
         }
         .heroGrain {
           position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -1521,7 +1526,15 @@ export default function LP3Page() {
         }
 
         @media (max-width: 759px) {
-          .heroBg { background-position: center 35%; }
+          .heroBg { background-position: center 50%; }
+          .heroBg::after {
+            background:
+              linear-gradient(180deg,
+                rgba(14,16,19,0.90) 0%,
+                rgba(14,16,19,0.65) 35%,
+                rgba(14,16,19,0.50) 55%,
+                rgba(14,16,19,0.92) 100%);
+          }
           .hero h1 { font-size: clamp(48px, 13vw, 72px); }
           .lineProcess {
             display: flex !important;
