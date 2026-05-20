@@ -273,9 +273,9 @@ export default function LP3Page() {
           <span>GP Asfalto</span>
         </span>
         <div className="topbarRight">
-          <a className="topPhone" href={`tel:+${WHATSAPP_NUMBER}`} aria-label="Ligar agora">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          <a className="topPhone" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
             </svg>
             <span>{PHONE_DISPLAY}</span>
           </a>
@@ -498,11 +498,11 @@ export default function LP3Page() {
             <li><span />Atendemos todo o estado de Goiás</li>
             <li><span />ART de execução inclusa</li>
           </ul>
-          <a className="formCallNote" href={`tel:+${WHATSAPP_NUMBER}`}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          <a className="formCallNote" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
             </svg>
-            Prefere falar agora? <strong>{PHONE_DISPLAY}</strong>
+            Prefere chamar no WhatsApp? <strong>{PHONE_DISPLAY}</strong>
           </a>
         </div>
 
@@ -600,11 +600,11 @@ export default function LP3Page() {
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
               </svg>
             </button>
-            <a className="ghost" href={`tel:+${WHATSAPP_NUMBER}`}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
               </svg>
-              {PHONE_DISPLAY}
+              Chamar no WhatsApp
             </a>
           </div>
         </div>
@@ -619,7 +619,7 @@ export default function LP3Page() {
 
       {/* ── STICKY CTA ── */}
       <div className={showSticky ? "stickyCta visible" : "stickyCta"}>
-        <a className="ghost" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+        <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
           </svg>
@@ -675,7 +675,7 @@ export default function LP3Page() {
         .topShield {
           position: fixed;
           top: 0; left: 0; right: 0;
-          height: 84px;
+          height: 100px;
           z-index: 49;          /* abaixo da topbar (50), acima do conteúdo */
           background: var(--graphite);
           pointer-events: none;
@@ -750,7 +750,7 @@ export default function LP3Page() {
         /* ── TOPBAR ── */
         .topbar {
           position: fixed; top: 14px; left: 14px; right: 14px; z-index: 50;
-          height: 60px; padding: 7px 8px 7px 18px;
+          height: 76px; padding: 8px 8px 8px 20px;
           border: 1px solid var(--line); border-radius: 999px;
           background: rgba(14,16,19,0.88);
           backdrop-filter: blur(22px);
@@ -764,7 +764,7 @@ export default function LP3Page() {
           color: white; text-decoration: none;
           min-width: 0; flex: 0 0 auto;
         }
-        .brand img { height: 36px; width: auto; max-width: 140px; object-fit: contain; }
+        .brand img { height: 56px; width: auto; max-width: 200px; object-fit: contain; }
         .brand > span { display: none; color: #fff; font-weight: 900; font-size: 18px; }
         .topbarRight {
           display: flex; align-items: center; gap: 10px;
@@ -796,7 +796,7 @@ export default function LP3Page() {
         .hero {
           position: relative;
           min-height: 100svh;
-          padding: 110px 20px 56px;
+          padding: 130px 20px 56px;
           display: flex; align-items: center;
           overflow: hidden; isolation: isolate;
           background: var(--graphite);
@@ -970,6 +970,15 @@ export default function LP3Page() {
         }
         .ghost:hover { background: rgba(255,255,255,0.10); }
 
+        /* Variante WhatsApp: usa verde oficial #25D366 — chama atenção como CTA secundário */
+        .ghostWa {
+          background: #25D366; color: #052f1a;
+          border: 1px solid #1fb157;
+          box-shadow: 0 14px 32px rgba(37,211,102,0.28);
+        }
+        .ghostWa:hover { background: #20bf5b; color: #052f1a; }
+        .ghostWa svg { color: #052f1a; }
+
         /* ── CLIENT STRIP (dark) ── */
         .clientStrip {
           background: var(--graphite-2);
@@ -982,10 +991,25 @@ export default function LP3Page() {
           text-transform: uppercase; color: var(--muted-2);
           text-align: center; margin: 0 0 16px;
         }
-        .clientLogoWrap { display: flex; justify-content: center; }
+        .clientLogoWrap {
+          display: flex; justify-content: center;
+          background: var(--cream);
+          padding: 14px 22px;
+          border-radius: 14px;
+          margin: 0 auto;
+          max-width: 980px;
+          border: 1px solid rgba(255,255,255,0.06);
+        }
         .clientLogoStrip {
-          height: 32px; width: auto;
-          filter: brightness(0) invert(1) opacity(0.55);
+          height: 36px; width: auto;
+          max-width: 100%;
+          /*
+           * Quando você gerar a versão do PNG sem fundo (transparente),
+           * troque o background do .clientLogoWrap para transparent e
+           * adicione: filter: brightness(0) invert(1) opacity(0.55);
+           * aqui no .clientLogoStrip. Vai ficar logos monocromáticas
+           * brancas elegantes em fundo grafite.
+           */
         }
 
         /* ── SECTIONS BASE ── */
@@ -1412,7 +1436,7 @@ export default function LP3Page() {
           }
           .topPhone { display: inline-flex; }
 
-          .hero { padding: 130px 32px 80px; }
+          .hero { padding: 150px 32px 80px; }
           .heroGrid {
             grid-template-columns: 1.15fr 0.85fr;
             gap: 56px;
