@@ -57,11 +57,11 @@ export const site = {
 
   // ── HERO
   hero: {
-    eyebrow:     'Infraestrutura · Pavimentação · CBUQ',
-    line1:       'GP ASFALTO',
-    line2:       'DO CAMPO',
-    line3:       'À CIDADE.',
-    description: 'Terraplenagem, pavimentação CBUQ e infraestrutura completa para o agronegócio, loteamentos e empresas do Centro-Oeste.',
+    eyebrow:     'Pavimentação · Terraplenagem · Infraestrutura',
+    line1:       'CBUQ PRÓPRIO.',
+    line2:       'ENGENHARIA APLICADA.',
+    line3:       'ENTREGA NO PRAZO.',
+    description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
     videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/v1777986525/17215135-uhd_3840_2160_30fps_lyotyu.mp4',
   },
@@ -80,7 +80,7 @@ export const site = {
       slug:        'comigo-ponte-de-pedra',
       segment:     'Agronegócio · Goiás',
       title:       'COMIGO\nPONTE DE PEDRA',
-      description: 'Terraplanagem, pavimentação CBUQ e drenagem de infraestrutura rural para a cooperativa COMIGO.',
+      description: 'Terraplenagem, pavimentação CBUQ e drenagem de infraestrutura rural para a cooperativa COMIGO.',
       photo:       '/images/obras/comigo-pp.jpg',
       index:       '01',
     },
@@ -96,7 +96,7 @@ export const site = {
       slug:        'condominio-italia',
       segment:     'Loteamento · Jataí, GO',
       title:       'CONDOMÍNIO\nITÁLIA',
-      description: 'Infraestrutura completa: terraplanagem, rede de água tratada, esgoto, galeria pluvial e pavimentação CBUQ.',
+      description: 'Infraestrutura completa: terraplenagem, rede de água tratada, esgoto, galeria pluvial e pavimentação CBUQ.',
       photo:       '/images/obras/condominio-italia.jpg',
       index:       '03',
     },
@@ -147,9 +147,9 @@ export const site = {
 
   // ── SEO
   seo: {
-    title:       'GP Asfalto Brasil — Infraestrutura e Pavimentação em Goiás',
-    description: 'Terraplenagem, pavimentação CBUQ, loteamentos e infraestrutura rural. 3 usinas próprias. Rio Verde, GO.',
-    keywords:    'asfalto rio verde go, pavimentação goiás, CBUQ goiás, terraplenagem loteamento rio verde, infraestrutura agronegócio',
+    title:       'GP Asfalto Brasil — CBUQ Próprio, Engenharia Aplicada, Entrega no Prazo',
+    description: 'Pavimentação asfáltica CBUQ, terraplenagem e infraestrutura completa em Goiás. 3 usinas próprias, controle técnico e cronograma cumprido. Rio Verde · GO.',
+    keywords:    'CBUQ rio verde, pavimentação asfáltica goiás, terraplenagem centro-oeste, usina de asfalto rio verde, infraestrutura loteamento goiás, pavimentação agronegócio',
     url:         'https://gpasfaltobrasil.com',
   },
 }
