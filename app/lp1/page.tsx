@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -9,6 +9,7 @@ const GTAG_ID = 'AW-18158017809'
 const CONVERSION_ID = 'AW-18158017809/ma-TCIXWma5cEJG6tdJD'
 const VIDEO_CLOUDINARY = 'https://res.cloudinary.com/dfw7h9c2j/video/upload/vc_h264,q_auto/silo-bg_tjhnws.mp4#t=5'
 const WA = '5564999452124'
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyQuizwCnwaorxsKca0UbufFjXrd1QJnQWOOMSkSm6eZcq8hjvtSTs1YJ6BVQBEgPlz/exec'
 
 declare global {
   interface Window {
@@ -77,14 +78,39 @@ const maskPhone = (v: string) => {
   return v
 }
 
-function Form() {
+function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
   const [form, setForm]         = useState({ nome: '', perfil: '', whatsapp: '', cidade: '' })
   const [sent, setSent]         = useState(false)
   const [honeypot, setHoneypot] = useState('')
+  const [loading, setLoading]   = useState(false)
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (honeypot) return
     if (!form.nome || !form.whatsapp) return
+    if (loading) return
+
+    setLoading(true)
+
+    // 1. Capta o lead no Google Sheets (não bloqueia se falhar)
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          nome: form.nome,
+          perfil: form.perfil,
+          cidade: form.cidade,
+          whatsapp: form.whatsapp,
+          origem,
+        }),
+      })
+    } catch (err) {
+      console.error('Erro ao salvar lead:', err)
+      // segue o fluxo mesmo se falhar
+    }
+
+    // 2. Monta mensagem do WhatsApp
     const msg = encodeURIComponent(
       'Olá! Tenho interesse em asfaltar o pátio.\n' +
       'Nome: ' + form.nome + '\n' +
@@ -92,10 +118,12 @@ function Form() {
       'Cidade: ' + (form.cidade || 'Não informado') + '\n' +
       'WhatsApp: ' + form.whatsapp
     )
-    // Dispara conversão Google Ads antes de abrir WhatsApp
+
+    // 3. Dispara conversão Google Ads e abre WhatsApp
     fireConversion()
     window.open('https://wa.me/' + WA + '?text=' + msg, '_blank')
     setSent(true)
+    setLoading(false)
   }
 
   if (sent) return (
@@ -170,11 +198,11 @@ function Form() {
       </div>
 
       <button onClick={handleSend}
-        disabled={!form.nome || !form.whatsapp}
+        disabled={!form.nome || !form.whatsapp || loading}
         className="mt-5 w-full flex items-center justify-between px-6 py-4
           bg-green text-white text-[12px] font-medium tracking-[.14em] uppercase
           hover:bg-green2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-        Quero agendar visita técnica
+        {loading ? 'Enviando...' : 'Quero agendar visita técnica'}
         <span className="text-[16px]">↗</span>
       </button>
       <p className="text-[10px] text-white/18 text-center mt-3">
@@ -288,7 +316,7 @@ export default function LPSilos() {
                 A gente vai até você.<br />
                 <span className="text-green">Sem compromisso.</span>
               </h3>
-              <Form />
+              <Form origem="LP1 - Hero" />
             </div>
           </div>
 
@@ -421,7 +449,7 @@ export default function LPSilos() {
             GP Asfalto — mais de 40 anos asfaltando pátios de silo no Cerrado.
             Nossa equipe visita gratuitamente e apresenta proposta com preço e prazo.
           </p>
-          <Form />
+          <Form origem="LP1 - CTA Final" />
         </div>
       </section>
 
