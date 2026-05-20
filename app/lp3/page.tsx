@@ -221,6 +221,19 @@ export default function LP3Page() {
   return (
     <main className="lp3">
 
+      {/*
+        Style inline SSR-first: aplica fundo grafite imediatamente, antes do JS hidratar.
+        Resolve o "flash azul" do bg-gp-navy do layout pai entre o HTML chegar e o useEffect rodar.
+        Esse CSS é parte do HTML inicial — não depende de hydration.
+      */}
+      <style>{`
+        html, body { background: #0E1013 !important; }
+        body > header, body > aside, body > [class*="Header"],
+        body > [class*="SideTagline"], body > [class*="WhatsAppFloat"] {
+          display: none !important;
+        }
+      `}</style>
+
       {/* ── ESCUDO ── cobre vazamento do layout pai (header global, fundo azul) atrás da topbar fixa */}
       <div className="topShield" aria-hidden="true" />
 
@@ -703,7 +716,7 @@ export default function LP3Page() {
         /* ── TOPBAR ── */
         .topbar {
           position: fixed; top: 14px; left: 14px; right: 14px; z-index: 50;
-          height: 76px; padding: 8px 8px 8px 20px;
+          height: 76px; padding: 8px 8px 8px 12px;
           border: 1px solid var(--line); border-radius: 999px;
           background: rgba(14,16,19,0.88);
           backdrop-filter: blur(22px);
