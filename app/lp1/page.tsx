@@ -140,9 +140,9 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
   )
 
   // Classes reutilizáveis: input/select com fundo sutil, hover e focus visíveis
-  const fieldWrap = 'group flex flex-col border-b border-white/10 bg-white/[.02] hover:bg-white/[.05] focus-within:bg-white/[.06] focus-within:border-orange transition-colors duration-150 px-3'
-  const labelCls  = 'text-[10px] font-medium tracking-[.2em] uppercase text-white/55 group-focus-within:text-orange pt-3 pb-1 transition-colors'
-  const inputCls  = 'bg-transparent border-none outline-none text-[15px] font-light text-white pb-3 placeholder:text-white/30 caret-orange'
+  const fieldWrap = 'group flex flex-col border-b border-white/10 bg-white/[.02] hover:bg-white/[.05] focus-within:bg-white/[.06] focus-within:border-gp-orange transition-colors duration-150 px-3'
+  const labelCls  = 'text-[10px] font-medium tracking-[.2em] uppercase text-white/55 group-focus-within:text-gp-orange pt-3 pb-1 transition-colors'
+  const inputCls  = 'bg-transparent border-none outline-none text-[15px] font-light text-white pb-3 placeholder:text-white/30 caret-gp-orange'
 
   return (
     <div>
@@ -158,7 +158,7 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
         ].map(f => (
           <div key={f.key} className={fieldWrap}>
             <label className={labelCls}>
-              {f.label}{f.req && <span className="text-orange ml-1">*</span>}
+              {f.label}{f.req && <span className="text-gp-orange ml-1">*</span>}
             </label>
             <input type={f.type} placeholder={f.ph}
               value={form[f.key as keyof typeof form]}
@@ -183,7 +183,7 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
 
         <div className={fieldWrap}>
           <label className={labelCls}>
-            WhatsApp <span className="text-orange ml-1">*</span>
+            WhatsApp <span className="text-gp-orange ml-1">*</span>
           </label>
           <input type="tel" placeholder="(64) 9 0000-0000"
             value={form.whatsapp}
@@ -195,9 +195,9 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
       <button onClick={handleSend}
         disabled={!form.nome || !form.whatsapp || loading}
         className="mt-5 w-full flex items-center justify-between px-6 py-4
-          bg-orange text-white text-[13px] font-bold tracking-[.12em] uppercase
+          bg-gp-orange text-white text-[13px] font-bold tracking-[.12em] uppercase
           shadow-[0_8px_24px_-8px_rgba(255,107,0,.6)]
-          hover:bg-orange-dark hover:shadow-[0_12px_32px_-8px_rgba(255,107,0,.8)]
+          hover:bg-gp-orange-dark hover:shadow-[0_12px_32px_-8px_rgba(255,107,0,.8)]
           hover:translate-y-[-1px]
           active:translate-y-[0px] active:shadow-[0_4px_12px_-4px_rgba(255,107,0,.6)]
           transition-all duration-200
@@ -311,12 +311,12 @@ export default function LPSilos() {
           <div className="lg:pl-6">
             <div className="bg-[#0b1828]/95 backdrop-blur-sm p-7 md:p-9 border border-white/[.10]
               shadow-[0_24px_60px_-20px_rgba(0,0,0,.6)]">
-              <p className="text-[10px] font-medium tracking-[.22em] uppercase text-orange mb-2">
+              <p className="text-[10px] font-medium tracking-[.22em] uppercase text-gp-orange mb-2">
                 Visita técnica gratuita
               </p>
               <h3 className="font-display font-black text-white text-[22px] uppercase leading-tight mb-2">
                 Proposta com preço<br />
-                <span className="text-orange">e prazo em até 7 dias.</span>
+                <span className="text-gp-orange">e prazo em até 7 dias.</span>
               </h3>
               <p className="text-[13px] text-white/50 mb-6 leading-relaxed">
                 Nossa equipe visita sua unidade. Sem custo, sem compromisso.
@@ -448,7 +448,7 @@ export default function LPSilos() {
           <h2 className="font-display font-black text-white mb-3 leading-[.9] text-center"
             style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}>
             PRONTO PARA<br />
-            <span className="text-orange">ASFALTAR SEU PÁTIO?</span>
+            <span className="text-gp-orange">ASFALTAR SEU PÁTIO?</span>
           </h2>
           <p className="text-[14px] font-light text-white/50 text-center mb-10 leading-relaxed">
             GP Asfalto — mais de 40 anos asfaltando pátios de silo no Cerrado.
