@@ -91,7 +91,6 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
 
     setLoading(true)
 
-    // 1. Capta o lead no Google Sheets (não bloqueia se falhar)
     try {
       await fetch(SHEETS_URL, {
         method: 'POST',
@@ -107,10 +106,8 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
       })
     } catch (err) {
       console.error('Erro ao salvar lead:', err)
-      // segue o fluxo mesmo se falhar
     }
 
-    // 2. Monta mensagem do WhatsApp
     const msg = encodeURIComponent(
       'Olá! Tenho interesse em asfaltar o pátio.\n' +
       'Nome: ' + form.nome + '\n' +
@@ -119,7 +116,6 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
       'WhatsApp: ' + form.whatsapp
     )
 
-    // 3. Dispara conversão Google Ads e abre WhatsApp
     fireConversion()
     window.open('https://wa.me/' + WA + '?text=' + msg, '_blank')
     setSent(true)
@@ -132,7 +128,7 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
         <span className="font-display font-black text-green text-sm">OK</span>
       </div>
       <p className="font-display font-bold text-[22px] text-white mb-2">Recebemos!</p>
-      <p className="text-[13px] text-white/40 mb-6">Retorno em até 24 horas.</p>
+      <p className="text-[13px] text-white/60 mb-6">Retorno em até 24 horas.</p>
       <button
         onClick={() => { setSent(false); setForm({ nome: '', perfil: '', whatsapp: '', cidade: '' }) }}
         className="text-[11px] font-medium tracking-[.14em] uppercase
@@ -143,6 +139,11 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
     </div>
   )
 
+  // Classes reutilizáveis: input/select com fundo sutil, hover e focus visíveis
+  const fieldWrap = 'group flex flex-col border-b border-white/10 bg-white/[.02] hover:bg-white/[.05] focus-within:bg-white/[.06] focus-within:border-orange transition-colors duration-150 px-3'
+  const labelCls  = 'text-[10px] font-medium tracking-[.2em] uppercase text-white/55 group-focus-within:text-orange pt-3 pb-1 transition-colors'
+  const inputCls  = 'bg-transparent border-none outline-none text-[15px] font-light text-white pb-3 placeholder:text-white/30 caret-orange'
+
   return (
     <div>
       {/* HONEYPOT */}
@@ -150,34 +151,29 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
         style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', height: 0 }}
         onChange={e => setHoneypot(e.target.value)} />
 
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0 border-t border-white/10">
         {[
           { key: 'nome',   label: 'Seu nome',  type: 'text', ph: 'Como você se chama?', req: true  },
           { key: 'cidade', label: 'Cidade',    type: 'text', ph: 'Onde fica a unidade?', req: false },
         ].map(f => (
-          <div key={f.key} className="flex flex-col border-b border-white/[.08] first:border-t">
-            <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
-              {f.label}{f.req && <span className="text-green ml-1">*</span>}
+          <div key={f.key} className={fieldWrap}>
+            <label className={labelCls}>
+              {f.label}{f.req && <span className="text-orange ml-1">*</span>}
             </label>
             <input type={f.type} placeholder={f.ph}
               value={form[f.key as keyof typeof form]}
               onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
-              className="bg-transparent border-none outline-none text-[15px] font-light
-                text-white pb-3 placeholder:text-white/12 caret-green" />
+              className={inputCls} />
           </div>
         ))}
 
         {/* PERFIL SELECT */}
-        <div className="flex flex-col border-b border-white/[.08]">
-          <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
-            Você é
-          </label>
+        <div className={fieldWrap}>
+          <label className={labelCls}>Você é</label>
           <select
             value={form.perfil}
             onChange={e => setForm(p => ({ ...p, perfil: e.target.value }))}
-            className="bg-transparent border-none outline-none text-[15px] font-light
-              text-white pb-3 caret-green appearance-none
-              [&>option]:bg-[#0b1828] [&>option]:text-white">
+            className={inputCls + ' appearance-none cursor-pointer [&>option]:bg-[#0b1828] [&>option]:text-white'}>
             <option value="" disabled>Selecione seu perfil</option>
             <option value="Armazenadora / Cooperativa">Armazenadora / Cooperativa</option>
             <option value="Produtor Rural / Fazenda">Produtor Rural / Fazenda</option>
@@ -185,27 +181,32 @@ function Form({ origem = 'LP1 - Silos' }: { origem?: string }) {
           </select>
         </div>
 
-        <div className="flex flex-col border-b border-white/[.08]">
-          <label className="text-[10px] font-medium tracking-[.2em] uppercase text-white/22 pt-3 pb-1">
-            WhatsApp <span className="text-green">*</span>
+        <div className={fieldWrap}>
+          <label className={labelCls}>
+            WhatsApp <span className="text-orange ml-1">*</span>
           </label>
           <input type="tel" placeholder="(64) 9 0000-0000"
             value={form.whatsapp}
             onChange={e => setForm(p => ({ ...p, whatsapp: maskPhone(e.target.value) }))}
-            className="bg-transparent border-none outline-none text-[15px] font-light
-              text-white pb-3 placeholder:text-white/12 caret-green" />
+            className={inputCls} />
         </div>
       </div>
 
       <button onClick={handleSend}
         disabled={!form.nome || !form.whatsapp || loading}
         className="mt-5 w-full flex items-center justify-between px-6 py-4
-          bg-green text-white text-[12px] font-medium tracking-[.14em] uppercase
-          hover:bg-green2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-        {loading ? 'Enviando...' : 'Quero agendar visita técnica'}
-        <span className="text-[16px]">↗</span>
+          bg-orange text-white text-[13px] font-bold tracking-[.12em] uppercase
+          shadow-[0_8px_24px_-8px_rgba(255,107,0,.6)]
+          hover:bg-orange-dark hover:shadow-[0_12px_32px_-8px_rgba(255,107,0,.8)]
+          hover:translate-y-[-1px]
+          active:translate-y-[0px] active:shadow-[0_4px_12px_-4px_rgba(255,107,0,.6)]
+          transition-all duration-200
+          disabled:opacity-40 disabled:cursor-not-allowed
+          disabled:hover:translate-y-0 disabled:hover:shadow-[0_8px_24px_-8px_rgba(255,107,0,.6)]">
+        {loading ? 'Enviando...' : 'Agendar visita gratuita'}
+        <span className="text-[18px]">→</span>
       </button>
-      <p className="text-[10px] text-white/18 text-center mt-3">
+      <p className="text-[11px] text-white/45 text-center mt-3">
         Retorno em até 24 horas · Sem compromisso
       </p>
     </div>
@@ -308,14 +309,18 @@ export default function LPSilos() {
 
           {/* RIGHT — form card */}
           <div className="lg:pl-6">
-            <div className="bg-[#0b1828]/92 backdrop-blur-sm p-7 md:p-9 border border-white/[.08]">
-              <p className="text-[10px] font-medium tracking-[.22em] uppercase text-green mb-1">
+            <div className="bg-[#0b1828]/95 backdrop-blur-sm p-7 md:p-9 border border-white/[.10]
+              shadow-[0_24px_60px_-20px_rgba(0,0,0,.6)]">
+              <p className="text-[10px] font-medium tracking-[.22em] uppercase text-orange mb-2">
                 Visita técnica gratuita
               </p>
-              <h3 className="font-display font-black text-white text-[22px] uppercase leading-tight mb-6">
-                A gente vai até você.<br />
-                <span className="text-green">Sem compromisso.</span>
+              <h3 className="font-display font-black text-white text-[22px] uppercase leading-tight mb-2">
+                Proposta com preço<br />
+                <span className="text-orange">e prazo em até 7 dias.</span>
               </h3>
+              <p className="text-[13px] text-white/50 mb-6 leading-relaxed">
+                Nossa equipe visita sua unidade. Sem custo, sem compromisso.
+              </p>
               <Form origem="LP1 - Hero" />
             </div>
           </div>
@@ -443,9 +448,9 @@ export default function LPSilos() {
           <h2 className="font-display font-black text-white mb-3 leading-[.9] text-center"
             style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}>
             PRONTO PARA<br />
-            <span className="text-green">ASFALTAR SEU PÁTIO?</span>
+            <span className="text-orange">ASFALTAR SEU PÁTIO?</span>
           </h2>
-          <p className="text-[14px] font-light text-white/32 text-center mb-10 leading-relaxed">
+          <p className="text-[14px] font-light text-white/50 text-center mb-10 leading-relaxed">
             GP Asfalto — mais de 40 anos asfaltando pátios de silo no Cerrado.
             Nossa equipe visita gratuitamente e apresenta proposta com preço e prazo.
           </p>
