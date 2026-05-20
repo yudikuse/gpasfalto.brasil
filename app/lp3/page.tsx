@@ -940,14 +940,14 @@ export default function LP3Page() {
         /* ── CLIENT STRIP (dark) ── */
         .clientStrip {
           background: var(--graphite-2);
-          padding: 28px clamp(16px,4vw,40px);
+          padding: 32px clamp(16px,4vw,40px);
           border-top: 1px solid var(--line-soft);
           border-bottom: 1px solid var(--line-soft);
         }
         .clientLabel {
           font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
           text-transform: uppercase; color: var(--muted-2);
-          text-align: center; margin: 0 0 16px;
+          text-align: center; margin: 0 0 22px;
         }
         .clientLogoWrap {
           display: flex; justify-content: center;
@@ -956,16 +956,19 @@ export default function LP3Page() {
           max-width: 980px;
         }
         .clientLogoStrip {
-          height: 36px; width: auto;
+          height: 32px; width: auto;
           max-width: 100%;
-          filter: brightness(0) invert(1) opacity(0.55);
-          /*
-           * Esse filter monocromático funciona bem com o PNG transparente
-           * (logos_strip_transparent.png). Se a logo aparecer "rasurada",
-           * é porque ainda está sendo carregado o PNG com fundo branco —
-           * substitua o arquivo em /public/images/lp/logos_strip.png.
-           */
+          /* Glow branco sutil "ilumina" partes escuras das logos sem alterar
+             cores — partes pretas viram cinza-claro, partes coloridas mantêm cor.
+             É a técnica usada por Vercel/Linear/Stripe quando exibem logos
+             multicoloridas em fundos escuros. */
+          filter:
+            drop-shadow(0 0 0.5px rgba(255,255,255,0.8))
+            drop-shadow(0 0 0.5px rgba(255,255,255,0.8))
+            brightness(1.08);
+          opacity: 0.90;
         }
+        .clientLogoStrip:hover { opacity: 1; }
 
         /* ── SECTIONS BASE ── */
         .proof, .entry, .formSection, .faqSection, .closing {
