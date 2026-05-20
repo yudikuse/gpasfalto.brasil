@@ -326,18 +326,15 @@ export default function LP3Page() {
         </div>
       </section>
 
-      {/* ── CLIENT STRIP (texto editorial até logos oficiais serem fornecidas) ── */}
+      {/* ── CLIENT STRIP (logos oficiais dos parceiros) ── */}
       <div className="clientStrip">
         <p className="clientLabel">Fazemos parte da infraestrutura dessas operações</p>
-        <div className="clientMarquee" aria-label="Parceiros e clientes">
-          <div className="clientMarqueeTrack">
-            {["LDC", "Comigo", "Fetz", "Raízen", "Cereal Ouro", "Grupo Cereal", "Nutrien", "Mercado Livre"].map((n, i, arr) => (
-              <span key={n} className="clientName">
-                {n}
-                {i < arr.length - 1 && <span className="clientDivider" aria-hidden="true">·</span>}
-              </span>
-            ))}
-          </div>
+        <div className="clientLogoWrap">
+          <img
+            src="/images/lp/logos_strip.png"
+            alt="LDC, Comigo, Raízen, Realiza Construtora, Grupo Fetz, Grupo Cereal, Cereal Ouro, Mercado Livre, Nutrien"
+            className="clientLogoStrip"
+          />
         </div>
       </div>
 
@@ -952,7 +949,7 @@ export default function LP3Page() {
         .ghostWa:hover { background: #20bf5b; color: #052f1a; }
         .ghostWa svg { color: #052f1a; }
 
-        /* ── CLIENT STRIP (texto editorial) ── */
+        /* ── CLIENT STRIP (logos PNG @2x transparente) ── */
         .clientStrip {
           background: var(--graphite-2);
           padding: 36px clamp(16px,4vw,40px);
@@ -964,47 +961,25 @@ export default function LP3Page() {
           text-transform: uppercase; color: var(--muted-2);
           text-align: center; margin: 0 0 22px;
         }
-        .clientMarquee {
-          width: 100%;
-          overflow: hidden;
-          mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
-          -webkit-mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
-        }
-        .clientMarqueeTrack {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          gap: 0;
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-        .clientName {
-          font-family: "Barlow Condensed", sans-serif;
-          font-size: clamp(18px, 3vw, 24px);
-          font-weight: 700;
-          letter-spacing: 0.04em;
-          color: var(--cream-2);
-          text-transform: uppercase;
+        .clientLogoWrap {
+          display: flex; justify-content: center;
           padding: 4px 0;
-          white-space: nowrap;
-          transition: color 0.2s;
-          display: inline-flex;
-          align-items: center;
+          margin: 0 auto;
+          max-width: 1100px;
+          /* máscara de fade nas pontas pra parecer "fila contínua" */
+          mask-image: linear-gradient(90deg, transparent 0, black 5%, black 95%, transparent 100%);
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, black 5%, black 95%, transparent 100%);
         }
-        .clientName:hover { color: var(--cream); }
-        .clientDivider {
-          display: inline-block;
-          margin: 0 18px;
-          color: var(--green2);
-          opacity: 0.50;
-          font-size: 0.85em;
-          transform: translateY(-2px);
+        .clientLogoStrip {
+          height: 52px; width: auto;
+          max-width: 100%;
+          opacity: 0.95;
+          transition: opacity 0.2s;
         }
+        .clientLogoStrip:hover { opacity: 1; }
         @media (max-width: 759px) {
-          .clientMarqueeTrack { gap: 0; }
-          .clientName { font-size: 16px; }
-          .clientDivider { margin: 0 12px; }
+          .clientLogoStrip { height: 36px; }
+          .clientStrip { padding: 28px 8px; }
         }
 
         /* ── SECTIONS BASE ── */
