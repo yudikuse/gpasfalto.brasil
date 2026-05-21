@@ -428,7 +428,7 @@ export default function LP3Page() {
           />
           <div className="proofImageTag">
             <span className="proofImageDot" />
-            Obra em execução · Goiás
+            Comigo · Rio Verde / GO
           </div>
         </div>
       </section>
@@ -481,8 +481,8 @@ export default function LP3Page() {
             aria-hidden="true"
           />
           <div className="entryCaption">
-            <span><span className="kickerDot"/>Obra em campo · Goiás</span>
-            <strong>Base, massa, aplicação e rolo trabalhando em sequência.</strong>
+            <span><span className="kickerDot"/>Iporá / GO</span>
+            <strong>Galeria de drenagem executada antes do CBUQ. Obra completa, do subsolo ao revestimento.</strong>
           </div>
         </div>
       </section>
