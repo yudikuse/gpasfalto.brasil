@@ -14,7 +14,7 @@ const PHONE_DISPLAY = "(64) 99945-2124";
 //   ao criar a ação de conversão (formato: "AW-XXXXXXX/XxxxxxxxXXxxXXxx").
 // ─────────────────────────────────────────────────────────────────────
 const GOOGLE_ADS_ID = "AW-18158017809";
-const GOOGLE_ADS_CONVERSION_LABEL = "AW-18158017809/SUBSTITUA_AQUI";
+const GOOGLE_ADS_CONVERSION_LABEL = "AW-18158017809/mz-TCIXWma8cEJG6tdJD";
 
 // Dispara o evento de conversão no Google Ads.
 // Usa event_callback + fallback de 500ms pra garantir que o WhatsApp
