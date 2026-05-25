@@ -1,9 +1,48 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useState } from "react";
+import Script from "next/script";
 
 const WHATSAPP_NUMBER = "5564999452124";
 const PHONE_DISPLAY = "(64) 99945-2124";
+
+// ─────────────────────────────────────────────────────────────────────
+// GOOGLE ADS — TAG + CONVERSÃO
+// ID da conta: AW-18158017809
+// Label da conversão "LP3 - Avaliação Técnica (WhatsApp)":
+//   ⚠️ Substitua o valor abaixo pelo label real que o Google Ads gerar
+//   ao criar a ação de conversão (formato: "AW-XXXXXXX/XxxxxxxxXXxxXXxx").
+// ─────────────────────────────────────────────────────────────────────
+const GOOGLE_ADS_ID = "AW-18158017809";
+const GOOGLE_ADS_CONVERSION_LABEL = "AW-18158017809/SUBSTITUA_AQUI";
+
+// Dispara o evento de conversão no Google Ads.
+// Usa event_callback + fallback de 500ms pra garantir que o WhatsApp
+// abra mesmo se a tag falhar, demorar ou estiver bloqueada (adblock, etc).
+function fireConversion(onDone: () => void) {
+  let called = false;
+  const done = () => {
+    if (called) return;
+    called = true;
+    onDone();
+  };
+  try {
+    const g = (typeof window !== "undefined" ? (window as any).gtag : undefined);
+    if (typeof g === "function") {
+      g("event", "conversion", {
+        send_to: GOOGLE_ADS_CONVERSION_LABEL,
+        event_callback: done,
+      });
+      // Fallback: se gtag travar/demorar, abre WhatsApp em 500ms de qualquer jeito
+      setTimeout(done, 500);
+    } else {
+      // gtag não carregou — segue direto pro WhatsApp
+      done();
+    }
+  } catch {
+    done();
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────
 // VÍDEO DO HERO DA PROOF (Cloudinary, tratado com contraste/saturação/vinheta)
@@ -197,9 +236,20 @@ export default function LP3Page() {
   }
 
   function quickWhatsapp(message: string) {
-    openWhatsapp(
-      `Olá, vim pela página da GP Asfalto.\n\nSituação:\n${message}\n\nGostaria de uma avaliação técnica.`
-    );
+    const fullMessage =
+      `Olá, vim pela página da GP Asfalto.\n\nSituação:\n${message}\n\nGostaria de uma avaliação técnica.`;
+    fireConversion(() => openWhatsapp(fullMessage));
+  }
+
+  // Handler para os links <a href="wa.me/..."> diretos (topbar, sticky, CTAs).
+  // Intercepta o clique, dispara conversão, depois navega.
+  // Usa preventDefault + fireConversion + window.open pra manter target=_blank.
+  function handleDirectWhatsappClick(e: MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    fireConversion(() => {
+      window.open(href, "_blank", "noopener,noreferrer");
+    });
   }
 
   function handleHeroSubmit(event: FormEvent<HTMLFormElement>) {
@@ -207,14 +257,14 @@ export default function LP3Page() {
     const form = new FormData(event.currentTarget);
     const name = String(form.get("hname") || "");
     const city = String(form.get("hcity") || "");
-    openWhatsapp(
+    const message =
       `Olá, vim pela página da GP Asfalto.\n\n` +
       `Nome: ${name}\n` +
       `WhatsApp: ${heroPhone}\n` +
       `Cidade da obra: ${city}\n\n` +
       `Quero uma avaliação técnica de pavimentação.\n\n` +
-      `Origem: LP CBUQ · Hero · Google Ads`
-    );
+      `Origem: LP CBUQ · Hero · Google Ads`;
+    fireConversion(() => openWhatsapp(message));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -226,7 +276,7 @@ export default function LP3Page() {
     const volume = String(form.get("volume") || "Não informado");
     const prazo = String(form.get("prazo") || "Não informado");
 
-    openWhatsapp(
+    const message =
       `Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.\n\n` +
       `Nome: ${name}\n` +
       `Empresa: ${empresa}\n` +
@@ -235,12 +285,32 @@ export default function LP3Page() {
       `Situação:\n${selected.message}\n\n` +
       `Prazo desejado:\n${prazo}\n\n` +
       `Área ou volume aproximado:\n${volume}\n\n` +
-      `Origem: LP CBUQ · Form · Google Ads`
-    );
+      `Origem: LP CBUQ · Form · Google Ads`;
+    fireConversion(() => openWhatsapp(message));
   }
 
   return (
     <main className="lp3">
+
+      {/*
+        ── GOOGLE ADS GLOBAL TAG ──
+        Carrega o gtag.js (id AW-18158017809) com strategy="afterInteractive"
+        para não bloquear o render inicial. A função `fireConversion` no topo
+        do arquivo dispara o evento de conversão e o WhatsApp em sequência
+        garantida (com fallback de 500ms se gtag falhar).
+      */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-ads-tag" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GOOGLE_ADS_ID}');
+        `}
+      </Script>
 
       {/*
         Style inline SSR-first: aplica fundo grafite imediatamente, antes do JS hidratar.
@@ -271,7 +341,7 @@ export default function LP3Page() {
           <span>GP Asfalto</span>
         </span>
         <div className="topbarRight">
-          <a className="topPhone" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp">
+          <a className="topPhone" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp" onClick={handleDirectWhatsappClick}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
             </svg>
@@ -530,7 +600,7 @@ export default function LP3Page() {
             <li><span />Atendemos todo o estado de Goiás</li>
             <li><span />ART de execução inclusa</li>
           </ul>
-          <a className="formCallNote" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+          <a className="formCallNote" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" onClick={handleDirectWhatsappClick}>
             <span className="formCallIcon" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
@@ -637,7 +707,7 @@ export default function LP3Page() {
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
               </svg>
             </button>
-            <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+            <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" onClick={handleDirectWhatsappClick}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
               </svg>
@@ -656,7 +726,7 @@ export default function LP3Page() {
 
       {/* ── STICKY CTA ── */}
       <div className={showSticky ? "stickyCta visible" : "stickyCta"}>
-        <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer">
+        <a className="ghost ghostWa" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, vim pela página da GP Asfalto. Gostaria de uma avaliação técnica.")}`} target="_blank" rel="noreferrer" onClick={handleDirectWhatsappClick}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7 0-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5C9.9 9 9.3 7.5 9 6.8c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.2 3.3 5.3 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
           </svg>
