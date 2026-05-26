@@ -16,9 +16,14 @@ export function Hero() {
         >
           <source src={site.hero.videoLocal} type="video/mp4" />
         </video>
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gp-navy/40 via-gp-navy/65 to-gp-navy" />
-        <div className="absolute inset-0 bg-gp-navy/25" />
+
+        {/* OVERLAY 1: Gradient vertical mais leve no topo,
+            só escurece pro fim pra fazer transição com a próxima seção */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gp-navy/15 via-gp-navy/30 to-gp-navy" />
+
+        {/* OVERLAY 2: Gradient lateral — escuro à esquerda (onde está texto),
+            transparente à direita (deixa o vídeo aparecer bonito) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/70 via-gp-navy/20 to-transparent" />
       </div>
 
       <div className="container-gp relative flex min-h-screen flex-col justify-between pb-12 pt-[calc(var(--header-h)+4rem)]">
