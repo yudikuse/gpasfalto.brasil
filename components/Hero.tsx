@@ -17,13 +17,13 @@ export function Hero() {
           <source src={site.hero.videoLocal} type="video/mp4" />
         </video>
 
-        {/* OVERLAY 1: Gradient vertical mais leve no topo,
-            só escurece pro fim pra fazer transição com a próxima seção */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gp-navy/15 via-gp-navy/30 to-gp-navy" />
+        {/* OVERLAY 1: Gradient vertical bem leve no topo,
+            escurece apenas no rodapé pra fazer transição com a próxima seção */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gp-navy/15 to-gp-navy/95" />
 
-        {/* OVERLAY 2: Gradient lateral — escuro à esquerda (onde está texto),
-            transparente à direita (deixa o vídeo aparecer bonito) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/70 via-gp-navy/20 to-transparent" />
+        {/* OVERLAY 2: Gradient lateral leve — só escurece a esquerda
+            o suficiente pra texto ler, direita totalmente livre */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/55 via-transparent to-transparent" />
       </div>
 
       <div className="container-gp relative flex min-h-screen flex-col justify-between pb-12 pt-[calc(var(--header-h)+4rem)]">
@@ -35,14 +35,14 @@ export function Hero() {
 
         {/* Headline */}
         <div className="max-w-6xl">
-          <h1 className="font-display text-hero uppercase text-gp-bone">
+          <h1 className="font-display text-hero uppercase text-gp-bone drop-shadow-[0_2px_8px_rgba(13,17,66,0.6)]">
             {site.hero.line1}
             <br />
             <span className="text-gp-green-bright">{site.hero.line2}</span>
             <br />
             {site.hero.line3}
           </h1>
-          <p className="mt-8 max-w-xl text-lg text-gp-bone/75 sm:text-xl">
+          <p className="mt-8 max-w-xl text-lg text-gp-bone/85 drop-shadow-[0_2px_6px_rgba(13,17,66,0.7)] sm:text-xl">
             {site.hero.description}
           </p>
 
