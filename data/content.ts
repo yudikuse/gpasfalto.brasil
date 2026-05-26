@@ -73,7 +73,7 @@ export const site = {
     { value: 28,  suffix: '',  label: 'Municípios\natendidos'      },
   ],
 
-  // ── OBRAS (cards visuais)
+  // ── OBRAS (cada uma com vídeo do YouTube embedado)
   projects: [
     {
       slug:        'comigo-ponte-de-pedra',
@@ -81,6 +81,7 @@ export const site = {
       title:       'COMIGO\nPONTE DE PEDRA',
       description: 'Terraplenagem, pavimentação CBUQ e drenagem de infraestrutura rural para a cooperativa COMIGO.',
       photo:       '/images/obras/comigo-pp.jpg',
+      videoId:     'PvG0aEMyf4Y',
       index:       '01',
     },
     {
@@ -89,6 +90,7 @@ export const site = {
       title:       'NUTRIEN\nRIO VERDE',
       description: 'Infraestrutura e pavimentação asfáltica CBUQ para pátio industrial e área de manobra.',
       photo:       '/images/obras/nutrien.jpg',
+      videoId:     'Xne1VjTpzm4',
       index:       '02',
     },
     {
@@ -97,6 +99,7 @@ export const site = {
       title:       'CONDOMÍNIO\nITÁLIA',
       description: 'Infraestrutura completa: terraplenagem, rede de água tratada, esgoto, galeria pluvial e pavimentação CBUQ.',
       photo:       '/images/obras/condominio-italia.jpg',
+      videoId:     '5hUNiYjKfqM',
       index:       '03',
     },
     {
@@ -105,60 +108,37 @@ export const site = {
       title:       'COMIGO\nIPORÁ',
       description: 'Infraestrutura e pavimentação asfáltica CBUQ para unidade da cooperativa COMIGO em Iporá.',
       photo:       '/images/obras/comigo-ipora.jpg',
+      videoId:     'KV1QgeEX40U',
       index:       '04',
     },
   ],
 
-  // ── VÍDEOS (obras documentadas + institucionais)
-  // Os primeiros 4 são obras (que mais convertem). Os 4 últimos são VTs.
+  // ── VÍDEOS INSTITUCIONAIS (não-duplicados; não estão em projects)
+  // Pavim. Nutrien + 3 VTs. Não repetir obras aqui!
   videos: [
-    {
-      id:       'KV1QgeEX40U',
-      title:    'Infraestrutura Comigo',
-      subtitle: 'Iporá · GO',
-      tag:      'Obra',
-    },
-    {
-      id:       'PvG0aEMyf4Y',
-      title:    'Infraestrutura Comigo',
-      subtitle: 'Ponte de Pedra · GO',
-      tag:      'Obra',
-    },
-    {
-      id:       'Xne1VjTpzm4',
-      title:    'Infraestrutura Nutrien',
-      subtitle: 'Rio Verde · GO',
-      tag:      'Obra',
-    },
-    {
-      id:       '5hUNiYjKfqM',
-      title:    'Condomínio Itália',
-      subtitle: 'Pavimentação · Jataí · GO',
-      tag:      'Obra',
-    },
     {
       id:       'XwOw0FP32DA',
       title:    'Pavimentação Nutrien',
       subtitle: 'Rio Verde · GO',
-      tag:      'Obra',
+      tag:      'Bastidores',
     },
     {
       id:       'EhYhPPiYYX8',
       title:    'VT GP Asfalto',
-      subtitle: 'Institucional',
-      tag:      'Vídeo',
+      subtitle: 'Vídeo institucional',
+      tag:      'Institucional',
     },
     {
       id:       '-bxy5VSAx3c',
       title:    'VT GP Asfalto 2',
-      subtitle: 'Institucional',
-      tag:      'Vídeo',
+      subtitle: 'Vídeo institucional',
+      tag:      'Institucional',
     },
     {
       id:       '-4wzpJ-_I1c',
       title:    'VT GP Asfalto 3',
-      subtitle: 'Institucional',
-      tag:      'Vídeo',
+      subtitle: 'Vídeo institucional',
+      tag:      'Institucional',
     },
   ],
 
