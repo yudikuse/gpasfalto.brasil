@@ -9,7 +9,6 @@ import { cn } from '@/lib/cn'
 export function FeaturedProjects() {
   const [activeId, setActiveId] = useState<string | null>(null)
 
-  // Fecha modal com ESC + trava scroll do body
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setActiveId(null)
@@ -54,33 +53,41 @@ export function FeaturedProjects() {
         {/* Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {site.projects.map((project) => {
-            // Se tiver vídeo, usa thumbnail do YouTube; senão usa a foto local
-            const thumbSrc = project.videoId
-              ? `https://i.ytimg.com/vi/${project.videoId}/hqdefault.jpg`
-              : project.photo
             const hasVideo = Boolean(project.videoId)
+            // Maxres com fallback automático via onError pra hqdefault
+            const thumbSrc = hasVideo
+              ? `https://i.ytimg.com/vi/${project.videoId}/maxresdefault.jpg`
+              : project.photo
+
+            const handleClick = () => {
+              if (hasVideo) setActiveId(project.videoId!)
+            }
 
             return (
-              <article key={project.slug} className="project-card group">
-                <button
-                  type="button"
-                  onClick={() => hasVideo && setActiveId(project.videoId!)}
-                  disabled={!hasVideo}
-                  className={cn(
-                    'relative block aspect-[4/5] w-full overflow-hidden bg-gp-navy-deep text-left',
-                    hasVideo ? 'cursor-pointer' : 'cursor-default'
-                  )}
-                  aria-label={hasVideo ? `Reproduzir vídeo de ${project.title.replace('\n', ' ')}` : project.title.replace('\n', ' ')}
-                >
-                  {/* Imagem ou thumbnail YouTube */}
+              <article
+                key={project.slug}
+                className={cn(
+                  'project-card group',
+                  hasVideo && 'cursor-pointer'
+                )}
+                onClick={handleClick}
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-gp-navy-deep">
+                  {/* Thumbnail (YouTube ou foto local) */}
                   {hasVideo ? (
-                    // Pra thumbnail do YouTube usa <img> normal (URL externa não otimizada)
-                    // eslint-disable-next-line @next/next/no-img-element
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={thumbSrc}
                       alt={project.title.replace('\n', ' ')}
-                      className="project-image absolute inset-0 h-full w-full object-cover"
+                      className="project-image absolute inset-0 h-full w-full object-cover brightness-[0.7] saturate-[0.85] transition-all duration-700 ease-out-expo group-hover:scale-[1.05] group-hover:brightness-[0.85]"
                       loading="lazy"
+                      onError={(e) => {
+                        // Fallback pro hqdefault se maxres não existir
+                        const img = e.currentTarget
+                        if (img.src.includes('maxresdefault')) {
+                          img.src = `https://i.ytimg.com/vi/${project.videoId}/hqdefault.jpg`
+                        }
+                      }}
                     />
                   ) : (
                     <Image
@@ -88,33 +95,33 @@ export function FeaturedProjects() {
                       alt={project.title.replace('\n', ' ')}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="project-image object-cover"
+                      className="project-image object-cover brightness-[0.7] transition-all duration-700 ease-out-expo group-hover:scale-[1.05] group-hover:brightness-[0.85]"
                     />
                   )}
 
-                  {/* Gradiente */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-gp-navy-deep via-gp-navy-deep/40 to-transparent transition-opacity duration-400 group-hover:from-gp-navy-deep/95 group-hover:via-gp-navy-deep/60" />
+                  {/* Gradient dramático bottom→top */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gp-navy-deep via-gp-navy-deep/60 to-gp-navy-deep/10" />
 
-                  {/* Play button (só se tiver vídeo) */}
-                  {hasVideo && (
-                    <div className="absolute inset-0 grid place-items-center">
-                      <span className="grid h-16 w-16 place-items-center rounded-full border-2 border-gp-bone/40 bg-gp-navy-deep/40 backdrop-blur-sm transition-all duration-400 ease-out-expo group-hover:scale-110 group-hover:border-gp-green-bright group-hover:bg-gp-green-bright">
-                        <Play
-                          size={22}
-                          className="ml-1 fill-gp-bone text-gp-bone transition-colors group-hover:fill-gp-navy-deep group-hover:text-gp-navy-deep"
-                        />
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Index number */}
+                  {/* Index number — canto superior direito */}
                   <div className="absolute right-6 top-6">
-                    <span className="font-display text-3xl text-gp-green-bright/80">
+                    <span className="font-display text-3xl text-gp-green-bright/70">
                       {project.index}
                     </span>
                   </div>
 
-                  {/* Content */}
+                  {/* Chip "VÍDEO" discreto — canto superior esquerdo */}
+                  {hasVideo && (
+                    <div className="absolute left-6 top-6">
+                      <span className="inline-flex items-center gap-1.5 border border-gp-bone/25 bg-gp-navy-deep/40 px-2 py-1 backdrop-blur-sm">
+                        <Play size={9} className="fill-gp-green-bright text-gp-green-bright" />
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-gp-bone/85">
+                          Vídeo
+                        </span>
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Content bottom */}
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <div className="font-mono text-xs uppercase tracking-widest text-gp-green-bright">
                       {project.segment}
@@ -126,14 +133,25 @@ export function FeaturedProjects() {
                       {project.description}
                     </p>
 
-                    {hasVideo && (
-                      <div className="mt-6 flex items-center gap-3 text-gp-bone/60 transition-colors group-hover:text-gp-green-bright">
-                        <span className="text-xs uppercase tracking-wider">Ver obra em vídeo</span>
-                        <Play size={14} className="fill-current" />
-                      </div>
-                    )}
+                    {/* CTA inferior */}
+                    <div className="mt-6 flex items-center gap-3 text-gp-bone/60 transition-colors group-hover:text-gp-green-bright">
+                      <span className="text-xs uppercase tracking-wider">
+                        {hasVideo ? 'Assistir' : 'Detalhes'}
+                      </span>
+                      {hasVideo ? (
+                        <Play
+                          size={14}
+                          className="fill-current transition-transform group-hover:scale-110"
+                        />
+                      ) : (
+                        <ArrowUpRight
+                          size={16}
+                          className="transition-transform group-hover:rotate-45"
+                        />
+                      )}
+                    </div>
                   </div>
-                </button>
+                </div>
               </article>
             )
           })}
