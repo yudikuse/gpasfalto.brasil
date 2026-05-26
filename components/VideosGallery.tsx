@@ -8,7 +8,6 @@ import { cn } from '@/lib/cn'
 export function VideosGallery() {
   const [activeId, setActiveId] = useState<string | null>(null)
 
-  // Fecha modal com ESC + trava scroll do body
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setActiveId(null)
@@ -24,37 +23,35 @@ export function VideosGallery() {
   }, [activeId])
 
   return (
-    <section id="videos" className="relative py-32">
+    <section id="videos" className="relative border-t border-gp-steel/10 py-24">
       <div className="container-gp">
-        {/* Heading */}
-        <div className="mb-16 flex flex-wrap items-end justify-between gap-8">
+        {/* Heading — mais discreto que FeaturedProjects */}
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <div className="mb-4 flex items-center gap-4">
+            <div className="mb-3 flex items-center gap-4">
               <span className="h-px w-12 bg-gp-green-bright" />
-              <span className="eyebrow">Em vídeo</span>
+              <span className="eyebrow">GP em movimento</span>
             </div>
-            <h2 className="font-display text-display-xl uppercase text-gp-bone">
-              Obras
-              <br />
-              <span className="text-gp-green-bright">documentadas.</span>
+            <h2 className="font-display text-display-md uppercase text-gp-bone">
+              Bastidores e <span className="text-gp-green-bright">institucional.</span>
             </h2>
           </div>
-          <p className="max-w-md text-gp-bone/65">
-            Imagens reais de execução em campo. Cada vídeo mostra o controle técnico,
-            a equipe própria e o cronograma da GP Asfalto.
+          <p className="max-w-sm text-sm text-gp-bone/60">
+            Vídeos de execução em campo e VTs institucionais da GP Asfalto.
           </p>
         </div>
 
-        {/* Grid de vídeos */}
+        {/* Grid 4 cols horizontal — mais compacto */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {site.videos.map((video) => (
             <button
               key={video.id}
+              type="button"
               onClick={() => setActiveId(video.id)}
               className="group relative aspect-video overflow-hidden bg-gp-navy-deep text-left"
               aria-label={`Reproduzir ${video.title}`}
             >
-              {/* Thumbnail YouTube */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
                 alt={video.title}
@@ -62,32 +59,32 @@ export function VideosGallery() {
                 loading="lazy"
               />
 
-              {/* Overlay escurece no hover */}
+              {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-gp-navy-deep via-gp-navy-deep/40 to-transparent transition-opacity duration-400 group-hover:from-gp-navy-deep/95 group-hover:via-gp-navy-deep/60" />
 
-              {/* Play button central */}
+              {/* Play */}
               <div className="absolute inset-0 grid place-items-center">
-                <span className="grid h-16 w-16 place-items-center rounded-full border-2 border-gp-bone/50 bg-gp-navy-deep/40 backdrop-blur-sm transition-all duration-400 ease-out-expo group-hover:scale-110 group-hover:border-gp-green-bright group-hover:bg-gp-green-bright">
+                <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-gp-bone/40 bg-gp-navy-deep/40 backdrop-blur-sm transition-all duration-400 ease-out-expo group-hover:scale-110 group-hover:border-gp-green-bright group-hover:bg-gp-green-bright">
                   <Play
-                    size={22}
-                    className="ml-1 fill-gp-bone text-gp-bone transition-colors group-hover:fill-gp-navy-deep group-hover:text-gp-navy-deep"
+                    size={16}
+                    className="ml-0.5 fill-gp-bone text-gp-bone transition-colors group-hover:fill-gp-navy-deep group-hover:text-gp-navy-deep"
                   />
                 </span>
               </div>
 
               {/* Tag */}
-              <div className="absolute left-4 top-4">
+              <div className="absolute left-3 top-3">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-gp-green-bright">
                   {video.tag}
                 </span>
               </div>
 
-              {/* Title bottom */}
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                <h3 className="font-display text-base uppercase leading-tight text-gp-bone group-hover:text-gp-green-bright">
+              {/* Title */}
+              <div className="absolute inset-x-0 bottom-0 p-3">
+                <h3 className="font-display text-sm uppercase leading-tight text-gp-bone group-hover:text-gp-green-bright">
                   {video.title}
                 </h3>
-                <p className="mt-1 text-xs text-gp-bone/70">{video.subtitle}</p>
+                <p className="mt-0.5 text-[11px] text-gp-bone/60">{video.subtitle}</p>
               </div>
             </button>
           ))}
