@@ -62,7 +62,7 @@ export const site = {
     line3:       'ENTREGA NO PRAZO.',
     description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
-    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/f_auto,q_auto,ac_none,h_1080/Infraestrutura_Nutrien_Rio_Verde_GO_Xne1VjTpzm4_krxxw8.mp4',
+    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/f_auto,q_auto,ac_none,h_1080,so_6,eo_52/Infraestrutura_Nutrien_Rio_Verde_GO_Xne1VjTpzm4_krxxw8.mp4',
   },
 
   // ── NÚMEROS (trust bar)
