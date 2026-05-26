@@ -33,15 +33,15 @@ export const site = {
     },
     {
       label:    'WhatsApp Comercial',
-      number:   '(64) 99945-2124',
-      whatsapp: '5564999452124',
+      number:   '(64) 98133-0088',
+      whatsapp: '5564981330088',
       isWhatsApp: true,
       primary:  false,
     },
     {
       label:    'WhatsApp Alternativo',
-      number:   '(64) 98133-0088',
-      whatsapp: '5564981330088',
+      number:   '(64) 99945-2124',
+      whatsapp: '5564999452124',
       isWhatsApp: true,
       primary:  false,
     },
@@ -62,7 +62,7 @@ export const site = {
     line3:       'ENTREGA NO PRAZO.',
     description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
-    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/v1777986525/17215135-uhd_3840_2160_30fps_lyotyu.mp4',
+    videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/f_auto,q_auto,ac_none,h_1080/Infraestrutura_Nutrien_Rio_Verde_GO_Xne1VjTpzm4_krxxw8.mp4',
   },
 
   // ── NÚMEROS (trust bar)
