@@ -18,7 +18,6 @@ export const site = {
     instagram: 'https://instagram.com/gp.asfalto',
     youtube:   'https://www.youtube.com/@tmb_brand',
     facebook:  'https://facebook.com/gpasfalto',
-    // Telefone WhatsApp principal (mantido pra retrocompatibilidade com Hero/CtaBanner)
     phone:     '(64) 99931-7039',
     whatsapp:  '5564999317039',
   },
@@ -74,7 +73,7 @@ export const site = {
     { value: 28,  suffix: '',  label: 'Municípios\natendidos'      },
   ],
 
-  // ── OBRAS (painéis individuais de projeto)
+  // ── OBRAS (cards visuais)
   projects: [
     {
       slug:        'comigo-ponte-de-pedra',
@@ -110,6 +109,59 @@ export const site = {
     },
   ],
 
+  // ── VÍDEOS (obras documentadas + institucionais)
+  // Os primeiros 4 são obras (que mais convertem). Os 4 últimos são VTs.
+  videos: [
+    {
+      id:       'KV1QgeEX40U',
+      title:    'Infraestrutura Comigo',
+      subtitle: 'Iporá · GO',
+      tag:      'Obra',
+    },
+    {
+      id:       'PvG0aEMyf4Y',
+      title:    'Infraestrutura Comigo',
+      subtitle: 'Ponte de Pedra · GO',
+      tag:      'Obra',
+    },
+    {
+      id:       'Xne1VjTpzm4',
+      title:    'Infraestrutura Nutrien',
+      subtitle: 'Rio Verde · GO',
+      tag:      'Obra',
+    },
+    {
+      id:       '5hUNiYjKfqM',
+      title:    'Condomínio Itália',
+      subtitle: 'Pavimentação · Jataí · GO',
+      tag:      'Obra',
+    },
+    {
+      id:       'XwOw0FP32DA',
+      title:    'Pavimentação Nutrien',
+      subtitle: 'Rio Verde · GO',
+      tag:      'Obra',
+    },
+    {
+      id:       'EhYhPPiYYX8',
+      title:    'VT GP Asfalto',
+      subtitle: 'Institucional',
+      tag:      'Vídeo',
+    },
+    {
+      id:       '-bxy5VSAx3c',
+      title:    'VT GP Asfalto 2',
+      subtitle: 'Institucional',
+      tag:      'Vídeo',
+    },
+    {
+      id:       '-4wzpJ-_I1c',
+      title:    'VT GP Asfalto 3',
+      subtitle: 'Institucional',
+      tag:      'Vídeo',
+    },
+  ],
+
   // ── USINAS
   usinas: [
     { number: '01', name: 'Usina Central',  location: 'Rio Verde · GO · Setor Industrial' },
@@ -126,7 +178,7 @@ export const site = {
     { key: 'Fornecimento externo', value: 'Disponível', sub: 'sob contrato'   },
   ],
 
-  // ── FORMULÁRIO — opções dos selects
+  // ── FORMULÁRIO
   formOptions: {
     projectTypes: [
       'Estrada / Pátio Rural — Agronegócio',
