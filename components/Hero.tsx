@@ -12,18 +12,18 @@ export function Hero() {
           muted
           playsInline
           poster="/images/hero-cbuq.jpg"
-          className="h-full w-full object-cover"
+          // Mobile: scale 130% (zoom menor pra preservar qualidade);
+          // Desktop: object-cover normal
+          className="h-full w-full scale-[1.3] object-cover object-center md:scale-100"
         >
           <source src={site.hero.videoLocal} type="video/mp4" />
         </video>
 
-        {/* OVERLAY 1: Gradient vertical bem leve no topo,
-            escurece apenas no rodapé pra fazer transição com a próxima seção */}
+        {/* OVERLAY 1: Gradient vertical leve, escurece só pro fim */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gp-navy/15 to-gp-navy/95" />
 
-        {/* OVERLAY 2: Gradient lateral leve — só escurece a esquerda
-            o suficiente pra texto ler, direita totalmente livre */}
-        <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/55 via-transparent to-transparent" />
+        {/* OVERLAY 2: Gradient lateral — mais escuro no mobile, leve no desktop */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/75 via-gp-navy/40 to-gp-navy/20 md:from-gp-navy/55 md:via-transparent md:to-transparent" />
       </div>
 
       <div className="container-gp relative flex min-h-screen flex-col justify-between pb-12 pt-[calc(var(--header-h)+4rem)]">
