@@ -142,17 +142,17 @@ export const site = {
   ],
 
   // ── CLIENTES (logos)
-  // Ordem importa: os mais reconhecidos primeiro = mais impacto
+  // visualScale: ajuste individual de tamanho pra equilibrar visualmente
   clients: [
-    { slug: 'comigo',        name: 'Comigo',                segment: 'Cooperativa Agro' },
-    { slug: 'nutrien',       name: 'Nutrien',               segment: 'Insumos Agrícolas' },
-    { slug: 'raizen',        name: 'Raízen',                segment: 'Energia / Bioenergia' },
-    { slug: 'ldc',           name: 'Louis Dreyfus Company', segment: 'Agroindústria' },
-    { slug: 'mercado-livre', name: 'Mercado Livre',         segment: 'E-commerce' },
-    { slug: 'grupo-cereal',  name: 'Grupo Cereal',          segment: 'Agroindústria' },
-    { slug: 'cereal-ouro',   name: 'Cereal Ouro',           segment: 'Agroindústria' },
-    { slug: 'grupo-fetz',    name: 'Grupo Fetz',            segment: 'Construtora' },
-    { slug: 'realiza',       name: 'Realiza Construtora',   segment: 'Loteamentos' },
+    { slug: 'comigo',        name: 'Comigo',                segment: 'Cooperativa Agro',     visualScale: 0.80 },
+    { slug: 'nutrien',       name: 'Nutrien',               segment: 'Insumos Agrícolas',    visualScale: 1.00 },
+    { slug: 'raizen',        name: 'Raízen',                segment: 'Energia / Bioenergia', visualScale: 1.05 },
+    { slug: 'ldc',           name: 'Louis Dreyfus Company', segment: 'Agroindústria',        visualScale: 1.20 },
+    { slug: 'mercado-livre', name: 'Mercado Livre',         segment: 'E-commerce',           visualScale: 1.20 },
+    { slug: 'grupo-cereal',  name: 'Grupo Cereal',          segment: 'Agroindústria',        visualScale: 1.20 },
+    { slug: 'cereal-ouro',   name: 'Cereal Ouro',           segment: 'Agroindústria',        visualScale: 1.00 },
+    { slug: 'grupo-fetz',    name: 'Grupo Fetz',            segment: 'Construtora',          visualScale: 0.85 },
+    { slug: 'realiza',       name: 'Realiza Construtora',   segment: 'Loteamentos',          visualScale: 1.00 },
   ],
 
   // ── USINAS
