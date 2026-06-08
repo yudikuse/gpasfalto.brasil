@@ -1,9 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Instagram, Youtube, ArrowUpRight } from 'lucide-react'
+import { Instagram, Youtube, Facebook, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
 
 export function Footer() {
+  // Helper: gera href tel: com formatação certa
+  // Os números em phones[].whatsapp JÁ vêm com 55 na frente
+  const telHref = (whatsappNumber: string) => `tel:+${whatsappNumber}`
+
   return (
     <footer className="relative bg-gp-navy-deep pt-24">
       <div className="container-gp">
@@ -24,7 +28,8 @@ export function Footer() {
 
           <div>
             <h3 className="font-display text-display-lg uppercase leading-none text-gp-bone">
-              Do campo<br/>à <span className="text-gp-green-bright">cidade.</span>
+              CBUQ próprio.<br/>
+              <span className="text-gp-green-bright">Entrega no prazo.</span>
             </h3>
           </div>
         </div>
@@ -50,7 +55,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`tel:+55${site.company.whatsapp}`} className="hover:text-gp-green-bright">
+                <a href={telHref(site.company.whatsapp)} className="hover:text-gp-green-bright">
                   {site.company.phone}
                 </a>
               </li>
@@ -85,6 +90,15 @@ export function Footer() {
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
+              </a>
+              <a
+                href={site.company.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="grid h-11 w-11 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-green-bright hover:text-gp-green-bright"
+                aria-label="Facebook"
+              >
+                <Facebook size={18} />
               </a>
               <a
                 href={site.company.youtube}
