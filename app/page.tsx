@@ -13,22 +13,7 @@ export default function HomePage() {
     <>
       <Hero />
       <StatsBar />
-
-      {/*
-        TESTE A/B (TEMPORÁRIO): duas versões da seção de logos pra você comparar.
-        Quando decidir qual prefere, apague o que não quiser e deixe só uma <ClientLogos />.
-      */}
-      <ClientLogos
-        variant="mono"
-        eyebrow="VERSÃO B · MONOCROMÁTICO"
-        title="Confiam na nossa engenharia."
-      />
-      <ClientLogos
-        variant="color"
-        eyebrow="VERSÃO A · COLORIDO"
-        title="Confiam na nossa engenharia."
-      />
-
+      <ClientLogos />
       <ServicesGrid />
       <FeaturedProjects />
       <VideosGallery />
