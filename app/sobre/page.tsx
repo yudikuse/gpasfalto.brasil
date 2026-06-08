@@ -1,148 +1,151 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import { ArrowUpRight, Target, Eye, Award, MapPin } from 'lucide-react'
 import { site } from '@/data/content'
 
-export default function Sobre() {
-  const { company } = site
+export const metadata = {
+  title: 'Sobre · GP Asfalto Brasil',
+  description: 'Conheça a GP Asfalto: 28 anos pavimentando o Centro-Oeste com CBUQ próprio, engenharia aplicada e cronograma cumprido.',
+}
 
+const valores = [
+  {
+    icon: Target,
+    titulo: 'Missão',
+    texto: 'Entregar obras de pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma — gerando previsibilidade para o agronegócio, loteadores e empresas do Centro-Oeste.',
+  },
+  {
+    icon: Eye,
+    titulo: 'Visão',
+    texto: 'Ser a referência regional em infraestrutura asfáltica de Goiás, reconhecida pela engenharia aplicada na prática, controle de qualidade certificado e palavra cumprida em cada obra entregue.',
+  },
+  {
+    icon: Award,
+    titulo: 'Política de Qualidade',
+    texto: 'Operar com produção própria de CBUQ controlada em laboratório (ensaio Marshall por traço), licença ambiental ativa SEMAD-GO e execução conforme normas DNIT e NBR 7207 em todas as etapas.',
+  },
+]
+
+const marcos = [
+  { ano: '1998', evento: 'Fundação da GP Asfalto em Rio Verde, GO' },
+  { ano: '2010', evento: 'Inauguração da segunda usina CBUQ' },
+  { ano: '2018', evento: 'Atingimos 50 loteamentos entregues no Centro-Oeste' },
+  { ano: '2023', evento: 'Terceira usina CBUQ em operação · expansão regional' },
+  { ano: '2026', evento: '28 anos de mercado · 28 municípios atendidos' },
+]
+
+export default function SobrePage() {
   return (
-    <div className="min-h-screen bg-navy text-cream font-body">
-
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
-        px-10 h-[68px] bg-navy border-b border-cream/8">
-        <Link href="/" className="flex items-center hover:opacity-85 transition-opacity">
-          <Image src="/images/logo-white.png" alt={company.name}
-            width={160} height={44} className="h-14 w-auto object-contain" priority />
-        </Link>
-        <Link href="/#p7"
-          className="text-[12px] font-medium tracking-[.1em] uppercase
-            text-white bg-green px-6 py-2.5 hover:bg-green2 transition-colors">
-          Orçamento
-        </Link>
-      </nav>
-
-      <section className="pt-[68px]">
-        <div className="px-10 md:px-16 py-20 md:py-32 border-b border-cream/8">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-5 h-px bg-green block" />
-            <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">Quem somos</span>
+    <main className="bg-gp-navy">
+      {/* HERO da página /sobre */}
+      <section className="relative overflow-hidden bg-gp-navy-deep pb-24 pt-[calc(var(--header-h)+5rem)]">
+        <div className="container-gp">
+          <div className="mb-6 flex items-center gap-4">
+            <span className="h-px w-12 bg-gp-green-bright" />
+            <span className="eyebrow">A empresa</span>
           </div>
-          <h1 className="font-display font-black text-cream leading-[.88]"
-            style={{ fontSize: 'clamp(56px, 9vw, 130px)' }}>
-            MAIS DE 25 ANOS<br />
-            <span style={{ WebkitTextStroke: '1.5px rgba(240,235,226,.2)', color: 'transparent' }}>CONSTRUINDO</span><br />
-            <span className="text-green">O BRASIL.</span>
+          <h1 className="font-display text-display-xl uppercase leading-[0.95] text-gp-bone">
+            28 anos pavimentando
+            <br />
+            <span className="text-gp-green-bright">o Centro-Oeste.</span>
           </h1>
+          <p className="mt-8 max-w-2xl text-lg text-gp-bone/75 sm:text-xl">
+            A GP Asfalto opera desde 1998 em Rio Verde, GO, com produção própria
+            de CBUQ, frota dedicada e equipe técnica especializada. Atendemos o
+            agronegócio, loteadores e empresas do Centro-Oeste com obras
+            entregues no prazo.
+          </p>
         </div>
       </section>
 
-      <section className="px-10 md:px-16 py-20 border-b border-cream/8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl">
-          <div>
-            <h2 className="font-display font-bold text-[32px] text-cream mb-6 uppercase tracking-wide">Nossa História</h2>
-            <p className="text-[15px] font-light leading-[1.9] text-cream/55">
-              Fundada em {company.founded} em Rio Verde — GO, a GP Asfalto nasceu para atender a crescente demanda por infraestrutura de qualidade no coração do agronegócio brasileiro.
-            </p>
-            <p className="text-[15px] font-light leading-[1.9] text-cream/55 mt-4">
-              Acreditamos que o futuro se constrói com trabalho, desenvolvimento e tecnologia. Nossas principais matérias-primas são tradição, seriedade, profissionalismo e foco na qualidade.
-            </p>
-            <p className="text-[15px] font-light leading-[1.9] text-cream/55 mt-4">
-              Hoje operamos com três usinas próprias de CBUQ, frota completa de terraplenagem e equipe técnica com décadas de obra no Cerrado.
-            </p>
+      {/* MISSÃO / VISÃO / POLÍTICA DE QUALIDADE */}
+      <section className="py-24">
+        <div className="container-gp">
+          <div className="mb-16 flex items-center gap-4">
+            <span className="h-px w-12 bg-gp-green-bright" />
+            <span className="eyebrow">Princípios</span>
           </div>
-          <div className="flex flex-col gap-3">
-            {[
-              { n: '25+', l: 'Anos de mercado' },
-              { n: '50+', l: 'Loteamentos executados' },
-              { n: '3',   l: 'Usinas CBUQ próprias' },
-              { n: '28',  l: 'Municípios atendidos' },
-            ].map(s => (
-              <div key={s.n} className="flex items-baseline gap-6 py-5 border-b border-cream/8 first:border-t">
-                <span className="font-display font-black text-[48px] text-cream leading-none w-24 flex-shrink-0">{s.n}</span>
-                <span className="text-[13px] font-normal tracking-[.06em] text-cream/45 uppercase">{s.l}</span>
+          <div className="grid gap-8 md:grid-cols-3">
+            {valores.map((v) => {
+              const Icon = v.icon
+              return (
+                <div
+                  key={v.titulo}
+                  className="group border-l-2 border-gp-steel/20 p-6 transition-colors hover:border-gp-green-bright"
+                >
+                  <Icon
+                    size={28}
+                    className="text-gp-green-bright"
+                    strokeWidth={1.5}
+                  />
+                  <h3 className="mt-6 font-display text-2xl uppercase text-gp-bone">
+                    {v.titulo}
+                  </h3>
+                  <p className="mt-4 text-gp-bone/70">{v.texto}</p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* TIMELINE / MARCOS */}
+      <section className="border-y border-gp-steel/10 bg-gp-navy-deep py-24">
+        <div className="container-gp">
+          <div className="mb-16 flex items-center gap-4">
+            <span className="h-px w-12 bg-gp-green-bright" />
+            <span className="eyebrow">Trajetória</span>
+          </div>
+          <h2 className="mb-12 font-display text-display-lg uppercase text-gp-bone">
+            Da primeira obra à <span className="text-gp-green-bright">terceira usina.</span>
+          </h2>
+
+          <div className="grid gap-px bg-gp-steel/20 md:grid-cols-5">
+            {marcos.map((m) => (
+              <div key={m.ano} className="bg-gp-navy-deep p-6">
+                <div className="font-display text-3xl text-gp-green-bright">
+                  {m.ano}
+                </div>
+                <p className="mt-3 text-sm text-gp-bone/70">{m.evento}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-navy2 px-10 md:px-16 py-20 border-b border-cream/8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-6xl">
-          {[
-            { title: 'Missão', text: 'Planejar e executar serviços de infraestrutura urbana, loteamentos, terraplenagem, pavimentação asfáltica, drenagem, saneamento básico e pontes com qualidade e sustentabilidade, em harmonia socioambiental.' },
-            { title: 'Visão', text: 'Tornar-se a maior referência no mercado de loteamentos e construção pesada pela excelência em gerenciamento de projetos públicos e privados, respeitando prazos, colaboradores, clientes e sociedade.' },
-            { title: 'Política de Qualidade', text: 'Garantir a satisfação dos clientes, a execução de obras com qualidade, a busca constante de tecnologias inovadoras e o foco em melhoria contínua dos processos.' },
-          ].map((item, i) => (
-            <div key={i} className="px-8 py-10 border-r border-cream/8 last:border-r-0 first:pl-0 last:pr-0">
-              <div className="flex items-center gap-3 mb-5">
-                <span className="w-4 h-px bg-green block" />
-                <span className="text-[9px] font-medium tracking-[.24em] uppercase text-green">{item.title}</span>
+      {/* SEDE */}
+      <section className="py-24">
+        <div className="container-gp">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <div className="mb-6 flex items-center gap-4">
+                <span className="h-px w-12 bg-gp-green-bright" />
+                <span className="eyebrow">Sede</span>
               </div>
-              <p className="text-[14px] font-light leading-[1.85] text-cream/50">{item.text}</p>
+              <h2 className="font-display text-display-lg uppercase text-gp-bone">
+                Rio Verde, <span className="text-gp-green-bright">Goiás.</span>
+              </h2>
+              <div className="mt-8 flex items-start gap-4 text-gp-bone/80">
+                <MapPin size={24} className="mt-1 shrink-0 text-gp-green-bright" />
+                <address className="not-italic">
+                  {site.company.address}
+                  <br />
+                  CNPJ {site.company.cnpj}
+                </address>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-10 md:px-16 py-20 border-b border-cream/8">
-        <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-5 h-px bg-green block" />
-            <span className="text-[10px] font-medium tracking-[.26em] uppercase text-green">O que fazemos</span>
-          </div>
-          <h2 className="font-display font-black text-cream uppercase" style={{ fontSize: 'clamp(36px, 5vw, 64px)' }}>
-            Soluções Completas<br />em Infraestrutura
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
-          {[
-            { title: 'Usinagem de Asfalto CBUQ', desc: 'Três usinas próprias com filtro de mangas. Produção de CBUQ com dosagem Marshall certificada e controle tecnológico completo. Fornecemos também para terceiros licitantes.' },
-            { title: 'Terraplanagem', desc: 'Técnicas avançadas e equipamentos de qualidade para execução de processos de drenagem geométrica e geotécnica com controle tecnológico total.' },
-            { title: 'Saneamento Básico', desc: 'Execução de obras de canalização de água tratada, rede de esgoto e galerias pluviais com rigor técnico e normativo.' },
-            { title: 'Pavimentação Asfáltica', desc: 'Elevado padrão de pavimentação com CBUQ de qualidade e resistência diferenciadas. Tecnologias inovadoras com resultado comprovadamente superior.' },
-            { title: 'Loteamentos', desc: 'Mais de 50 loteamentos executados com infraestrutura completa: ruas asfaltadas, meio-fio, galeria pluvial, rede de água e esgoto.' },
-            { title: 'Infraestrutura Urbana', desc: 'Estrutura completa para incorporação e infraestrutura em áreas urbanas e rurais, loteamentos abertos ou fechados.' },
-          ].map((s, i) => (
-            <div key={i} className="py-10 px-8 border-b border-r border-cream/8">
-              <h3 className="font-display font-bold text-[22px] text-cream uppercase mb-4 leading-tight">{s.title}</h3>
-              <p className="text-[14px] font-light leading-[1.85] text-cream/45">{s.desc}</p>
+            <div className="flex justify-start lg:justify-end">
+              <a
+                href={`https://wa.me/${site.company.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                Solicitar Orçamento
+                <ArrowUpRight size={16} />
+              </a>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-10 md:px-16 py-20">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 max-w-6xl">
-          <div>
-            <h2 className="font-display font-black text-cream uppercase" style={{ fontSize: 'clamp(36px, 5vw, 64px)' }}>
-              Vamos construir<br /><span className="text-green">juntos.</span>
-            </h2>
-            <p className="text-[15px] font-light text-cream/45 mt-4 max-w-md leading-relaxed">
-              Entre em contato com nossa equipe técnica. Respondemos em até 24 horas.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 flex-shrink-0">
-            <Link href="/#p7"
-              className="text-[12px] font-medium tracking-[.14em] uppercase text-white bg-green px-10 py-4 hover:bg-green2 transition-colors text-center">
-              Solicitar Orçamento
-            </Link>
-            <a href={'https://wa.me/' + company.whatsapp} target="_blank"
-              className="text-[12px] font-medium tracking-[.14em] uppercase text-cream/40 border border-cream/15 px-10 py-4 hover:border-green hover:text-green transition-colors text-center">
-              WhatsApp
-            </a>
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-cream/8 px-10 py-6 flex items-center justify-between flex-wrap gap-4 bg-navy">
-        <Link href="/" className="font-display font-bold text-[14px] tracking-[.1em] uppercase text-cream/60 hover:text-cream transition-colors">
-          GP<span className="text-green">.</span>ASFALTO BRASIL
-        </Link>
-        <span className="text-[9px] tracking-[.08em] text-cream/20">
-          2025 {company.razao} · Rio Verde, GO
-        </span>
-      </footer>
-
-    </div>
+    </main>
   )
 }
