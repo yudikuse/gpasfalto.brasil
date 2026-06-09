@@ -63,6 +63,7 @@ export const site = {
     description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
     videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/q_auto:best,ac_none/0608_wbqp6m.mp4',
+    videoLocalMobile: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/q_auto:best,ac_none/0608-vertical_ukeq9g.mp4',
   },
 
   // ── NÚMEROS (trust bar)
