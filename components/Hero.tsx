@@ -25,12 +25,10 @@ export function Hero() {
 
         {/* Headline */}
         <div className="max-w-6xl">
-          <h1 className="font-display text-hero uppercase text-gp-bone drop-shadow-[0_2px_8px_rgba(13,17,66,0.6)]">
+          <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase leading-[0.92] tracking-[-0.02em] text-gp-bone drop-shadow-[0_2px_8px_rgba(13,17,66,0.6)]">
             {site.hero.line1}
             <br />
             <span className="text-gp-green-bright">{site.hero.line2}</span>
-            <br />
-            {site.hero.line3}
           </h1>
           <p className="mt-8 max-w-xl text-lg text-gp-bone/85 drop-shadow-[0_2px_6px_rgba(13,17,66,0.7)] sm:text-xl">
             {site.hero.description}
@@ -53,30 +51,14 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Bottom: scroll indicator + featured */}
-        <div className="flex items-end justify-between gap-8">
+        {/* Bottom: scroll indicator */}
+        <div className="flex items-end">
           <div className="flex items-center gap-3 text-gp-bone/60">
             <ArrowDown size={16} className="animate-bounce" />
             <span className="font-mono text-xs uppercase tracking-wider">
               Role para conhecer
             </span>
           </div>
-
-          <a
-            href="#obras"
-            className="group hidden max-w-sm items-center gap-4 border-l-2 border-gp-green-bright pl-4 transition-all hover:pl-6 md:flex"
-          >
-            <div>
-              <div className="eyebrow">Em destaque</div>
-              <div className="mt-1 text-sm leading-snug text-gp-bone group-hover:text-gp-green-bright">
-                3 usinas CBUQ próprias · 28 municípios atendidos
-              </div>
-            </div>
-            <ArrowUpRight
-              size={20}
-              className="shrink-0 text-gp-green-bright transition-transform group-hover:rotate-45"
-            />
-          </a>
         </div>
       </div>
     </section>

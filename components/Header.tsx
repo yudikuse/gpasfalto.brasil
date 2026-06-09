@@ -16,15 +16,7 @@ const nav = [
 ]
 
 export function Header() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // Trava o scroll do body enquanto o menu fullscreen está aberto
   useEffect(() => {
@@ -46,14 +38,7 @@ export function Header() {
 
   return (
     <>
-      <header
-        className={cn(
-          'fixed inset-x-0 top-0 z-[var(--z-header)] transition-all duration-500 ease-out-expo',
-          scrolled
-            ? 'bg-gp-navy/85 backdrop-blur-md border-b border-gp-steel/10'
-            : 'bg-transparent'
-        )}
-      >
+      <header className="fixed inset-x-0 top-0 z-[var(--z-header)] bg-transparent">
         <div className="container-gp flex h-[var(--header-h)] items-center justify-between">
           <Link href="/" className="flex items-center" aria-label="GP Asfalto">
             <Image
@@ -66,6 +51,19 @@ export function Header() {
             />
           </Link>
 
+          {/* NAV INLINE — desktop */}
+          <nav className="hidden items-center gap-8 lg:flex">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="font-mono text-xs uppercase tracking-wider text-gp-bone/80 transition-colors hover:text-gp-green-bright"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
           <div className="flex items-center gap-3">
             <a
               href={`https://wa.me/${site.company.whatsapp}`}
@@ -76,9 +74,10 @@ export function Header() {
               Orçamento
               <ArrowUpRight size={14} />
             </a>
+            {/* Hambúrguer — só mobile/tablet */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone"
+              className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone lg:hidden"
               aria-label="Abrir menu"
             >
               <Menu size={18} />
@@ -87,11 +86,11 @@ export function Header() {
         </div>
       </header>
 
-      {/* MENU FULLSCREEN — estilo gmining */}
+      {/* MENU FULLSCREEN — mobile/tablet */}
       <div
         aria-hidden={!menuOpen}
         className={cn(
-          'fixed inset-0 z-[var(--z-menu)] bg-gp-navy-deep transition-all duration-500 ease-out-expo',
+          'fixed inset-0 z-[var(--z-menu)] bg-gp-navy-deep transition-all duration-500 ease-out-expo lg:hidden',
           menuOpen
             ? 'pointer-events-auto opacity-100'
             : 'pointer-events-none opacity-0'
