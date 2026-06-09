@@ -26,6 +26,24 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Trava o scroll do body enquanto o menu fullscreen está aberto
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  // Fecha no ESC
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
   return (
     <>
       <header
@@ -48,18 +66,6 @@ export function Header() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-10 lg:flex">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm uppercase tracking-wider text-gp-bone/70 transition-colors hover:text-gp-bone"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
           <div className="flex items-center gap-3">
             <a
               href={`https://wa.me/${site.company.whatsapp}`}
@@ -72,7 +78,7 @@ export function Header() {
             </a>
             <button
               onClick={() => setMenuOpen(true)}
-              className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone lg:hidden"
+              className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone"
               aria-label="Abrir menu"
             >
               <Menu size={18} />
@@ -81,10 +87,14 @@ export function Header() {
         </div>
       </header>
 
+      {/* MENU FULLSCREEN — estilo gmining */}
       <div
+        aria-hidden={!menuOpen}
         className={cn(
-          'fixed inset-0 z-[var(--z-menu)] bg-gp-navy transition-opacity duration-500 ease-out-expo lg:hidden',
-          menuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          'fixed inset-0 z-[var(--z-menu)] bg-gp-navy-deep transition-all duration-500 ease-out-expo',
+          menuOpen
+            ? 'pointer-events-auto opacity-100'
+            : 'pointer-events-none opacity-0'
         )}
       >
         <div className="container-gp flex h-[var(--header-h)] items-center justify-between">
@@ -97,28 +107,47 @@ export function Header() {
           />
           <button
             onClick={() => setMenuOpen(false)}
-            className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone"
+            className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone"
             aria-label="Fechar menu"
           >
             <X size={18} />
           </button>
         </div>
-        <nav className="container-gp mt-20 flex flex-col gap-6">
-          {nav.map((item) => (
+
+        <nav className="container-gp mt-[clamp(1.5rem,7vh,4rem)] flex flex-col">
+          {nav.map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="font-display text-4xl uppercase text-gp-bone transition-colors hover:text-gp-green-bright"
+              style={{ transitionDelay: menuOpen ? `${120 + i * 70}ms` : '0ms' }}
+              className={cn(
+                'group flex items-baseline gap-4 border-b border-gp-steel/15 py-4 transition-all duration-700 ease-out-expo md:py-5',
+                menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+              )}
             >
-              {item.label}
+              <span className="font-mono text-xs text-gp-green-bright">
+                0{i + 1}
+              </span>
+              <span className="font-display text-5xl uppercase leading-none text-gp-bone transition-colors duration-300 group-hover:text-gp-green-bright md:text-7xl">
+                {item.label}
+              </span>
+              <ArrowUpRight
+                size={28}
+                className="ml-auto -translate-x-2 self-center text-gp-green-bright opacity-0 transition-all duration-400 ease-out-expo group-hover:translate-x-0 group-hover:opacity-100"
+              />
             </Link>
           ))}
+
           <a
             href={`https://wa.me/${site.company.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary mt-8 w-fit"
+            style={{ transitionDelay: menuOpen ? `${120 + nav.length * 70}ms` : '0ms' }}
+            className={cn(
+              'btn-primary mt-10 w-fit transition-all duration-700 ease-out-expo',
+              menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+            )}
           >
             Solicitar Orçamento
             <ArrowUpRight size={16} />
