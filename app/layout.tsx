@@ -4,6 +4,8 @@ import { SmoothScroll } from '@/components/SmoothScroll'
 import { Header } from '@/components/Header'
 import { SideTagline } from '@/components/SideTagline'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
+import { Grain } from '@/components/Grain'
+import { RevealObserver } from '@/components/RevealObserver'
 import { site } from '@/data/content'
 import './globals.css'
 
@@ -48,11 +50,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="bg-gp-navy text-gp-bone antialiased">
+        {/* Marca .js no <html> antes da pintura: sem JS o conteúdo aparece normal,
+            com JS o reveal entra em ação sem flash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <SmoothScroll>
+          <Grain />
           <Header />
           <SideTagline />
           <main>{children}</main>
           <WhatsAppFloat />
+          <RevealObserver />
         </SmoothScroll>
       </body>
     </html>

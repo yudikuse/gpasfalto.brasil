@@ -12,13 +12,13 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <StatsBar />
-      <ClientLogos />
-      <ServicesGrid />
-      <FeaturedProjects />
-      <VideosGallery />
-      <UsinasSection />
-      <CtaBanner />
+      <div className="reveal"><StatsBar /></div>
+      <div className="reveal"><ClientLogos /></div>
+      <div className="reveal"><ServicesGrid /></div>
+      <div className="reveal"><FeaturedProjects /></div>
+      <div className="reveal"><VideosGallery /></div>
+      <div className="reveal"><UsinasSection /></div>
+      <div className="reveal"><CtaBanner /></div>
       <Footer />
     </>
   )
