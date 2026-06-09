@@ -1,23 +1,13 @@
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
+import { HeroVideo } from './HeroVideo'
 
 export function Hero() {
   return (
     <section className="relative isolate min-h-screen overflow-hidden bg-gp-navy">
       {/* Vídeo de fundo */}
       <div className="absolute inset-0 -z-10">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/images/hero-cbuq.jpg"
-          // Mobile: scale 130% (zoom menor pra preservar qualidade);
-          // Desktop: object-cover normal
-          className="h-full w-full scale-[1.3] object-cover object-center md:scale-100"
-        >
-          <source src={site.hero.videoLocal} type="video/mp4" />
-        </video>
+        <HeroVideo />
 
         {/* OVERLAY 1: Gradient vertical leve, escurece só pro fim */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gp-navy/15 to-gp-navy/95" />
