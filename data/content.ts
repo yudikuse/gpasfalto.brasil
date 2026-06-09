@@ -58,7 +58,7 @@ export const site = {
   hero: {
     eyebrow:     'Pavimentação\u00A0· Terraplenagem\u00A0· Infraestrutura',
     line1:       'CBUQ PRÓPRIO.',
-    line2:       'ENGENHARIA APLICADA.',
+    line2:       'ENTREGA NO PRAZO.',
     line3:       'ENTREGA NO PRAZO.',
     description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
