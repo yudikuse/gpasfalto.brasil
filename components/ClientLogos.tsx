@@ -8,10 +8,10 @@ export function ClientLogos() {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
 
   return (
-    <section className="relative border-t border-gp-steel/10 bg-gp-navy-deep py-20">
+    <section className="relative border-t border-gp-steel/10 bg-gp-navy-deep py-12 md:py-20">
       <div className="container-gp">
         {/* Heading discreto */}
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-6 md:mb-12">
           <div>
             <div className="mb-3 flex items-center gap-4">
               <span className="h-px w-12 bg-gp-green-bright" />
@@ -28,7 +28,7 @@ export function ClientLogos() {
         </div>
 
         {/* Grid de logos */}
-        <div className="grid grid-cols-2 gap-px bg-gp-steel/10 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9">
+        <div className="grid grid-cols-3 gap-px bg-gp-steel/10 lg:grid-cols-5 xl:grid-cols-9">
           {site.clients.map((client) => {
             const baseScale = client.visualScale ?? 1
             const isHovered = hoveredSlug === client.slug
@@ -61,7 +61,7 @@ export function ClientLogos() {
         </div>
 
         {/* Linha sutil de "ver mais" */}
-        <div className="mt-12 flex items-center justify-center gap-3 text-gp-bone/45">
+        <div className="mt-8 flex items-center justify-center gap-3 text-gp-bone/45 md:mt-12">
           <span className="h-px w-12 bg-gp-steel/20" />
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]">
             E muitos outros · {site.clients.length}+ clientes atendidos
