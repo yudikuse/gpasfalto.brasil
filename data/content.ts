@@ -56,7 +56,7 @@ export const site = {
 
   // ── HERO
   hero: {
-    eyebrow:     'Pavimentação · Terraplenagem · Infraestrutura',
+    eyebrow:     'Pavimentação\u00A0· Terraplenagem\u00A0· Infraestrutura',
     line1:       'CBUQ PRÓPRIO.',
     line2:       'ENGENHARIA APLICADA.',
     line3:       'ENTREGA NO PRAZO.',
