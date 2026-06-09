@@ -34,7 +34,7 @@ export function ClientLogos() {
             const isHovered = hoveredSlug === client.slug
             // Hover multiplica scale base por 1.10
             const finalScale = isHovered ? baseScale * 1.1 : baseScale
-            const opacity = isHovered ? 1 : 0.65
+            const opacity = isHovered ? 1 : 0.8
 
             return (
               <div
