@@ -171,44 +171,58 @@
   }
 }
 
-/* ===== Hero: entrada animada + linhas-guia geométricas (vibe gmining/blueprint).
-   Tudo gateado por .js (sem JS, aparece normal). CSS puro, custo ~zero,
-   roda uma vez no load. Respeita prefers-reduced-motion. ===== */
+/* ===== Hero: entrada animada (gmining-style). Gateado por .js (sem JS aparece
+   normal). CSS puro, roda uma vez no load. Respeita prefers-reduced-motion. ===== */
 @keyframes heroRise {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes drawDown  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes drawRight { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes markIn    { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes maskRise  { from { transform: translateY(115%); } to { transform: translateY(0); } }
+@keyframes topoDraw {
+  from { opacity: 0; clip-path: inset(58% 0 0 58%); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
 
 .js .hero-rise {
   opacity: 0;
   animation: heroRise 900ms cubic-bezier(.16, 1, .3, 1) both;
   animation-delay: var(--rise-delay, 0ms);
 }
-.js .guide-v {
-  transform-origin: top center;
-  animation: drawDown 1300ms cubic-bezier(.16, 1, .3, 1) both;
-  animation-delay: var(--draw-delay, 0ms);
-}
 .js .guide-h {
   transform-origin: left center;
   animation: drawRight 900ms cubic-bezier(.16, 1, .3, 1) both;
   animation-delay: var(--draw-delay, 0ms);
 }
-.js .guide-mark {
-  opacity: 0;
-  animation: markIn 600ms cubic-bezier(.16, 1, .3, 1) both;
-  animation-delay: var(--draw-delay, 0ms);
+
+/* Masked reveal do título: cada linha sobe de trás de um corte */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
 }
+.line-mask > .line-inner { display: block; }
+.js .line-mask > .line-inner {
+  transform: translateY(115%);
+  animation: maskRise 1000ms cubic-bezier(.16, 1, .3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* Topografia: entra "se desenhando" do canto inferior-direito */
+.js .hero-topo {
+  animation: topoDraw 1500ms cubic-bezier(.16, 1, .3, 1) both;
+  animation-delay: 650ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js .hero-rise,
-  .js .guide-v,
   .js .guide-h,
-  .js .guide-mark {
+  .js .line-mask > .line-inner,
+  .js .hero-topo {
     opacity: 1;
     transform: none;
+    clip-path: none;
     animation: none;
   }
 }
