@@ -36,6 +36,14 @@ export const metadata: Metadata = {
   },
   description: site.seo.description,
   keywords: site.seo.keywords,
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
   openGraph: {
     title: site.seo.title,
     description: site.seo.description,
@@ -44,12 +52,80 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: site.seo.title,
+    description: site.seo.description,
+  },
+}
+
+/* Schema.org — JSON-LD. Diz ao Google quem é a GP Asfalto, onde atua e o que
+   faz. Melhora busca local e pode render cartão rico. Coordenadas de Rio
+   Verde são aproximadas (suficiente para SEO). */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'GeneralContractor'],
+  '@id': site.seo.url + '/#business',
+  name: site.company.name,
+  legalName: site.company.razao,
+  url: site.seo.url,
+  email: site.company.email,
+  telephone: '+55' + site.company.whatsapp.replace(/\D/g, '').replace(/^55/, ''),
+  foundingDate: site.company.founded,
+  description: site.seo.description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua dos Trabalhadores, 350 — Setor Industrial',
+    addressLocality: 'Rio Verde',
+    addressRegion: 'GO',
+    postalCode: '75909-790',
+    addressCountry: 'BR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -17.7975,
+    longitude: -50.9197,
+  },
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'Sudoeste Goiano' },
+    { '@type': 'State', name: 'Goiás' },
+  ],
+  sameAs: [
+    site.company.instagram,
+    site.company.facebook,
+    site.company.youtube,
+  ],
+  knowsAbout: [
+    'Pavimentação asfáltica',
+    'CBUQ',
+    'Terraplenagem',
+    'Infraestrutura urbana',
+    'Usina de asfalto',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Serviços GP Asfalto',
+    itemListElement: [
+      'Pavimentação asfáltica (CBUQ)',
+      'Fornecimento de CBUQ usinado',
+      'Terraplenagem',
+      'Infraestrutura de loteamentos e obras',
+    ].map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s },
+    })),
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="bg-gp-navy text-gp-bone antialiased">
+        {/* Schema.org LocalBusiness (SEO técnico) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {/* Marca .js no <html> antes da pintura: sem JS o conteúdo aparece normal,
             com JS o reveal entra em ação sem flash. */}
         <script
