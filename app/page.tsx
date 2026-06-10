@@ -6,6 +6,7 @@ import { FeaturedProjects } from '@/components/FeaturedProjects'
 import { VideosGallery } from '@/components/VideosGallery'
 import { UsinasSection } from '@/components/UsinasSection'
 import { CtaBanner } from '@/components/CtaBanner'
+import { ContactSection } from '@/components/ContactSection'
 import { Footer } from '@/components/Footer'
 
 export default function HomePage() {
@@ -19,6 +20,7 @@ export default function HomePage() {
       <div className="reveal"><VideosGallery /></div>
       <div className="reveal"><UsinasSection /></div>
       <div className="reveal"><CtaBanner /></div>
+      <div className="reveal"><ContactSection /></div>
       <Footer />
     </>
   )
