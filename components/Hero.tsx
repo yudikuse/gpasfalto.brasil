@@ -42,6 +42,9 @@ export function Hero() {
         {/* Headline */}
         <div className="max-w-6xl">
           <h1 className="font-display text-[clamp(3rem,8vw,7rem)] uppercase leading-[0.9] tracking-[-0.02em] text-gp-bone drop-shadow-[0_2px_10px_rgba(13,17,66,0.6)]">
+            <span className="sr-only">
+              Pavimentação asfáltica, CBUQ e terraplenagem em Rio Verde e no Sudoeste Goiano — GP Asfalto.{' '}
+            </span>
             <span className="line-mask">
               <span
                 className="line-inner"
