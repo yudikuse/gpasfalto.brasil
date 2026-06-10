@@ -19,11 +19,14 @@
  *  que vocês quiserem como remetente (ex.: a mariana.gpa@gmail.com).
  ****************************************************************************/
 
+/*  TESTE INICIAL: enviando só pro marcelo. Quando validar, é só descomentar
+    os outros 3 endereços abaixo e reimplantar (Implantar → Gerenciar
+    implantações → editar → Nova versão).  */
 var RECIPIENTS = [
-  'givago@gpasfalto.com.br',
-  'mariana.gpa@gmail.com',
-  'marcelo@gpasfalto.com.br',
-  'contato@gpasfalto.com.br'
+  'marcelo@gpasfalto.com.br'
+  // , 'givago@gpasfalto.com.br'
+  // , 'mariana.gpa@gmail.com'
+  // , 'contato@gpasfalto.com.br'
 ].join(',')
 
 var SHEET_NAME = 'Leads Site'
