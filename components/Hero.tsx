@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
 import { HeroVideo } from './HeroVideo'
+import { HeroTopo } from './HeroTopo'
 
 export function Hero() {
   return (
@@ -15,40 +16,13 @@ export function Hero() {
 
         {/* OVERLAY 2: Gradient lateral — mais escuro no mobile, leve no desktop */}
         <div className="absolute inset-0 bg-gradient-to-r from-gp-navy/75 via-gp-navy/40 to-gp-navy/20 md:from-gp-navy/55 md:via-transparent md:to-transparent" />
+
+        {/* SCRIM DO TOPO: garante contraste do header branco em qualquer frame do vídeo */}
+        <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-gp-navy-deep/85 via-gp-navy-deep/35 to-transparent" />
       </div>
 
-      {/* LINHAS-GUIA GEOMÉTRICAS — vibe blueprint de engenharia.
-          Ficam acima do vídeo/overlay e atrás do texto. Desenham de cima
-          pra baixo no load (.guide-v). */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
-        <span
-          className="guide-v absolute inset-y-0 left-[18%] w-px bg-gradient-to-b from-transparent via-gp-bone/12 to-transparent"
-          style={{ ['--draw-delay' as string]: '250ms' } as CSSProperties}
-        />
-        <span
-          className="guide-v absolute inset-y-0 left-1/2 hidden w-px bg-gradient-to-b from-transparent via-gp-bone/[0.07] to-transparent md:block"
-          style={{ ['--draw-delay' as string]: '400ms' } as CSSProperties}
-        />
-        <span
-          className="guide-v absolute inset-y-0 right-[14%] hidden w-px bg-gradient-to-b from-transparent via-gp-green-bright/20 to-transparent md:block"
-          style={{ ['--draw-delay' as string]: '550ms' } as CSSProperties}
-        />
-        {/* Cruzetas / ticks de engenharia */}
-        <span
-          className="guide-mark absolute left-[18%] top-[26%] h-3.5 w-3.5 -translate-x-1/2"
-          style={{ ['--draw-delay' as string]: '900ms' } as CSSProperties}
-        >
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gp-green-bright/70" />
-          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-gp-green-bright/70" />
-        </span>
-        <span
-          className="guide-mark absolute right-[14%] bottom-[22%] hidden h-3.5 w-3.5 translate-x-1/2 md:block"
-          style={{ ['--draw-delay' as string]: '1050ms' } as CSSProperties}
-        >
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gp-bone/40" />
-          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-gp-bone/40" />
-        </span>
-      </div>
+      {/* GEOMETRIA: fragmento de curvas de nível (topografia) no canto inf-direito */}
+      <HeroTopo />
 
       <div className="container-gp relative flex min-h-screen flex-col justify-between pb-12 pt-[calc(var(--header-h)+4rem)]">
         {/* Eyebrow */}
@@ -67,18 +41,22 @@ export function Hero() {
 
         {/* Headline */}
         <div className="max-w-6xl">
-          <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] uppercase leading-[0.92] tracking-[-0.02em] text-gp-bone drop-shadow-[0_2px_8px_rgba(13,17,66,0.6)]">
-            <span
-              className="hero-rise block"
-              style={{ ['--rise-delay' as string]: '350ms' } as CSSProperties}
-            >
-              {site.hero.line1}
+          <h1 className="font-display text-[clamp(3rem,8vw,7rem)] uppercase leading-[0.9] tracking-[-0.02em] text-gp-bone drop-shadow-[0_2px_10px_rgba(13,17,66,0.6)]">
+            <span className="line-mask">
+              <span
+                className="line-inner"
+                style={{ ['--rise-delay' as string]: '300ms' } as CSSProperties}
+              >
+                {site.hero.line1}
+              </span>
             </span>
-            <span
-              className="hero-rise block text-gp-green-bright"
-              style={{ ['--rise-delay' as string]: '490ms' } as CSSProperties}
-            >
-              {site.hero.line2}
+            <span className="line-mask">
+              <span
+                className="line-inner text-gp-green-bright"
+                style={{ ['--rise-delay' as string]: '440ms' } as CSSProperties}
+              >
+                {site.hero.line2}
+              </span>
             </span>
           </h1>
           <p
