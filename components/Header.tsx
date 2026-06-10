@@ -44,20 +44,20 @@ export function Header() {
             <Image
               src="/images/logo-white.png"
               alt="GP Asfalto"
-              width={320}
-              height={96}
+              width={360}
+              height={112}
               priority
-              className="h-14 w-auto md:h-16"
+              className="h-16 w-auto md:h-20"
             />
           </Link>
 
           {/* NAV INLINE — desktop */}
-          <nav className="hidden items-center gap-8 lg:flex">
+          <nav className="hidden items-center gap-10 lg:flex">
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-mono text-xs uppercase tracking-wider text-gp-bone/80 transition-colors hover:text-gp-green-bright"
+                className="font-mono text-sm font-medium uppercase tracking-[0.16em] text-gp-bone/85 transition-colors hover:text-gp-green-bright"
               >
                 {item.label}
               </Link>
@@ -69,18 +69,18 @@ export function Header() {
               href={`https://wa.me/${site.company.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary hidden text-xs md:inline-flex"
+              className="btn-primary hidden md:inline-flex"
             >
               Orçamento
-              <ArrowUpRight size={14} />
+              <ArrowUpRight size={16} />
             </a>
             {/* Hambúrguer — só mobile/tablet */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="grid h-10 w-10 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone lg:hidden"
+              className="grid h-12 w-12 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-bone lg:hidden"
               aria-label="Abrir menu"
             >
-              <Menu size={18} />
+              <Menu size={20} />
             </button>
           </div>
         </div>
