@@ -6,6 +6,7 @@ import { SideTagline } from '@/components/SideTagline'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { Grain } from '@/components/Grain'
 import { RevealObserver } from '@/components/RevealObserver'
+import { CustomCursor } from '@/components/CustomCursor'
 import { site } from '@/data/content'
 import './globals.css'
 
@@ -140,6 +141,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <WhatsAppFloat />
           <RevealObserver />
+          <CustomCursor />
         </SmoothScroll>
       </body>
     </html>

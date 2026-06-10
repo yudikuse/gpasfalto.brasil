@@ -7,6 +7,7 @@ import { ParaQuemSection } from '@/components/ParaQuemSection'
 import { VideosGallery } from '@/components/VideosGallery'
 import { UsinasSection } from '@/components/UsinasSection'
 import { CtaBanner } from '@/components/CtaBanner'
+import { TopoDivider } from '@/components/TopoDivider'
 import { ContactSection } from '@/components/ContactSection'
 import { Footer } from '@/components/Footer'
 
@@ -21,6 +22,7 @@ export default function HomePage() {
       <div className="reveal"><FeaturedProjects /></div>
       <div className="reveal"><VideosGallery /></div>
       <div className="reveal"><UsinasSection /></div>
+      <TopoDivider />
       <div className="reveal"><CtaBanner /></div>
       <div className="reveal"><ContactSection /></div>
       <Footer />
