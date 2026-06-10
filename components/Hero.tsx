@@ -9,7 +9,9 @@ export function Hero() {
     <section className="relative isolate min-h-screen overflow-hidden bg-gp-navy">
       {/* Vídeo de fundo */}
       <div className="absolute inset-0 -z-10">
-        <HeroVideo />
+        <div className="hero-zoom absolute inset-0">
+          <HeroVideo />
+        </div>
 
         {/* OVERLAY 1: Gradient vertical leve, escurece só pro fim */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gp-navy/15 to-gp-navy/95" />
@@ -40,8 +42,8 @@ export function Hero() {
         </div>
 
         {/* Headline */}
-        <div className="max-w-6xl">
-          <h1 className="font-display text-[clamp(3rem,8vw,7rem)] uppercase leading-[0.9] tracking-[-0.02em] text-gp-bone drop-shadow-[0_2px_10px_rgba(13,17,66,0.6)]">
+        <div className="max-w-7xl">
+          <h1 className="font-display text-[clamp(2.75rem,9.5vw,9.5rem)] uppercase leading-[0.85] tracking-[-0.03em] text-gp-bone drop-shadow-[0_2px_14px_rgba(13,17,66,0.7)]">
             <span className="sr-only">
               Pavimentação asfáltica, CBUQ e terraplenagem em Rio Verde e no Sudoeste Goiano — GP Asfalto.{' '}
             </span>
