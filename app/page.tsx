@@ -3,6 +3,7 @@ import { StatsBar } from '@/components/StatsBar'
 import { ClientLogos } from '@/components/ClientLogos'
 import { ServicesGrid } from '@/components/ServicesGrid'
 import { FeaturedProjects } from '@/components/FeaturedProjects'
+import { ParaQuemSection } from '@/components/ParaQuemSection'
 import { VideosGallery } from '@/components/VideosGallery'
 import { UsinasSection } from '@/components/UsinasSection'
 import { CtaBanner } from '@/components/CtaBanner'
@@ -16,6 +17,7 @@ export default function HomePage() {
       <div className="reveal"><StatsBar /></div>
       <div className="reveal"><ClientLogos /></div>
       <div className="reveal"><ServicesGrid /></div>
+      <div className="reveal"><ParaQuemSection /></div>
       <div className="reveal"><FeaturedProjects /></div>
       <div className="reveal"><VideosGallery /></div>
       <div className="reveal"><UsinasSection /></div>
