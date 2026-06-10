@@ -10,7 +10,7 @@ import { site } from '@/data/content'
    Passo a passo no arquivo apps-script/contato.gs.
    Enquanto estiver com o placeholder, o form mostra sucesso mas NÃO envia.
    ─────────────────────────────────────────────────────────────────────── */
-const LEAD_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzCEXPeIpK5BRcpswlpHWyXU9siBeq02y4ZwZJ6fso3RxONZyFbd_DbJ1ifa80dhBecCg/exec'
+const LEAD_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwi7G30fhE7lBpGSTw1rXuhjxcOW5SBhBALWYi5-Pg9nlV-_vBpNIcVUFhe3lgNPxNAxA/exec'
 
 const tipos = [
   'Agronegócio',
