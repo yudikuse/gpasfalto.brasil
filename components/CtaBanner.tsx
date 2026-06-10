@@ -15,23 +15,26 @@ export function CtaBanner() {
 
   return (
     <section id="contato" className="relative overflow-hidden bg-gp-navy">
-      {/* Padrão sutil de pista */}
+      {/* Estrada em perspectiva — bordas convergindo pro ponto de fuga +
+          faixa central tracejada. Bem sutil, atrás do conteúdo. */}
       <svg
         aria-hidden
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.04]"
-        preserveAspectRatio="xMidYMid slice"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        preserveAspectRatio="xMidYMax slice"
         viewBox="0 0 1200 800"
       >
-        <defs>
-          <pattern id="road-lines" width="80" height="80" patternTransform="rotate(8)" patternUnits="userSpaceOnUse">
-            <line x1="40" y1="0" x2="40" y2="80" stroke="currentColor" strokeWidth="2" className="text-gp-green-bright" />
-            <line x1="10" y1="0" x2="10" y2="20" stroke="currentColor" strokeWidth="1" className="text-gp-bone" />
-            <line x1="10" y1="40" x2="10" y2="60" stroke="currentColor" strokeWidth="1" className="text-gp-bone" />
-            <line x1="70" y1="0" x2="70" y2="20" stroke="currentColor" strokeWidth="1" className="text-gp-bone" />
-            <line x1="70" y1="40" x2="70" y2="60" stroke="currentColor" strokeWidth="1" className="text-gp-bone" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#road-lines)" />
+        <g fill="none" strokeLinecap="round">
+          {/* bordas da pista */}
+          <line x1="170" y1="800" x2="586" y2="168" stroke="#F0EBE2" strokeWidth="2" strokeOpacity="0.07" />
+          <line x1="1030" y1="800" x2="614" y2="168" stroke="#F0EBE2" strokeWidth="2" strokeOpacity="0.07" />
+          {/* faixas internas */}
+          <line x1="420" y1="800" x2="593" y2="174" stroke="#F0EBE2" strokeWidth="1" strokeOpacity="0.04" />
+          <line x1="780" y1="800" x2="607" y2="174" stroke="#F0EBE2" strokeWidth="1" strokeOpacity="0.04" />
+          {/* faixa central tracejada (verde) */}
+          <line x1="600" y1="800" x2="600" y2="178" stroke="#34C759" strokeWidth="3" strokeDasharray="34 26" strokeOpacity="0.10" />
+          {/* horizonte sutil */}
+          <line x1="430" y1="168" x2="770" y2="168" stroke="#F0EBE2" strokeWidth="1" strokeOpacity="0.05" />
+        </g>
       </svg>
 
       <div className="container-gp relative py-32 md:py-40">
