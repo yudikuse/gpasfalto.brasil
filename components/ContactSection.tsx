@@ -6,8 +6,8 @@ import { site } from '@/data/content'
 
 /* ───────────────────────────────────────────────────────────────────────
    DESTINO DO LEAD — cole aqui a URL do Web App do Apps Script (termina em
-   /exec). É o script que grava na planilha E dispara o e-mail pros 4
-   destinatários. Passo a passo no arquivo apps-script/contato.gs.
+   /exec). É o script que grava na planilha E dispara o e-mail.
+   Passo a passo no arquivo apps-script/contato.gs.
    Enquanto estiver com o placeholder, o form mostra sucesso mas NÃO envia.
    ─────────────────────────────────────────────────────────────────────── */
 const LEAD_WEBHOOK = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT_/exec'
@@ -27,6 +27,11 @@ const maskPhone = (v: string) => {
   if (d.length <= 7) return '(' + d.slice(0, 2) + ') ' + d.slice(2)
   return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7)
 }
+
+const inputCls =
+  'border border-gp-steel/20 bg-gp-navy-deep px-3 py-3 text-[15px] text-gp-bone ' +
+  'caret-gp-green-bright outline-none placeholder:text-gp-steel/40 ' +
+  'transition-colors focus:border-gp-green-bright'
 
 export function ContactSection() {
   const { company } = site
@@ -120,17 +125,17 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* DIREITA — formulário (card claro pra destacar) */}
-        <div className="bg-gp-bone p-8 md:p-10">
+        {/* DIREITA — formulário (painel escuro) */}
+        <div className="border border-gp-steel/15 bg-gp-navy p-8 md:p-10">
           {sent ? (
             <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
-              <div className="grid h-16 w-16 place-items-center border-2 border-gp-green">
-                <span className="font-display text-2xl font-black text-gp-green">OK</span>
+              <div className="grid h-16 w-16 place-items-center border-2 border-gp-green-bright">
+                <span className="font-display text-2xl font-black text-gp-green-bright">OK</span>
               </div>
-              <h3 className="mt-6 font-display text-3xl font-black uppercase text-gp-navy-deep">
+              <h3 className="mt-6 font-display text-3xl font-black uppercase text-gp-bone">
                 Pedido enviado!
               </h3>
-              <p className="mt-3 max-w-xs text-sm text-gp-navy-deep/60">
+              <p className="mt-3 max-w-xs text-sm text-gp-bone/60">
                 Nossa equipe técnica retorna em até 24h úteis. Se preferir, fale
                 agora pelo WhatsApp.
               </p>
@@ -146,7 +151,7 @@ export function ContactSection() {
                 </a>
                 <button
                   onClick={reset}
-                  className="border border-gp-navy-deep/30 px-6 py-3 text-xs font-medium uppercase tracking-wider text-gp-navy-deep transition-colors hover:bg-gp-navy-deep hover:text-gp-bone"
+                  className="border border-gp-steel/30 px-6 py-3 text-xs font-medium uppercase tracking-wider text-gp-bone transition-colors hover:border-gp-bone"
                 >
                   Novo orçamento
                 </button>
@@ -154,7 +159,7 @@ export function ContactSection() {
             </div>
           ) : (
             <div className="flex flex-col gap-5">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-gp-green">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-gp-green-bright">
                 Conte sobre a obra
               </p>
 
@@ -172,7 +177,7 @@ export function ContactSection() {
               </div>
 
               <div>
-                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gp-navy-deep/40">
+                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gp-steel/70">
                   Tipo de projeto
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -184,8 +189,8 @@ export function ContactSection() {
                       className={
                         'border px-3 py-2 text-xs font-medium transition-colors ' +
                         (tipo === t
-                          ? 'border-gp-green bg-gp-green/10 text-gp-navy-deep'
-                          : 'border-gp-navy-deep/15 text-gp-navy-deep/60 hover:border-gp-navy-deep/40')
+                          ? 'border-gp-green-bright bg-gp-green-bright/10 text-gp-green-bright'
+                          : 'border-gp-steel/20 text-gp-steel hover:border-gp-steel/50 hover:text-gp-bone')
                       }
                     >
                       {t}
@@ -195,7 +200,7 @@ export function ContactSection() {
               </div>
 
               <div>
-                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gp-navy-deep/40">
+                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-gp-steel/70">
                   Descrição (opcional)
                 </label>
                 <textarea
@@ -203,7 +208,7 @@ export function ContactSection() {
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   placeholder="Extensão, prazo, outras informações..."
-                  className="w-full resize-none border border-gp-navy-deep/15 bg-white px-3 py-3 text-[15px] text-gp-navy-deep caret-gp-green outline-none placeholder:text-gp-navy-deep/30 focus:border-gp-green"
+                  className={'w-full resize-none ' + inputCls}
                 />
               </div>
 
@@ -216,13 +221,13 @@ export function ContactSection() {
                 {!sending && <ArrowUpRight size={16} />}
               </button>
 
-              <div className="flex items-center justify-center gap-2 text-xs text-gp-navy-deep/40">
+              <div className="flex items-center justify-center gap-2 text-xs text-gp-steel">
                 <span>Prefere o WhatsApp?</span>
                 <a
                   href={waLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-gp-green underline-offset-2 hover:underline"
+                  className="font-medium text-gp-green-bright underline-offset-2 hover:underline"
                 >
                   Falar agora
                 </a>
@@ -246,7 +251,7 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-2">
-      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-gp-navy-deep/40">
+      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-gp-steel/70">
         {label}
       </span>
       <input
@@ -254,7 +259,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="border border-gp-navy-deep/15 bg-white px-3 py-3 text-[15px] text-gp-navy-deep caret-gp-green outline-none placeholder:text-gp-navy-deep/30 focus:border-gp-green"
+        className={inputCls}
       />
     </label>
   )
