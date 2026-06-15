@@ -1,13 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Instagram, Youtube, Facebook, ArrowUpRight } from 'lucide-react'
+import { Instagram, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
 
 export function Footer() {
-  // Helper: gera href tel: com formatação certa
-  // Os números em phones[].whatsapp JÁ vêm com 55 na frente
-  const telHref = (whatsappNumber: string) => `tel:+${whatsappNumber}`
-
   return (
     <footer className="relative bg-gp-navy-deep pt-24">
       <div className="container-gp">
@@ -22,7 +18,7 @@ export function Footer() {
             />
             <p className="mt-6 max-w-sm text-sm text-gp-steel">
               Infraestrutura, pavimentação CBUQ e usinas próprias. Atendendo o
-              agronegócio, loteamentos e empresas do Centro-Oeste desde {site.company.founded}.
+              agronegócio, loteamentos e empresas do Centro-Oeste há mais de 40 anos.
             </p>
           </div>
 
@@ -55,7 +51,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={telHref(site.company.whatsapp)} className="hover:text-gp-green-bright">
+                <a href={`tel:+55${site.company.phone.replace(/\D/g, '')}`} className="hover:text-gp-green-bright">
                   {site.company.phone}
                 </a>
               </li>
@@ -90,24 +86,6 @@ export function Footer() {
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
-              </a>
-              <a
-                href={site.company.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="grid h-11 w-11 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-green-bright hover:text-gp-green-bright"
-                aria-label="Facebook"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href={site.company.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="grid h-11 w-11 place-items-center border border-gp-steel/30 text-gp-bone transition-colors hover:border-gp-green-bright hover:text-gp-green-bright"
-                aria-label="YouTube"
-              >
-                <Youtube size={18} />
               </a>
             </div>
           </div>
