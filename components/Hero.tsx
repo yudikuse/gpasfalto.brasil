@@ -6,7 +6,7 @@ import { HeroTopo } from './HeroTopo'
 
 export function Hero() {
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-gp-navy">
+    <section id="inicio" className="relative isolate min-h-screen overflow-hidden bg-gp-navy">
       {/* Vídeo de fundo */}
       <div className="absolute inset-0 -z-10">
         <div className="hero-zoom absolute inset-0">
@@ -91,11 +91,18 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Bottom: scroll indicator */}
+        {/* Bottom: readout técnico + scroll indicator */}
         <div
-          className="hero-rise flex items-end"
+          className="hero-rise flex flex-wrap items-end justify-between gap-4"
           style={{ ['--rise-delay' as string]: '1000ms' } as CSSProperties}
         >
+          {/* Readout técnico — estilo "mission control" (dados reais da GP) */}
+          <div className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-wider text-gp-bone/55">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gp-green-bright" />
+            <span>Rio Verde · -17.79, -50.91 · Raio 90 km · LO Ativa SEMAD-GO</span>
+          </div>
+
+          {/* Scroll indicator */}
           <div className="flex items-center gap-3 text-gp-bone/60">
             <ArrowDown size={16} className="animate-bounce" />
             <span className="font-mono text-xs uppercase tracking-wider">
