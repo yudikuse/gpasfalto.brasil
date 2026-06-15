@@ -4,7 +4,7 @@ import { site } from '@/data/content'
 const trustItems = [
   '3 usinas CBUQ próprias',
   '50+ loteamentos entregues',
-  '25 anos de mercado',
+  '40+ anos de mercado',
   'Centro-Oeste',
 ]
 
@@ -59,7 +59,6 @@ export default function HeroPanel() {
             style={{ WebkitTextStroke: '1.5px rgba(255,255,255,.2)', color: 'transparent' }}>
             {hero.line2}
           </span>
-          <span className="block text-green">{hero.line3}</span>
         </h1>
 
         <div className="anim-3 flex flex-wrap items-end justify-between gap-5 mt-8">

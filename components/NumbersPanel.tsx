@@ -70,7 +70,7 @@ export default function NumbersPanel() {
           </span>
           <span className="text-[11px] font-medium tracking-[.1em] uppercase
             text-green border border-green/35 px-4 py-1.5 flex-shrink-0">
-            Est. {company.founded}
+            Mais de 40 anos
           </span>
         </div>
 

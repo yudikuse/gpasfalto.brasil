@@ -1,6 +1,6 @@
 'use client'
 
-import { Layers, Mountain, Waves, Signpost, Factory, Droplets, ArrowUpRight } from 'lucide-react'
+import { Layers, Mountain, Waves, Droplet, Factory, Droplets, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
 
 const services = [
@@ -23,10 +23,10 @@ const services = [
     desc: 'Sistemas completos de drenagem superficial e profunda em concreto armado.',
   },
   {
-    icon: Signpost,
-    title: 'Sinalização Viária',
-    subtitle: 'Horizontal e vertical',
-    desc: 'Sinalização termoplástica, placas refletivas, tachas e defensas conforme DNIT/CTB.',
+    icon: Droplet,
+    title: 'Saneamento Básico',
+    subtitle: 'Água, esgoto e galerias pluviais',
+    desc: 'Canalização de água tratada, rede de esgoto e galerias pluviais com procedimentos rigorosos e controle tecnológico.',
   },
   {
     icon: Factory,
