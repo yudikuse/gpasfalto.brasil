@@ -11,14 +11,11 @@ export const site = {
     name:      'GP Asfalto',
     cnpj:      '22.674.189/0001-30',
     razao:     'GPAsfalto Ltda',
-    founded:   '1998',
     location:  'Rio Verde · GO · Brasil',
-    address:   'Rua dos Trabalhadores, 350 — Setor Industrial, Rio Verde · GO',
+    address:   'Rua dos Trabalhadores, 350 — Setor Industrial · CEP 75905-020 · Rio Verde · GO',
     email:     'contato@gpasfalto.com.br',
     instagram: 'https://instagram.com/gp.asfalto',
-    youtube:   'https://www.youtube.com/@tmb_brand',
-    facebook:  'https://facebook.com/gpasfalto',
-    phone:     '(64) 99931-7039',
+    phone:     '(64) 98133-0088',
     whatsapp:  '5564999317039',
   },
 
@@ -59,7 +56,6 @@ export const site = {
     eyebrow:     'Pavimentação\u00A0· Terraplenagem\u00A0· Infraestrutura',
     line1:       'CBUQ PRÓPRIO.',
     line2:       'ENTREGA NO PRAZO.',
-    line3:       'ENTREGA NO PRAZO.',
     description: 'Da usina à compactação final, a GP Asfalto entrega pavimentação, terraplenagem e infraestrutura com controle técnico, equipe própria e compromisso de cronograma.',
     videoYoutubeId: 'vS6B71Pfu7c',
     videoLocal: 'https://res.cloudinary.com/dfw7h9c2j/video/upload/q_auto:best,ac_none/0608_wbqp6m.mp4',
@@ -68,7 +64,7 @@ export const site = {
 
   // ── NÚMEROS (trust bar)
   numbers: [
-    { value: 25,  suffix: '+', label: 'Anos de\nmercado'           },
+    { value: 40,  suffix: '+', label: 'Anos de\nmercado'           },
     { value: 50,  suffix: '+', label: 'Loteamentos\nentregues'     },
     { value: 3,   suffix: '',  label: 'Usinas CBUQ\nem operação'   },
     { value: 28,  suffix: '',  label: 'Municípios\natendidos'      },
