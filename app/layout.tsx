@@ -71,14 +71,13 @@ const jsonLd = {
   url: site.seo.url,
   email: site.company.email,
   telephone: '+55' + site.company.whatsapp.replace(/\D/g, '').replace(/^55/, ''),
-  foundingDate: site.company.founded,
   description: site.seo.description,
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Rua dos Trabalhadores, 350 — Setor Industrial',
     addressLocality: 'Rio Verde',
     addressRegion: 'GO',
-    postalCode: '75909-790',
+    postalCode: '75905-020',
     addressCountry: 'BR',
   },
   geo: {
@@ -92,14 +91,13 @@ const jsonLd = {
   ],
   sameAs: [
     site.company.instagram,
-    site.company.facebook,
-    site.company.youtube,
   ],
   knowsAbout: [
     'Pavimentação asfáltica',
     'CBUQ',
     'Terraplenagem',
     'Infraestrutura urbana',
+    'Saneamento básico',
     'Usina de asfalto',
   ],
   hasOfferCatalog: {
