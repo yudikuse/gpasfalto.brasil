@@ -65,7 +65,7 @@ export const site = {
   // ── NÚMEROS (trust bar)
   numbers: [
     { value: 40,  suffix: '+', label: 'Anos de\nmercado'           },
-    { value: 50,  suffix: '+', label: 'Loteamentos\nentregues'     },
+    { value: 300,  suffix: '+', label: 'Obras\nentregues'     },
     { value: 3,   suffix: '',  label: 'Usinas CBUQ\nem operação'   },
     { value: 28,  suffix: '',  label: 'Municípios\natendidos'      },
   ],
