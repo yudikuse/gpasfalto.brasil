@@ -3,7 +3,7 @@ import { site } from '@/data/content'
 
 export const metadata = {
   title: 'Sobre · GP Asfalto Brasil',
-  description: 'Conheça a GP Asfalto: 28 anos pavimentando o Centro-Oeste com CBUQ próprio, engenharia aplicada e cronograma cumprido.',
+  description: 'Conheça a GP Asfalto: mais de 40 anos pavimentando o Centro-Oeste com CBUQ próprio, engenharia aplicada e cronograma cumprido.',
 }
 
 const valores = [
@@ -24,17 +24,9 @@ const valores = [
   },
 ]
 
-const marcos = [
-  { ano: '1998', evento: 'Fundação da GP Asfalto em Rio Verde, GO' },
-  { ano: '2010', evento: 'Inauguração da segunda usina CBUQ' },
-  { ano: '2018', evento: 'Atingimos 50 loteamentos entregues no Centro-Oeste' },
-  { ano: '2023', evento: 'Terceira usina CBUQ em operação · expansão regional' },
-  { ano: '2026', evento: '28 anos de mercado · 28 municípios atendidos' },
-]
-
 export default function SobrePage() {
   return (
-    <main className="bg-gp-navy">
+    <div className="bg-gp-navy">
       {/* HERO da página /sobre */}
       <section className="relative overflow-hidden bg-gp-navy-deep pb-24 pt-[calc(var(--header-h)+5rem)]">
         <div className="container-gp">
@@ -43,12 +35,12 @@ export default function SobrePage() {
             <span className="eyebrow">A empresa</span>
           </div>
           <h1 className="font-display text-display-xl uppercase leading-[0.95] text-gp-bone">
-            28 anos pavimentando
+            Mais de 40 anos pavimentando
             <br />
             <span className="text-gp-green-bright">o Centro-Oeste.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-gp-bone/75 sm:text-xl">
-            A GP Asfalto opera desde 1998 em Rio Verde, GO, com produção própria
+            A GP Asfalto opera há mais de 40 anos em Rio Verde, GO, com produção própria
             de CBUQ, frota dedicada e equipe técnica especializada. Atendemos o
             agronegócio, loteadores e empresas do Centro-Oeste com obras
             entregues no prazo.
@@ -87,29 +79,6 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* TIMELINE / MARCOS */}
-      <section className="border-y border-gp-steel/10 bg-gp-navy-deep py-24">
-        <div className="container-gp">
-          <div className="mb-16 flex items-center gap-4">
-            <span className="h-px w-12 bg-gp-green-bright" />
-            <span className="eyebrow">Trajetória</span>
-          </div>
-          <h2 className="mb-12 font-display text-display-lg uppercase text-gp-bone">
-            Da primeira obra à <span className="text-gp-green-bright">terceira usina.</span>
-          </h2>
-
-          <div className="grid gap-px bg-gp-steel/20 md:grid-cols-5">
-            {marcos.map((m) => (
-              <div key={m.ano} className="bg-gp-navy-deep p-6">
-                <div className="font-display text-3xl text-gp-green-bright">
-                  {m.ano}
-                </div>
-                <p className="mt-3 text-sm text-gp-bone/70">{m.evento}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* SEDE */}
       <section className="py-24">
@@ -146,6 +115,6 @@ export default function SobrePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   )
 }
