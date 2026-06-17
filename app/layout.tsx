@@ -7,6 +7,8 @@ import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { Grain } from '@/components/Grain'
 import { RevealObserver } from '@/components/RevealObserver'
 import { site } from '@/data/content'
+import Script from 'next/script'
+import { CookieConsent } from '@/components/CookieConsent'
 import './globals.css'
 
 const display = Big_Shoulders_Display({
@@ -119,6 +121,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="bg-gp-navy text-gp-bone antialiased">
+        {/* Google Consent Mode — nega cookies nao-essenciais por padrao (antes do gtag).
+            O banner de cookies faz o "update" conforme a escolha do usuario. */}
+        <Script id="gtag-consent-default" strategy="beforeInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});`}
+        </Script>
         {/* Schema.org LocalBusiness (SEO técnico) */}
         <script
           type="application/ld+json"
@@ -138,6 +145,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <WhatsAppFloat />
           <RevealObserver />
+          <CookieConsent />
         </SmoothScroll>
       </body>
     </html>
