@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 import { site } from '@/data/content'
+import { CookiePrefsButton } from '@/components/CookiePrefsButton'
 
 export function Footer() {
   return (
@@ -39,6 +40,7 @@ export function Footer() {
               <li><Link href="#usinas" className="text-gp-bone/70 hover:text-gp-green-bright">Usinas</Link></li>
               <li><Link href="/sobre" className="text-gp-bone/70 hover:text-gp-green-bright">Sobre</Link></li>
               <li><Link href="#contato" className="text-gp-bone/70 hover:text-gp-green-bright">Contato</Link></li>
+              <li><Link href="/privacidade" className="text-gp-bone/70 hover:text-gp-green-bright">Privacidade</Link></li>
             </ul>
           </div>
 
@@ -98,6 +100,7 @@ export function Footer() {
           <div className="font-mono text-xs uppercase tracking-widest text-gp-steel">
             CNPJ {site.company.cnpj}
           </div>
+          <CookiePrefsButton />
         </div>
       </div>
     </footer>
