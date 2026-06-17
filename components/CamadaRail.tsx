@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 
 /**
  * CamadaRail
- * Trilho lateral fixo no formato de uma amostra de pavimento (core sample).
- * Fica fixo na lateral direita, ocupa a altura da tela, e um marcador verde
- * desce pelas camadas conforme a pagina rola. A camada atual acende em verde.
+ * Trilho lateral fixo no formato de amostra de pavimento (core sample).
+ * Fica fixo na direita, ancorado por uma espinha vertical de altura total,
+ * e um marcador verde desce pelas camadas conforme a pagina rola.
  *
- * - Desktop (lg+): trilho completo com rotulos sempre visiveis.
- * - Telas menores: escondido (nao ocupa espaco no mobile).
+ * - Desktop (lg+): trilho completo, rotulos sempre visiveis.
+ * - Telas menores: escondido.
  */
 
 type Tex = "capa" | "lisa" | "base" | "sub" | "solo";
@@ -30,7 +30,6 @@ const LAYERS: Layer[] = [
   { key: "solo", label: "SUBLEITO", desc: "solo", basis: 22, tone: "#181c34", tex: "solo" },
 ];
 
-// topo acumulado de cada banda, em %
 const CUM = LAYERS.reduce<number[]>((acc, l, i) => {
   acc.push(i === 0 ? 0 : acc[i - 1] + LAYERS[i - 1].basis);
   return acc;
@@ -69,19 +68,18 @@ function Texture({ kind, id }: { kind: Tex; id: string }) {
       />
     );
   }
-  // base / sub / solo -> svg sem viewBox (tile em pixels, sem distorcao)
+  // base / sub / solo -> linhas abertas (sem caixinhas), svg sem viewBox (tile em px)
   return (
     <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }} aria-hidden>
       <defs>
         {kind === "base" && (
-          <pattern id={id} width="22" height="18" patternUnits="userSpaceOnUse">
-            <path d="M2 14 L6 5 L13 7 L11 15 Z" fill="none" stroke="#cfcbbb" strokeOpacity="0.38" strokeWidth="0.6" />
-            <path d="M12 16 L16 8 L21 10 L19 17 Z" fill="none" stroke="#cfcbbb" strokeOpacity="0.34" strokeWidth="0.6" />
+          <pattern id={id} width="30" height="14" patternUnits="userSpaceOnUse">
+            <path d="M0 11 L7 4 L15 11 L23 4 L30 11" fill="none" stroke="#cfcbbb" strokeOpacity="0.4" strokeWidth="0.7" />
           </pattern>
         )}
         {kind === "sub" && (
-          <pattern id={id} width="13" height="11" patternUnits="userSpaceOnUse">
-            <path d="M2 9 L4 4 L8 5 L7 10 Z" fill="none" stroke="#cfcbbb" strokeOpacity="0.3" strokeWidth="0.5" />
+          <pattern id={id} width="30" height="9" patternUnits="userSpaceOnUse">
+            <path d="M0 7 L5 3 L10 7 L15 3 L20 7 L25 3 L30 7" fill="none" stroke="#cfcbbb" strokeOpacity="0.34" strokeWidth="0.6" />
           </pattern>
         )}
         {kind === "solo" && (
@@ -123,88 +121,57 @@ export default function CamadaRail() {
   let active = 0;
   for (let i = 0; i < LAYERS.length; i++) if (pc >= CUM[i]) active = i;
 
+  const SPINE = 30; // x da espinha dentro da aside
+
   return (
     <aside
       aria-hidden
-      className="hidden lg:flex"
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 18,
-        height: "100vh",
-        width: 124,
-        zIndex: 40,
-        alignItems: "center",
-        pointerEvents: "none",
-      }}
+      className="hidden lg:block"
+      style={{ position: "fixed", top: 0, right: 26, height: "100vh", width: 124, zIndex: 40, pointerEvents: "none" }}
     >
-      <div style={{ position: "relative", height: "78vh", width: "100%" }}>
-        {/* barra (amostra) */}
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: 34,
-            display: "flex",
-            flexDirection: "column",
-            border: "0.5px solid rgba(207,203,187,.3)",
-          }}
-        >
-          {LAYERS.map((L, i) => (
-            <div
-              key={L.key}
+      {/* espinha vertical de altura total (ancora) */}
+      <span style={{ position: "absolute", left: SPINE, top: "6%", bottom: "6%", width: 1, background: "rgba(207,203,187,.22)" }} />
+      <span style={{ position: "absolute", left: SPINE - 4, top: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
+      <span style={{ position: "absolute", left: SPINE - 4, bottom: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
+
+      {/* barra (amostra), encaixada na espinha */}
+      <div
+        style={{
+          position: "absolute",
+          left: SPINE,
+          top: "11%",
+          height: "78%",
+          width: 30,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {LAYERS.map((L, i) => (
+          <div
+            key={L.key}
+            style={{
+              flex: `${L.basis} 0 0`,
+              position: "relative",
+              background: L.tone,
+              borderTop: i ? "1px solid rgba(52,199,89,.4)" : "none",
+              overflow: "hidden",
+            }}
+          >
+            <Texture kind={L.tex} id={`gp-tex-${L.key}`} />
+            <span
               style={{
-                flex: `${L.basis} 0 0`,
-                position: "relative",
-                background: L.tone,
-                borderTop: i ? "1px solid rgba(52,199,89,.4)" : "none",
-                overflow: "hidden",
+                position: "absolute",
+                inset: 0,
+                background: "#34C759",
+                opacity: active === i ? 0.12 : 0,
+                transition: "opacity .25s ease",
               }}
-            >
-              <Texture kind={L.tex} id={`gp-tex-${L.key}`} />
-              <span
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "#34C759",
-                  opacity: active === i ? 0.12 : 0,
-                  transition: "opacity .25s ease",
-                }}
-              />
-            </div>
-          ))}
-        </div>
+            />
+          </div>
+        ))}
 
-        {/* rotulos (sempre visiveis, a esquerda da barra) */}
-        <div style={{ position: "absolute", right: 44, top: 0, bottom: 0 }}>
-          {LAYERS.map((L, i) => {
-            const top = CUM[i] + L.basis / 2;
-            const on = active === i;
-            return (
-              <div
-                key={L.key}
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: `${top}%`,
-                  transform: "translateY(-50%)",
-                  textAlign: "right",
-                  whiteSpace: "nowrap",
-                  fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                  transition: "color .25s ease",
-                }}
-              >
-                <div style={{ fontSize: 10, letterSpacing: ".06em", color: on ? "#34C759" : "#6b7299" }}>{L.label}</div>
-                <div style={{ fontSize: 7, letterSpacing: ".04em", color: on ? "#34C759" : "#454c70" }}>{L.desc}</div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* marcador */}
-        <div style={{ position: "absolute", right: 0, top: `${pc}%`, width: 34, pointerEvents: "none" }}>
+        {/* marcador (anda dentro da barra) */}
+        <div style={{ position: "absolute", left: 0, top: `${pc}%`, width: 30, pointerEvents: "none" }}>
           <div style={{ position: "relative", height: 0, borderTop: "2px solid #34C759" }}>
             <div
               style={{
@@ -220,6 +187,32 @@ export default function CamadaRail() {
             />
           </div>
         </div>
+      </div>
+
+      {/* rotulos (sempre visiveis, a esquerda da barra) */}
+      <div style={{ position: "absolute", left: 0, top: "11%", height: "78%", width: SPINE - 4 }}>
+        {LAYERS.map((L, i) => {
+          const top = CUM[i] + L.basis / 2;
+          const on = active === i;
+          return (
+            <div
+              key={L.key}
+              style={{
+                position: "absolute",
+                right: 0,
+                top: `${top}%`,
+                transform: "translateY(-50%)",
+                textAlign: "right",
+                whiteSpace: "nowrap",
+                fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                transition: "color .25s ease",
+              }}
+            >
+              <div style={{ fontSize: 10, letterSpacing: ".06em", color: on ? "#34C759" : "#6b7299" }}>{L.label}</div>
+              <div style={{ fontSize: 7, letterSpacing: ".04em", color: on ? "#34C759" : "#454c70" }}>{L.desc}</div>
+            </div>
+          );
+        })}
       </div>
     </aside>
   );
