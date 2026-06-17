@@ -9,7 +9,7 @@ import { UsinasSection } from '@/components/UsinasSection'
 import { CtaBanner } from '@/components/CtaBanner'
 import { ContactSection } from '@/components/ContactSection'
 import { Footer } from '@/components/Footer'
-import { PageIndicator } from '@/components/PageIndicator'
+import CamadaRail from '@/components/CamadaRail'
 
 export default function HomePage() {
   return (
@@ -25,7 +25,7 @@ export default function HomePage() {
       <div className="reveal"><CtaBanner /></div>
       <div className="reveal"><ContactSection /></div>
       <Footer />
-      <PageIndicator />
+      <CamadaRail />
     </>
   )
 }
