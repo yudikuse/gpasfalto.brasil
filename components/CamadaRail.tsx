@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 /**
  * CamadaRail
  * Trilho lateral fixo no formato de amostra de pavimento (core sample).
- * Fica fixo na direita, ancorado por uma espinha vertical de altura total,
- * e um marcador verde desce pelas camadas conforme a pagina rola.
+ * Um marcador verde desce pelas camadas conforme a pagina rola; a camada
+ * atual acende em verde.
  *
- * - Desktop (lg+): trilho completo, rotulos sempre visiveis.
- * - Telas menores: escondido.
+ * - Desktop (lg+): trilho completo, ancorado por uma espinha, rotulos sempre visiveis.
+ * - Mobile (< lg): faixa fininha na borda + marcador + chip com a camada atual.
  */
 
 type Tex = "capa" | "lisa" | "base" | "sub" | "solo";
@@ -57,18 +57,10 @@ function Texture({ kind, id }: { kind: Tex; id: string }) {
   if (kind === "lisa") {
     return (
       <span
-        style={{
-          position: "absolute",
-          top: 4,
-          left: "8%",
-          right: "8%",
-          height: 0,
-          borderTop: "1px dashed rgba(207,203,187,.28)",
-        }}
+        style={{ position: "absolute", top: 4, left: "8%", right: "8%", height: 0, borderTop: "1px dashed rgba(207,203,187,.28)" }}
       />
     );
   }
-  // base / sub / solo -> linhas abertas (sem caixinhas), svg sem viewBox (tile em px)
   return (
     <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }} aria-hidden>
       <defs>
@@ -91,6 +83,25 @@ function Texture({ kind, id }: { kind: Tex; id: string }) {
       </defs>
       <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
+  );
+}
+
+function Marker({ width }: { width: number }) {
+  return (
+    <div style={{ position: "relative", height: 0, borderTop: "2px solid #34C759", width }}>
+      <div
+        style={{
+          position: "absolute",
+          left: -6,
+          top: -4,
+          width: 0,
+          height: 0,
+          borderTop: "4px solid transparent",
+          borderBottom: "4px solid transparent",
+          borderLeft: "6px solid #34C759",
+        }}
+      />
+    </div>
   );
 }
 
@@ -121,99 +132,92 @@ export default function CamadaRail() {
   let active = 0;
   for (let i = 0; i < LAYERS.length; i++) if (pc >= CUM[i]) active = i;
 
-  const SPINE = 30; // x da espinha dentro da aside
+  const SPINE = 30;
 
   return (
-    <aside
-      aria-hidden
-      className="hidden lg:block"
-      style={{ position: "fixed", top: 0, right: 26, height: "100vh", width: 124, zIndex: 40, pointerEvents: "none" }}
-    >
-      {/* espinha vertical de altura total (ancora) */}
-      <span style={{ position: "absolute", left: SPINE, top: "6%", bottom: "6%", width: 1, background: "rgba(207,203,187,.22)" }} />
-      <span style={{ position: "absolute", left: SPINE - 4, top: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
-      <span style={{ position: "absolute", left: SPINE - 4, bottom: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
-
-      {/* barra (amostra), encaixada na espinha */}
-      <div
-        style={{
-          position: "absolute",
-          left: SPINE,
-          top: "11%",
-          height: "78%",
-          width: 30,
-          display: "flex",
-          flexDirection: "column",
-        }}
+    <>
+      {/* ===== DESKTOP ===== */}
+      <aside
+        aria-hidden
+        className="hidden lg:block"
+        style={{ position: "fixed", top: 0, right: 26, height: "100vh", width: 124, zIndex: 40, pointerEvents: "none" }}
       >
-        {LAYERS.map((L, i) => (
-          <div
-            key={L.key}
-            style={{
-              flex: `${L.basis} 0 0`,
-              position: "relative",
-              background: L.tone,
-              borderTop: i ? "1px solid rgba(52,199,89,.4)" : "none",
-              overflow: "hidden",
-            }}
-          >
-            <Texture kind={L.tex} id={`gp-tex-${L.key}`} />
-            <span
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "#34C759",
-                opacity: active === i ? 0.12 : 0,
-                transition: "opacity .25s ease",
-              }}
-            />
-          </div>
-        ))}
+        <span style={{ position: "absolute", left: SPINE, top: "6%", bottom: "6%", width: 1, background: "rgba(207,203,187,.22)" }} />
+        <span style={{ position: "absolute", left: SPINE - 4, top: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
+        <span style={{ position: "absolute", left: SPINE - 4, bottom: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
 
-        {/* marcador (anda dentro da barra) */}
-        <div style={{ position: "absolute", left: 0, top: `${pc}%`, width: 30, pointerEvents: "none" }}>
-          <div style={{ position: "relative", height: 0, borderTop: "2px solid #34C759" }}>
-            <div
-              style={{
-                position: "absolute",
-                left: -6,
-                top: -4,
-                width: 0,
-                height: 0,
-                borderTop: "4px solid transparent",
-                borderBottom: "4px solid transparent",
-                borderLeft: "6px solid #34C759",
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* rotulos (sempre visiveis, a esquerda da barra) */}
-      <div style={{ position: "absolute", left: 0, top: "11%", height: "78%", width: SPINE - 4 }}>
-        {LAYERS.map((L, i) => {
-          const top = CUM[i] + L.basis / 2;
-          const on = active === i;
-          return (
+        <div style={{ position: "absolute", left: SPINE, top: "11%", height: "78%", width: 30, display: "flex", flexDirection: "column" }}>
+          {LAYERS.map((L, i) => (
             <div
               key={L.key}
+              style={{ flex: `${L.basis} 0 0`, position: "relative", background: L.tone, borderTop: i ? "1px solid rgba(52,199,89,.4)" : "none", overflow: "hidden" }}
+            >
+              <Texture kind={L.tex} id={`gp-tex-${L.key}`} />
+              <span style={{ position: "absolute", inset: 0, background: "#34C759", opacity: active === i ? 0.12 : 0, transition: "opacity .25s ease" }} />
+            </div>
+          ))}
+          <div style={{ position: "absolute", left: 0, top: `${pc}%`, width: 30 }}>
+            <Marker width={30} />
+          </div>
+        </div>
+
+        <div style={{ position: "absolute", left: 0, top: "11%", height: "78%", width: SPINE - 4 }}>
+          {LAYERS.map((L, i) => {
+            const top = CUM[i] + L.basis / 2;
+            const on = active === i;
+            return (
+              <div
+                key={L.key}
+                style={{ position: "absolute", right: 0, top: `${top}%`, transform: "translateY(-50%)", textAlign: "right", whiteSpace: "nowrap", fontFamily: "ui-monospace, 'JetBrains Mono', monospace", transition: "color .25s ease" }}
+              >
+                <div style={{ fontSize: 10, letterSpacing: ".06em", color: on ? "#34C759" : "#6b7299" }}>{L.label}</div>
+                <div style={{ fontSize: 7, letterSpacing: ".04em", color: on ? "#34C759" : "#454c70" }}>{L.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+      </aside>
+
+      {/* ===== MOBILE ===== */}
+      <aside
+        aria-hidden
+        className="block lg:hidden"
+        style={{ position: "fixed", top: 0, right: 6, height: "100vh", width: 96, zIndex: 40, pointerEvents: "none" }}
+      >
+        {/* faixa fininha */}
+        <div style={{ position: "absolute", right: 6, top: "16%", bottom: "16%", width: 7, display: "flex", flexDirection: "column", borderRadius: 2, overflow: "hidden" }}>
+          {LAYERS.map((L, i) => (
+            <div key={L.key} style={{ flex: `${L.basis} 0 0`, position: "relative", background: L.tone, borderTop: i ? "1px solid rgba(52,199,89,.45)" : "none" }}>
+              <span style={{ position: "absolute", inset: 0, background: "#34C759", opacity: active === i ? 0.2 : 0, transition: "opacity .25s ease" }} />
+            </div>
+          ))}
+        </div>
+        {/* marcador + chip da camada atual */}
+        <div style={{ position: "absolute", right: 6, top: "16%", height: "68%", width: 7 }}>
+          <div style={{ position: "absolute", left: 0, top: `${pc}%`, width: 7 }}>
+            <Marker width={7} />
+            <div
               style={{
                 position: "absolute",
-                right: 0,
-                top: `${top}%`,
+                right: 13,
+                top: 0,
                 transform: "translateY(-50%)",
-                textAlign: "right",
                 whiteSpace: "nowrap",
                 fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                transition: "color .25s ease",
+                fontSize: 9,
+                letterSpacing: ".08em",
+                color: "#34C759",
+                background: "rgba(10,13,40,.85)",
+                border: "1px solid rgba(52,199,89,.4)",
+                borderRadius: 3,
+                padding: "2px 6px",
               }}
             >
-              <div style={{ fontSize: 10, letterSpacing: ".06em", color: on ? "#34C759" : "#6b7299" }}>{L.label}</div>
-              <div style={{ fontSize: 7, letterSpacing: ".04em", color: on ? "#34C759" : "#454c70" }}>{L.desc}</div>
+              {LAYERS[active].label}
             </div>
-          );
-        })}
-      </div>
-    </aside>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
