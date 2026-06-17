@@ -107,6 +107,7 @@ function Marker({ width }: { width: number }) {
 
 export default function CamadaRail() {
   const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -116,6 +117,7 @@ export default function CamadaRail() {
         const h = document.documentElement.scrollHeight - window.innerHeight;
         const p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
         setProgress(p);
+        setVisible(window.scrollY > window.innerHeight * 0.6);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -140,7 +142,7 @@ export default function CamadaRail() {
       <aside
         aria-hidden
         className="hidden lg:block"
-        style={{ position: "fixed", top: 0, right: 26, height: "100vh", width: 124, zIndex: 40, pointerEvents: "none" }}
+        style={{ position: "fixed", top: 0, right: 26, height: "100vh", width: 124, zIndex: 40, pointerEvents: "none", opacity: visible ? 1 : 0, transition: "opacity .5s ease" }}
       >
         <span style={{ position: "absolute", left: SPINE, top: "6%", bottom: "6%", width: 1, background: "rgba(207,203,187,.22)" }} />
         <span style={{ position: "absolute", left: SPINE - 4, top: "6%", width: 9, height: 1, background: "rgba(207,203,187,.4)" }} />
@@ -182,7 +184,7 @@ export default function CamadaRail() {
       <aside
         aria-hidden
         className="block lg:hidden"
-        style={{ position: "fixed", top: 0, right: 6, height: "100vh", width: 96, zIndex: 40, pointerEvents: "none" }}
+        style={{ position: "fixed", top: 0, right: 6, height: "100vh", width: 96, zIndex: 40, pointerEvents: "none", opacity: visible ? 1 : 0, transition: "opacity .5s ease" }}
       >
         {/* faixa fininha */}
         <div style={{ position: "absolute", right: 6, top: "16%", bottom: "16%", width: 7, display: "flex", flexDirection: "column", borderRadius: 2, overflow: "hidden" }}>
