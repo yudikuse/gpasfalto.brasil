@@ -14,7 +14,7 @@ export function CtaBanner() {
   const fixo = site.phones.find((p) => !p.isWhatsApp)
 
   return (
-    <section id="contato" className="relative overflow-hidden bg-gp-navy">
+    <section className="relative overflow-hidden bg-gp-navy">
       {/* Estrada em perspectiva — bordas convergindo pro ponto de fuga +
           faixa central tracejada. Bem sutil, atrás do conteúdo. */}
       <svg
