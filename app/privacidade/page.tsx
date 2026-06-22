@@ -40,10 +40,12 @@ export default function PrivacidadePage() {
           </p>
 
           <P>
-            Esta política explica como a {company.name} ({company.razao}, CNPJ {company.cnpj})
-            trata dados pessoais e utiliza cookies neste site, em conformidade com a Lei Geral de
-            Proteção de Dados (Lei nº 13.709/2018 — LGPD). Ao usar o site, você concorda com as
-            práticas descritas aqui.
+            A sua privacidade é importante para a {company.name}. Esta política descreve como a{' '}
+            {company.razao} (CNPJ {company.cnpj}) coleta, usa, armazena e protege dados pessoais
+            neste site, e como você controla os cookies — em conformidade com a Lei Geral de Proteção
+            de Dados (Lei nº 13.709/2018 — LGPD). Solicitamos informações pessoais apenas quando são
+            realmente necessárias para lhe prestar um serviço, sempre por meios justos e legais, com
+            o seu conhecimento e consentimento.
           </P>
 
           <H2>1. Quem é o controlador</H2>
@@ -60,29 +62,31 @@ export default function PrivacidadePage() {
           <P>
             <strong className="text-gp-bone">Dados que você nos envia:</strong> ao preencher o
             formulário de contato ou solicitar orçamento, coletamos nome, e-mail, telefone e a
-            mensagem/descrição da obra que você informar.
+            descrição da obra que você informar.
           </P>
           <P>
             <strong className="text-gp-bone">Dados de navegação:</strong> coletamos, por meio de
-            cookies e tecnologias semelhantes, informações técnicas como páginas visitadas e
-            interações — mas apenas as não-essenciais mediante o seu consentimento (ver seção 5).
+            cookies e tecnologias semelhantes, informações técnicas de uso — mas as não-essenciais
+            apenas mediante o seu consentimento (ver seção 5).
           </P>
 
-          <H2>3. Para que usamos e a base legal</H2>
+          <H2>3. Consentimento</H2>
+          <P>
+            O uso contínuo do nosso site é considerado aceitação das nossas práticas de privacidade.
+            Quando solicitamos seus dados para uma finalidade secundária, como estatística ou
+            marketing, pedimos o seu consentimento de forma direta (no aviso de cookies) e você pode
+            recusar. Você pode <strong className="text-gp-bone">retirar o consentimento a qualquer
+            momento</strong>, pelo e-mail de contato ou pelo botão de preferências de cookies.
+          </P>
+
+          <H2>4. Para que usamos e a base legal</H2>
           <P>
             Usamos os dados de contato para responder à sua solicitação, elaborar orçamentos e
             executar procedimentos preliminares relacionados a um possível contrato — base legal de
             procedimentos preliminares e legítimo interesse (art. 7º da LGPD). Os dados de navegação
             não-essenciais são usados, mediante consentimento, para medir audiência e melhorar a
-            comunicação.
-          </P>
-
-          <H2>4. Com quem compartilhamos</H2>
-          <P>
-            Não vendemos seus dados. Eles podem ser processados por prestadores que viabilizam o
-            site, como serviços do Google (recebimento de formulários, e — somente com o seu
-            consentimento — Google Ads e vídeos do YouTube). Esses provedores tratam os dados
-            conforme suas próprias políticas e a finalidade aqui descrita.
+            comunicação. Retemos os dados apenas pelo tempo necessário a essas finalidades ou às
+            obrigações legais aplicáveis.
           </P>
 
           <H2>5. Cookies</H2>
@@ -93,7 +97,7 @@ export default function PrivacidadePage() {
           <P>
             <strong className="text-gp-bone">Estatística e marketing (não-essenciais):</strong>{' '}
             cookies do Google Ads (nas páginas de campanha) e do YouTube (quando você reproduz um
-            vídeo). Eles ficam <strong className="text-gp-bone">desativados por padrão</strong> e só
+            vídeo). Ficam <strong className="text-gp-bone">desativados por padrão</strong> e só
             passam a funcionar se você aceitar no aviso de cookies. Você pode mudar sua escolha a
             qualquer momento:
           </P>
@@ -101,28 +105,43 @@ export default function PrivacidadePage() {
             <CookiePrefsButton className="inline-flex items-center gap-2 rounded-md border border-gp-green-bright/40 px-4 py-2 font-mono text-xs uppercase tracking-widest text-gp-green-bright transition-colors hover:bg-gp-green-bright/10" />
           </div>
 
-          <H2>6. Seus direitos</H2>
+          <H2>6. Compartilhamento e serviços de terceiros</H2>
           <P>
-            Como titular, você pode solicitar a confirmação da existência de tratamento, o acesso,
-            a correção, a anonimização, a portabilidade e a eliminação dos seus dados, além de
-            revogar o consentimento — conforme o art. 18 da LGPD. Para exercer qualquer direito,
-            escreva para{' '}
+            Não vendemos seus dados nem os compartilhamos publicamente, exceto quando exigido por
+            lei. Fornecedores terceirizados — como os serviços do Google que viabilizam o
+            recebimento de formulários e, somente com o seu consentimento, o Google Ads e os vídeos
+            do YouTube — tratam os dados apenas na medida necessária para prestar os serviços que nos
+            fornecem, conforme as próprias políticas de privacidade deles. Ao clicar em links que o
+            levem para fora do nosso site, você deixa de ser regido por esta política; recomendamos
+            ler as declarações de privacidade desses sites.
+          </P>
+
+          <H2>7. Segurança</H2>
+          <P>
+            Adotamos precauções razoáveis e boas práticas para proteger seus dados contra perda,
+            acesso, divulgação, alteração ou destruição não autorizados, incluindo conexão
+            criptografada (HTTPS/SSL) e medidas técnicas e organizacionais adequadas. Nenhum método
+            de transmissão pela internet é 100% seguro, mas trabalhamos para manter um padrão
+            elevado de proteção.
+          </P>
+
+          <H2>8. Seus direitos</H2>
+          <P>
+            Como titular, você pode solicitar a confirmação da existência de tratamento, o acesso, a
+            correção, a anonimização, a portabilidade e a eliminação dos seus dados, além de revogar
+            o consentimento — conforme o art. 18 da LGPD. Para exercer qualquer direito, escreva
+            para{' '}
             <a href={`mailto:${company.email}`} className="text-gp-green-bright underline underline-offset-2">
               {company.email}
             </a>
             .
           </P>
 
-          <H2>7. Segurança e retenção</H2>
+          <H2>9. Alterações</H2>
           <P>
-            Adotamos medidas técnicas e organizacionais para proteger seus dados e os mantemos apenas
-            pelo tempo necessário às finalidades acima ou às obrigações legais aplicáveis.
-          </P>
-
-          <H2>8. Alterações</H2>
-          <P>
-            Podemos atualizar esta política periodicamente. A data de revisão no topo indica a versão
-            vigente.
+            Podemos modificar esta política a qualquer momento. As alterações entram em vigor assim
+            que publicadas nesta página, e a data de revisão no topo indica a versão vigente.
+            Recomendamos revisá-la periodicamente.
           </P>
 
           <div className="mt-14 border-t border-gp-bone/10 pt-8">
